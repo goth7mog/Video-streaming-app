@@ -52,6 +52,6 @@ $ npm start
 
 ### Author
 
-Oleksandr Yurishchev
+Alexander Yurishchev
 [Link](https://github.com/goth7mog)
 
