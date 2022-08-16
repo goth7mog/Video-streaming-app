@@ -1,0 +1,62 @@
+<%- include ("includes/header") %>
+    <section class="py-2">
+        <div class="row">
+        <div class="col-md-6 text-center">
+            <h1 class="display-6 mt-3 pt-5">
+                <%= video.title %>
+            </h1>
+            <div id="main_content_container" class="lead">
+
+                <video id="videoPlayer" controls controlsList="nodownload">
+                    <source src="<%= video.filePath %>" type="video/mp4">
+                </video>
+                
+                <% if (typeof enabled != "undefined" && enabled === 0) { %>
+                    <!-- Inform if user has no access -->
+                    <div id="content-padlock">
+                        <strong>You don't have access to this content</strong>
+                        <img src="/img/padlock-content.svg" alt="You don't have access to this content"/>
+                    </div>
+                <% } %>
+
+            </div>
+
+            <!-- Show paying button if user don't have access to this video -->
+            <% if (typeof enabled != "undefined" && enabled === 0) { %>
+
+                <form action="/charge" method="POST">
+                    
+                    <input type="hidden" id="productId" name="productId" value="<%= video.watch %>">
+                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="<%= stripePublishableKey %>"
+                        data-amount="<%= video.price %>" data-name="<%= video.title %>"
+                        data-description="<%= video.desc %>" data-image="<%= video.thumbnail %>" data-locale="auto">
+                    </script>
+
+                    <script>
+                        // Hide default stripe button
+                        document.getElementsByClassName('stripe-button-el')[0].style.display = 'none';
+
+                        // Prevent downloading via browser api
+                        const noContext = document.getElementById('videoPlayer');
+            
+                        noContext.addEventListener('contextmenu', e => {
+                            e.preventDefault();
+                        });
+                    </script>
+                    <button type="submit" class="buy_button btn btn-outline-dark text-white btn-lg">Buy view for $<%= video.price/100 %></button>
+
+                </form>
+
+            <% } %>
+
+            <h2>About</h2>
+            <p><%= video.desc %></p>
+
+        </div>
+        <div class="col-md-6">
+            <img src="/img/side-image.png" alt="" class="img-fluid">
+        </div>
+        </div>
+    </section>
+    
+  <%- include ("includes/footer") %>
