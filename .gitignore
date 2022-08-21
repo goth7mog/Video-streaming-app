@@ -1,4 +1,4 @@
 node_modules
 .env
-assets/videos/
-public/img/thumbnails/
+# assets/videos/
+# public/img/thumbnails/
