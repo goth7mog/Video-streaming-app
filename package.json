@@ -1,13 +1,13 @@
 {
-  "name": "ebookseller",
+  "name": "",
   "version": "1.0.0",
-  "description": "App to sell ebook",
+  "description": "",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js"
   },
-  "author": "Brad Traversy",
-  "license": "MIT",
+  "author": "",
+  "license": "",
   "dependencies": {
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.6",
