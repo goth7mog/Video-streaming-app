@@ -3,3 +3,4 @@ node_modules
 assets/videos/
 public/img/thumbnails/
 *.yaml
+.DS_Store
