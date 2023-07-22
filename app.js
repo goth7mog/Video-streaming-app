@@ -21,7 +21,7 @@ app.use(cookieParser());
 // Set Static Folder
 app.use(express.static(`${__dirname}/public`));
 
-
+console.log('test')
 
 app.use("/", mainRoute);
 app.use("/content", contentRoute);
