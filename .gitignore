@@ -1,6 +1,10 @@
-node_modules
+/node_modules
+/redis-data
+.env*
 .env
 assets/videos/
 public/img/thumbnails/
 *.yaml
+### Except the docker-compose files
+!docker-compose*.yaml
 .DS_Store

@@ -1,7 +1,8 @@
 const router = require("express").Router();
-const Content = require("../models/Content");
-const keys = require('../config/keys');
-const { verifyToken } = require("../middleware/verifyToken");
+const { Create, CreateWithID, Read, Update, Delete, Expire, GetAll, Search} = require(global.approute + '/collections/Content.js');
+const Helper = require(global.approute + '/helpers/helpFunctions.js'); // Add class Helper
+const { verifyToken } = require(global.approute + '/middleware/verifyToken');
+const _KEYS = require(global.approute + '/config/keys');
 
 
 // SHOW ALL VIDEOS
@@ -22,30 +23,41 @@ router.get("/", async (req, res) => {
 
 // SHOW PAGE WITH SPECIFIC VIDEO
 router.get('/watch', verifyToken, async (req, res) => {
+    const DATA = {};
+    const videoID = req.query.v || null;
+    
 
     try {
-        const video = await Content.findOne(
-            {
-                watch: req.query.v
-            }
-        );
-        req.dataToRender.stripePublishableKey = keys.stripePublishableKey;
-        req.dataToRender.video = video;
 
-        // Process and delete payment cookie right away after payment
+        // Process and delete the payment cookie right away after the payment
         const { paymentResult } = req.cookies;
         res.clearCookie('paymentResult');
 
-        // Add popup
-        if (paymentResult) {
-            req.dataToRender.messages.push({
-                type: "payment",
-                subject: paymentResult
-            });
+        if (videoID !== null) {
+            const video = await Read(videoID);
+
+            if (video !== null && video.deleted !== true) {
+                DATA.stripePublishableKey = _KEYS.stripePublishableKey;
+                DATA.video = video;
+
+                // Add popup
+                if (paymentResult) {
+                    DATA.messages.push({
+                        type: "payment",
+                        subject: paymentResult
+                    });
+                }
+
+                res.status(200);
+                res.render('video-page', DATA);
+            } else {
+                res.status(404);
+                res.render('not-available');
+            }
+
+        } else {
+            res.redirect("/content");
         }
-
-
-        res.render('video-page', req.dataToRender);
 
     } catch (e) {
         console.log(e);

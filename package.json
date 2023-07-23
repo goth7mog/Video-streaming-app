@@ -9,18 +9,26 @@
   "author": "",
   "license": "",
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
+    "dayjs": "^1.11.9",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.16.2",
     "express-handlebars": "^6.0.6",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.1",
-    "stripe": "^5.1.1"
+    "redis": "^4.6.7",
+    "redis-om": "^0.3.6",
+    "stream": "^0.0.2",
+    "stripe": "^5.1.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.18"
   }
 }

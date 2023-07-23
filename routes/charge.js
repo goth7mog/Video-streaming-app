@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Content = require("../models/Content");
+const Content = require("../collections/content");
 const keys = require('../config/keys');
 const stripe = require('stripe')(keys.stripeSecretKey);
 const { verifyToken } = require("../middleware/verifyToken");
