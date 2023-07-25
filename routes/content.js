@@ -23,9 +23,8 @@ router.get("/", async (req, res) => {
 
 // SHOW PAGE WITH SPECIFIC VIDEO
 router.get('/watch', verifyToken, async (req, res) => {
-    const DATA = {};
     const videoID = req.query.v || null;
-    
+
 
     try {
 
@@ -37,19 +36,19 @@ router.get('/watch', verifyToken, async (req, res) => {
             const video = await Read(videoID);
 
             if (video !== null && video.deleted !== true) {
-                DATA.stripePublishableKey = _KEYS.stripePublishableKey;
-                DATA.video = video;
+                res.locals.DATA_TO_RENDER.stripePublishableKey = _KEYS.stripePublishableKey;
+                res.locals.DATA_TO_RENDER.video = video;
 
                 // Add popup
                 if (paymentResult) {
-                    DATA.messages.push({
+                    res.locals.DATA_TO_RENDER.messages.push({
                         type: "payment",
                         subject: paymentResult
                     });
                 }
 
                 res.status(200);
-                res.render('video-page', DATA);
+                res.render('video-page', res.locals.DATA_TO_RENDER);
             } else {
                 res.status(404);
                 res.render('not-available');

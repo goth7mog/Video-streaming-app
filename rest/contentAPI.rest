@@ -1,0 +1,75 @@
+### TEST FILE FOR CONTENT API
+
+### CREATE CONTENT
+# Required - createdUserId
+POST http://localhost:8080/api/content HTTP/1.1
+Content-Type: application/json
+{
+    "title": "Bunny video",
+    "description": "Some bunny, isn't it",
+    "thumbnail": "/img/thumbnails/1659548097900-images.jpeg",
+    "categories": [
+        "funny",
+        "comedy"
+    ],
+    "tags": [
+        "bunny",
+        "fock"
+    ],
+    "filePath": "/assets/videos/1659548097899-some.mp4",
+    "price": 25,
+    "views": 0,
+
+    "createdUserId": "356F6DWRDX9M61H9T5MW2C358",
+    "createdDateTime": null,
+    "modifiedUserId": null,
+    "modifiedDateTime": null,
+    "deletedUserId": null,
+    "deletedDateTime": null,
+    "deleted": false
+}
+
+
+### READ CONTENT
+GET http://localhost:8080/api/content/01GMYKVRXQCX6QP19G0ZFKZT54 HTTP/1.1
+
+
+### UPDATE CONTENT
+# Required - modifiedUserId
+PUT http://localhost:8080/api/content/01GMYKVRXQCX6QP19G0ZFKZT54 HTTP/1.1
+Content-Type: application/json
+{
+    "areaDescription": "Now it's pretty urban",
+    "modifiedUserId": "N356F6DWRDX9M61H9T5MW2C358",
+    "modifiedDateTime": 1671529744.008
+}
+
+
+### DESTROY CONTENT (permanently)
+DELETE http://localhost:8080/api/content/01GMYKVRXQCX6QP19G0ZFKZT54 HTTP/1.1
+
+
+### DELETE CONTENT (to set 'deleted:true')
+# Required - deletedUserId
+PUT http://localhost:8080/api/content/01GMYKVRXQCX6QP19G0ZFKZT54 HTTP/1.1
+{
+    "deletedUserId": "N356F6DWRDX9M61H9T5MW2C358",
+    "deletedDateTime": 1671771504.389
+}
+
+
+### EXPIRE CONTENT
+GET http://localhost:8080/api/content/expire/01GMYKVRXQCX6QP19G0ZFKZT54?seconds=10 HTTP/1.1
+
+### GET ALL CONTENTS
+GET http://localhost:8080/api/content/search/all HTTP/1.1
+
+### GET ALL CONTENTS WITH OFFSET AND LIMIT, WHICH ARE SORTED BY * IN SORT ORDER (ASC, DESC)
+GET http://localhost:8080/api/content/search/all?offset=0&count=10&sortby=createdDateTime&sortorder=DESC HTTP/1.1
+
+### SEARCH FOR CONTENT
+## More detailed information about search in '/search/for' router
+GET http://localhost:8080/api/content/search/for?query=* HTTP/1.1
+
+### SEARCH FOR CONTENT WITH OFFSET AND LIMIT, WHICH ARE SORTED BY * IN SORT ORDER (ASC, DESC)
+GET http://localhost:8080/api/content/search/for?query=*&offset=0&count=10&sortby=createdDateTime&sortorder=ASC HTTP/1.1

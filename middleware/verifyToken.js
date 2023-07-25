@@ -1,11 +1,14 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
+    
     // Take token from cookie
     const { accessToken } = req.cookies;
 
-    req.dataToRender = req.dataToRender || {};
-    req.dataToRender.messages = req.dataToRender.messages || [];
+    console.log(res.locals)
+
+    res.locals.DATA_TO_RENDER = res.locals.DATA_TO_RENDER || {};
+    res.locals.DATA_TO_RENDER.messages = res.locals.DATA_TO_RENDER.messages || [];
 
     if (accessToken) {
 
@@ -15,8 +18,8 @@ const verifyToken = (req, res, next) => {
 
             if (err) {
                 req.accessToken = 'error';
-                req.dataToRender.enabled = 0;
-                req.dataToRender.messages.push({
+                res.locals.DATA_TO_RENDER.enabled = 0;
+                res.locals.DATA_TO_RENDER.messages.push({
                     type: "token",
                     subject: "Your token isn't valid"
                 });
@@ -25,13 +28,13 @@ const verifyToken = (req, res, next) => {
             }
 
             if (token.access.includes(+req.query.v)) {
-                req.dataToRender.enabled = 1;
+                res.locals.DATA_TO_RENDER.enabled = 1;
                 next();
 
             } else {
 
-                req.dataToRender.enabled = 0;
-                req.dataToRender.preloader = true;
+                res.locals.DATA_TO_RENDER.enabled = 0;
+                res.locals.DATA_TO_RENDER.preloader = true;
                 next();
 
             }
@@ -40,8 +43,8 @@ const verifyToken = (req, res, next) => {
 
     } else {
         // If we don't have access token
-        req.dataToRender.enabled = 0;
-        req.dataToRender.preloader = true;
+        res.locals.DATA_TO_RENDER.enabled = 0;
+        res.locals.DATA_TO_RENDER.preloader = true;
         next();
         return;
     }

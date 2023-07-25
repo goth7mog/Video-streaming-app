@@ -9,7 +9,7 @@ class content extends Entity { };
 // Create a schema for the entity
 const contentSchema = new Schema(content, {
     title: { type: 'string' },
-    watch: { type: 'number', sortable: true },
+    // watch: { type: 'number', sortable: true },
     description: { type: 'text', sortable: true },
     thumbnail: { type: 'string' },
     categories: { type: 'string[]' },
