@@ -8,6 +8,8 @@ const _KEYS = require(global.approute + '/config/keys');
 // SHOW ALL VIDEOS
 router.get("/", async (req, res) => {
 
+    // res.clearCookie("accessToken");
+
     try {
         const videos = await Content.find().sort({ createdAt: -1 });
         res.render("content", {
@@ -24,7 +26,7 @@ router.get("/", async (req, res) => {
 // SHOW PAGE WITH SPECIFIC VIDEO
 router.get('/watch', verifyToken, async (req, res) => {
     const videoID = req.query.v || null;
-
+    // console.log(req.cookies);
 
     try {
 
@@ -38,6 +40,8 @@ router.get('/watch', verifyToken, async (req, res) => {
             if (video !== null && video.deleted !== true) {
                 res.locals.DATA_TO_RENDER.stripePublishableKey = _KEYS.stripePublishableKey;
                 res.locals.DATA_TO_RENDER.video = video;
+
+                // console.log(video.entityId);
 
                 // Add popup
                 if (paymentResult) {
@@ -58,8 +62,9 @@ router.get('/watch', verifyToken, async (req, res) => {
             res.redirect("/content");
         }
 
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        console.log(err.message);
+        console.log(err.stack);
     }
 
 

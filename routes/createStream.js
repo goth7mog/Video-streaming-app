@@ -1,13 +1,16 @@
 const router = require("express").Router();
 const path = require('path');
 const fs = require('fs');
-const { verifyTokenForStream } = require("../middleware/verifyToken");
+const { verifyTokenForStream } = require(global.approute + "/middleware/verifyToken.js");
 
 
 // CREATE STREAM
-router.get('/:watch', verifyTokenForStream, (req, res) => {
+router.get('/:watch', verifyTokenForStream, async (req, res) => {
+// router.get('/:watch', (req, res) => {
 
-    const path = `assets/videos/${req.params.watch}`;
+
+    // console.log(req.params.watch)
+    const path = global.approute + `/assets/videos/${req.params.watch}`;
     const stat = fs.statSync(path);
     const fileSize = stat.size;
     const range = req.headers.range;

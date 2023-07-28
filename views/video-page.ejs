@@ -26,10 +26,10 @@
 
                 <form action="/charge" method="POST">
                     
-                    <input type="hidden" id="productId" name="productId" value="<%= video.watch %>">
+                    <input type="hidden" id="productId" name="productId" value="<%= video.entityId %>">
                     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="<%= stripePublishableKey %>"
                         data-amount="<%= video.price %>" data-name="<%= video.title %>"
-                        data-description="<%= video.desc %>" data-image="<%= video.thumbnail %>" data-locale="auto">
+                        data-description="<%= video.description %>" data-image="<%= video.thumbnail %>" data-locale="auto">
                     </script>
 
                     <script>
@@ -43,14 +43,14 @@
                             e.preventDefault();
                         });
                     </script>
-                    <button type="submit" class="buy_button btn btn-outline-dark text-white btn-lg">Buy view for $<%= video.price/100 %></button>
+                    <button type="submit" class="buy_button btn btn-outline-dark text-white btn-lg">Buy a view for $<%= video.price/100 %></button>
 
                 </form>
 
             <% } %>
 
             <h2>About</h2>
-            <p><%= video.desc %></p>
+            <p><%= video.description %></p>
 
         </div>
         <div class="col-md-6">

@@ -1,80 +1,89 @@
 const router = require("express").Router();
-const Content = require("../collections/content");
-const keys = require('../config/keys');
+const { Create, CreateWithID, Read, Update, Delete, Expire, GetAll, Search} = require(global.approute + '/collections/Content.js');
+const Helper = require(global.approute + '/helpers/helpFunctions.js'); // Add class Helper
+const ErrorNotifier = require(global.approute + '/helpers/ErrorNotifier.js');
+const keys = require(global.approute + '/config/keys');
 const stripe = require('stripe')(keys.stripeSecretKey);
-const { verifyToken } = require("../middleware/verifyToken");
+const { verifyToken } = require(global.approute + "/middleware/verifyToken");
 const jwt = require("jsonwebtoken");
 
 // CHARGE 
-router.post('/', verifyToken, async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        // Find information in the database about a video by its ID (key - watch)
-        // req.body.productId - data from the form
-        const video = await Content.findOne(
-            {
-                watch: +req.body.productId
-            }
-        );
+
+        /* Finding information in the database about the video by its id.
+        req.body.productId - data from the form */
+
+        const video = await Read(req.body.productId);
+
+        if (video === null || video.deleted === true) {
+            throw new Error(`Couldn't find the content by id ${req.body.productId} or it's deleted`);
+        }
 
         // Create stripe payment
-        stripe.customers.create({
+        const customer = await stripe.customers.create({
             email: req.body.stripeEmail,
             source: req.body.stripeToken
-        })
-            .then(customer => stripe.charges.create({
-                amount: video.price,
-                description: video.title,
-                currency: 'usd',
-                customer: customer.id
-            }))
-            .then(charge => {
+        });
 
-                let accessToken;
+        const charge = await stripe.charges.create({
+            amount: video.price,
+            description: video.title,
+            metadata: {
+                contentID: video.entityId
+            },
+            currency: 'usd',
+            customer: customer.id
+        });
 
-                // If we already have a current access token
-                if (req.accessToken && req.accessToken !== 'error') {
+        let accessToken;
 
-                    // Embed access information in token
-                    accessToken = jwt.sign(
-                        {
-                            purchaseIDs: req.accessToken.purchaseIDs.concat(charge.id),
-                            access: req.accessToken.access.concat(video.watch),
-                            email: req.accessToken.email.concat(charge.billing_details.name)
-                        },
-                        process.env.JWT_SEC,
-                        { expiresIn: 10 * 12 * 30 * 24 * 60 * 60 * 1000 }
-                    );
+        // If we already have a current access token
+        if (req.accessToken && req.accessToken !== 'error') {
 
-                    // And just delete old token
-                    res.clearCookie('accessToken');
+            // Embed access information in token
+            accessToken = jwt.sign(
+                {
+                    purchaseIDs: req.accessToken.purchaseIDs.concat(charge.id),
+                    access: req.accessToken.access.concat(video.entityId),
+                    email: req.accessToken.email.concat(charge.billing_details.name)
+                },
+                process.env.JWT_SEC,
+                { expiresIn: 10 * 12 * 30 * 24 * 60 * 60 * 1000 }
+            );
 
-                } else {
-                    // If the token is absent or not valid
-                    accessToken = jwt.sign(
-                        {
-                            purchaseIDs: [charge.id],
-                            access: [video.watch],
-                            email: [charge.billing_details.name]
-                        },
-                        process.env.JWT_SEC,
-                        { expiresIn: 10 * 12 * 30 * 24 * 60 * 60 * 1000 }
-                    );
-                }
+            // And just delete old token
+            res.clearCookie('accessToken');
 
-                // Ten years token and cookie
-                res.cookie('accessToken', accessToken, { maxAge: 10 * 12 * 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-                // Cookie for popup
-                res.cookie('paymentResult', "success-payment");
-                res.redirect(`/content/watch?v=${video.watch}`);
+        } else {
+            // If the token is absent or not valid
+            accessToken = jwt.sign(
+                {
+                    purchaseIDs: [charge.id],
+                    access: [video.entityId],
+                    email: [charge.billing_details.name]
+                },
+                process.env.JWT_SEC,
+                { expiresIn: 10 * 12 * 30 * 24 * 60 * 60 * 1000 }
+            );
+        }
 
-            }).catch((err) => {
+        // Ten years token and cookie
+        res.cookie('accessToken', accessToken, { maxAge: 10 * 12 * 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+        // Cookie for the popup
+        res.cookie('paymentResult', "success-payment");
+        res.redirect(`/content/watch?v=${video.entityId}`);
 
-                res.cookie('paymentResult', "error-payment");
-                res.redirect(`/content/watch?v=${video.watch}`);
-
-            });
     } catch (err) {
-        console.log(err);
+        ErrorNotifier({
+            msg: err.message,
+            stack: err.stack,
+            reqBody: req.body,
+            customerEmail: req.body.stripeEmail
+        });
+
+        res.cookie('paymentResult', "error-payment");
+        res.redirect(`/content/watch?v=${req.body.productId}`);
     }
 
 
