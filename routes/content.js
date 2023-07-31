@@ -8,7 +8,7 @@ const _KEYS = require(global.approute + '/config/keys');
 // SHOW ALL VIDEOS
 router.get("/", async (req, res) => {
 
-    // res.clearCookie("accessToken");
+    res.clearCookie("accessToken");
 
     try {
         const videos = await Content.find().sort({ createdAt: -1 });
@@ -30,9 +30,8 @@ router.get('/watch', verifyToken, async (req, res) => {
 
     try {
 
-        // Process and delete the payment cookie right away after the payment
-        const { paymentResult } = req.cookies;
-        res.clearCookie('paymentResult');
+        // To process a payment result
+        const paymentResult = req.flash('paymentResult'); // cleared after being displayed for one time
 
         if (videoID !== null) {
             const video = await Read(videoID);
@@ -43,13 +42,15 @@ router.get('/watch', verifyToken, async (req, res) => {
 
                 // console.log(video.entityId);
 
-                // Add popup
+                // The popup
                 if (paymentResult) {
                     res.locals.DATA_TO_RENDER.messages.push({
                         type: "payment",
                         subject: paymentResult
                     });
                 }
+
+                // console.log(res.locals.DATA_TO_RENDER)
 
                 res.status(200);
                 res.render('video-page', res.locals.DATA_TO_RENDER);

@@ -13,6 +13,7 @@ router.post('/', async (req, res) => {
 
         /* Finding information in the database about the video by its id.
         req.body.productId - data from the form */
+        // throw new Error(`Couldn't find the content by id ${req.body.productId} or it's deleted`);
 
         const video = await Read(req.body.productId);
 
@@ -71,7 +72,7 @@ router.post('/', async (req, res) => {
         // Ten years token and cookie
         res.cookie('accessToken', accessToken, { maxAge: 10 * 12 * 30 * 24 * 60 * 60 * 1000, httpOnly: true });
         // Cookie for the popup
-        res.cookie('paymentResult', "success-payment");
+        req.flash('paymentResult', "success-payment");
         res.redirect(`/content/watch?v=${video.entityId}`);
 
     } catch (err) {
@@ -82,7 +83,7 @@ router.post('/', async (req, res) => {
             customerEmail: req.body.stripeEmail
         });
 
-        res.cookie('paymentResult', "error-payment");
+        req.flash('paymentResult', "error-payment");
         res.redirect(`/content/watch?v=${req.body.productId}`);
     }
 

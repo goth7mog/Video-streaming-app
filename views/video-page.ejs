@@ -10,6 +10,7 @@
                 <video id="videoPlayer" controls controlsList="nodownload">
                     <source src="<%= video.filePath %>" type="video/mp4">
                 </video>
+                <!-- <img class="thumbnail" src="<%= video.thumbnail %>" style="width: 270px; height: 169px;"> -->
                 
                 <% if (typeof enabled != "undefined" && enabled === 0) { %>
                     <!-- Inform if user has no access -->

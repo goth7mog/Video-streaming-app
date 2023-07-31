@@ -6,7 +6,7 @@ services:
     #     - MONGO_INITDB_ROOT_USERNAME=root
     #     - MONGO_INITDB_ROOT_PASSWORD=pass777
     ports:
-      - "27017:27017"
+      - "27027:27017"
     command: mongod
     volumes:
       - mongodb_data_container2:/data/db

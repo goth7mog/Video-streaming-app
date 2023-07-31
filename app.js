@@ -1,7 +1,9 @@
 const dotenv = require("dotenv");
 dotenv.config();
 const express = require('express');
+const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 // const cors = require('cors');
 
@@ -26,6 +28,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Use cookies in the project
 app.use(cookieParser());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: true,
+  resave: true
+}));
+app.use(flash());
 
 // Set Static Folder
 app.use(express.static(`${global.approute}/public`));
