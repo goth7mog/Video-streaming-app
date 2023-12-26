@@ -6,6 +6,8 @@ const verifyToken = (req, res, next) => {
     
     // Taking the token from cookie
     const { accessToken } = req.cookies;
+    // const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+    // console.log(accessToken);
 
     // console.log(res.locals)
 
@@ -19,6 +21,7 @@ const verifyToken = (req, res, next) => {
             req.accessToken = token;
 
             if (err) {
+                // console.log(err);
                 req.accessToken = 'error';
                 res.locals.DATA_TO_RENDER.enabled = 0;
                 res.locals.DATA_TO_RENDER.messages.push({
@@ -64,7 +67,7 @@ const verifyTokenForStream = (req, res, next) => {
             const identifier = req.params.watch.substring(0, req.params.watch.indexOf("-"));
 
             if (err) {
-                res.status(403).send("The token is not valid!");
+                res.status(401).send("The token is not valid!");
             }
             if (token.access.includes(identifier)) {
                 next();
@@ -74,7 +77,7 @@ const verifyTokenForStream = (req, res, next) => {
         });
 
     } else {
-        res.status(403).send('No token');
+        res.status(401).send('No token');
         return;
     }
 };

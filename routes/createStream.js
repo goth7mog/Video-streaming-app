@@ -11,6 +11,7 @@ router.get('/:watch', verifyTokenForStream, async (req, res) => {
 
     // console.log(req.params.watch)
     const path = global.approute + `/assets/videos/${req.params.watch}`;
+    // console.log(path)
     const stat = fs.statSync(path);
     const fileSize = stat.size;
     const range = req.headers.range;

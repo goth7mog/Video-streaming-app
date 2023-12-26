@@ -8,7 +8,9 @@ const _KEYS = require(global.approute + '/config/keys');
 // SHOW ALL VIDEOS
 router.get("/", async (req, res) => {
 
-    res.clearCookie("accessToken");
+    // res.clearCookie("accessToken");
+    // res.clearCookie("accessToken");
+    // req.header("Authorization", "Bearer c8f27fee2a579fa4c3fa580");
 
     try {
         const videos = await Content.find().sort({ createdAt: -1 });
@@ -26,6 +28,8 @@ router.get("/", async (req, res) => {
 // SHOW PAGE WITH SPECIFIC VIDEO
 router.get('/watch', verifyToken, async (req, res) => {
     const videoID = req.query.v || null;
+    // console.log(req.cookies);
+    // console.log(req.headers);
     // console.log(req.cookies);
 
     try {

@@ -8,17 +8,19 @@ const bodyParser = require('body-parser');
 // const cors = require('cors');
 
 
-// Create Global Directory to use throughout app
+// Create Global Directory to use throughout the app
 const path = require('path');
 global.approute = path.resolve(__dirname);
-
 
 // Create an Express app
 const app = new express();
 
 const port = process.env.PORT || 8080;
 
-app.use("/public", express.static(global.approute + "/public"));
+
+// Set Static Folder
+app.use(express.static(`${global.approute}/public`));
+// app.use("/public", express.static(global.approute + "/public"));
 app.set("view engine", "ejs");
 // app.use(cors());
 
@@ -35,9 +37,16 @@ app.use(session({
 }));
 app.use(flash());
 
-// Set Static Folder
-app.use(express.static(`${global.approute}/public`));
 
+// const customHeadersAppLevel = function (req, res, next) {
+//   // req.header("Autorization", 'zendx/sop API');
+//   // req.header("some", "Basic");
+//   req.setHeader("Some", ["Basic"]);
+//   // console.log(req.headers.some)
+//   next();
+// };
+
+// app.use(customHeadersAppLevel);
 
 
 // Assign Redis connection
@@ -74,7 +83,8 @@ app.use("/api/content", contentAPIRoute);
 
 
 app.get('/app/info', (req, res) => {
-  // console.log(req.headers.authorization)
+  // console.log(req.headers.authorization);
+  // console.log(req.headers.authorization);
   res.json({
       code: 1,
       message: `${process.env.npm_package_name} is running`,

@@ -11,6 +11,12 @@ const jwt = require("jsonwebtoken");
 router.post('/', async (req, res) => {
     try {
 
+        // const promise = new Promise((resolve, reject) => {
+		// 	setTimeout(() => resolve("done!"), 100000)
+		//   });
+		
+		// const result = await promise; // wait until the promise resolves (*)
+
         /* Finding information in the database about the video by its id.
         req.body.productId - data from the form */
         // throw new Error(`Couldn't find the content by id ${req.body.productId} or it's deleted`);
