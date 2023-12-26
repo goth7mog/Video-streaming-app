@@ -1,0 +1,9 @@
+/node_modules
+.env*
+.env
+*.yaml
+/assets/videos/
+/public/admin/thumbnails/
+### Except the docker-compose files
+!docker-compose*.yaml
+.DS_Store

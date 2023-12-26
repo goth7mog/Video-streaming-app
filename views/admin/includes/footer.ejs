@@ -1,0 +1,97 @@
+<!-- Sticky Footer -->
+            <footer class="sticky-footer <%= typeof footerClass == "undefined" ? '' : footerClass %>">
+               <div class="container">
+                  <div class="row no-gutters">
+                     
+                  </div>
+               </div>
+            </footer>
+            
+         </div>
+         <!-- /.content-wrapper -->
+      </div>
+      <!-- /#wrapper -->
+      
+      <!-- Scroll to Top Button-->
+      <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+      </a>
+
+      <!-- Spinner -->
+      <div id="loader-wrapper">
+         <div class="loader">
+             <div class="dot"></div>
+             <div class="dot"></div>
+             <div class="dot"></div>
+             <div class="dot"></div>
+             <div class="dot"></div>
+         </div>
+     </div>
+
+      <!-- Logout Modal-->
+      <div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                  </button>
+               </div>
+               <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+               <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                  <a class="btn btn-primary" href="/admin/logout">Logout</a>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Bootstrap core JavaScript-->
+
+      <style>
+         .fixed-bottom {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: lightseagreen;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-size: 20px;
+         }
+      </style>
+
+      <!-- <% if (url != "/pro-version") { %>
+         <div class="footer fixed-bottom">
+            This is a free version, Pro version has a lot more features. Checkout all the features of <a style="color: greenyellow;" href="<%= mainURL %>/pro-version">Pro Version</a>
+         </div>
+      <% } %> -->
+      
+      <script src="/public/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- Core plugin JavaScript-->
+      <script src="/public/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+      <!-- Owl Carousel -->
+      <script src="/public/admin/vendor/owl-carousel/owl.carousel.js"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="/public/admin/js/custom.js?v=1"></script>
+
+      <script type="text/javascript" src="/public/admin/js/macOSNotif.min.js"></script>
+      <!-- <script type="text/javascript" src="/public/admin/js/socket.io.js"></script> -->
+      <script src="/public/admin/js/x0popup.min.js"></script>
+      <script src="/public/admin/js/videojs-ie8.min.js"></script>
+      <script src="/public/admin/js/video.js"></script>
+
+      <script src="/public/admin/js/alertify.min.js"></script>
+
+      <script type="text/javascript">
+         window.onerror = function (message, file, line) {
+            console.log(message + " in " + file + " at line " + line);
+         };
+
+         // var io = io(mainURL);
+      </script>
+
+   </body>
+
+</html>

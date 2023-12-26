@@ -1,0 +1,54 @@
+<%- include ("includes/header") %>  
+
+    <!-- <link href="/public/admin/css/main.css" rel="stylesheet"> -->
+
+    <section id="wrapper">
+        <div id="content-wrapper">
+            <div class="container-fluid pb-0">
+
+                <div id="videos-section" class="video-block section-padding">
+
+                    <div class="row">
+                    
+                        <% videos.forEach(function (video) { %>
+                            <!-- <div class="col-xl-3 col-sm-3 mb-3"> -->
+                            <!-- <div class="ml-3 mb-3"> -->
+                            <div class="mb-3 video-card-container">
+                                <div class="video-card">
+                                    <div class="video-card-image">
+                                        <a class="play-icon" href="/videos/watch?v=<%= video.watch %>"><i class="fas fa-play-circle"></i></a>
+                                        <a href="/videos/watch?v=<%= video.watch %>">
+                                        <img class="thumbnail" src="<%= video.thumbnail %>">
+                                        <!-- <img class="thumbnail" src="<%= video.thumbnail %>" style="width: 270px; height: 169px;"> -->
+                                        </a>
+                                        <div class="time"><%= video.minutes + ":" + video.seconds %></div>
+                                    </div>
+                                    <div class="video-card-body">
+                                        <div class="video-title">
+                                        <a href="/videos/watch?v=<%= video.watch %>"><%= video.title %></a>
+                                        </div>
+                                        <div class="video-page text-success">
+                                        
+                                            <%= video.category %> <i class="fas fa-check-circle text-success"></i>
+                                        
+                                        </div>
+                                        <div class="video-view">
+                                        <%= video.views %> views &nbsp;<i class="fas fa-calendar-alt"></i> <%
+                                            const createdAt = new Date(video.createdAt);
+                                            const date = createdAt.getDate() + "";
+                                        %>
+                                            <%= date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear() %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+        
+                    </div>
+
+                </div>
+
+            </div>
+    </section>
+
+<%- include ("includes/footer") %>

@@ -1,0 +1,206 @@
+<footer class="footer-bar ftco-footer ftco-bg-dark ftco-section">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-5">
+              <h2 class="ftco-heading-2">Contact me</h2>
+              <div class="block-23 mb-3">
+                <ul>
+                  <li><i class="fa-solid fa-location-dot"></i><span class="text">Panama City, Panama</span></li>
+                  <li><a href = "mailto:larissa.mora58@gmail.com?subject=Hypnonutrition_visitor"><i class="fas fa-envelope"></i><span class="text">Larissa.mora58@gmail.com</span></a></li>
+                  <li><a href = "tel:+50769979272"><i class="fas fa-phone-square"></i><span class="text">+507 6997-9272</span></a></li>
+                </ul>
+              </div>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-5 ml-md-4">
+            <h2 class="ftco-heading-2">Links</h2>
+            <ul class="list-unstyled">
+              <li><a href="/"><span class="fas fa-arrow-right mr-2"></span>Home</a></li>
+              <li><a href="/videos"><span class="fas fa-arrow-right mr-2"></span>Videos</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-5">
+            <h2 class="ftco-heading-2" style="margin-bottom: 30px;">Media</h2>
+            <ul class="ftco-footer-social list-unstyled float-md-left float-lft">
+              <li class="ftco-animate"><a href="https://twitter.com/" target="_blank"><span class="fa-brands fa-x-twitter"></span></a></li>
+              <li class="ftco-animate"><a href="https://www.facebook.com/" target="_blank"><span class="fab fa-facebook-square"></span></a></li>
+              <li class="ftco-animate"><a href="https://www.instagram.com/" target="_blank"><span class="fa-brands fa-instagram"></span></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-5">
+            <h2 class="ftco-heading-2">Opening Hours</h2>
+            <h3 class="open-hours"><i class="fas fa-clock"></i><span class="text">8am-5pm (EST), Monday to Friday</span></h3>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+
+          <p>
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+
+
+<!-- loader -->
+<!-- <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div> -->
+
+<!-- Spinner -->
+<div id="loader-wrapper">
+  <div class="loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+  </div>
+</div>
+
+<!-- Logout Modal-->
+<div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="/admin/logout">Logout</a>
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- Appointment Modal-->
+<div class="modal" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-xl-9 py-5 pr-md-5">
+        <div id="request-consultation-form">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <div class="heading-section heading-section-white ftco-animate mb-5">
+            <h2 class="mb-4">Request a consultation</h2>
+            <p style="font-size: 10px;">* Required fields</p>
+            <p style="font-size: 10px;">** Please, consider Panama Timezone (UTC +5)</p>
+          </div>
+          <form action="/request-consultation" method="POST" class="appointment-form ftco-animate">
+            <div class="d-md-flex">
+              <div class="form-group">
+                <input type="text" name="userFullName" class="form-control" placeholder="* Full Name" required>
+              </div>
+              <div class="form-group ml-md-4">
+                <div class="form-field">
+                  <div class="select-wrap">
+                    <div class="icon"><span class="fa-solid fa-chevron-down"></span></div>
+                    <select name="userService" id="" class="form-control" required>
+                      <option value="">* Select Your Service</option>
+                      <option value="Sesiones privadas">Sesiones privadas</option>
+                      <option value="Estrés, ansiedad, pánico, miedo">Estrés, ansiedad, pánico, miedo</option>
+                      <option value="Fobias">Fobias</option>
+                      <option value="Traumas - Estrés Post Traumático">Traumas - Estrés Post Traumático</option>
+                      <option value="Banda gástrica virtual">Banda gástrica virtual</option>
+                      <option value="Depresión">Depresión</option>
+                      <option value="Sentimiento de culpa">Sentimiento de culpa</option>
+                      <option value="Rencor y odio">Rencor y odio</option>
+                      <option value="Complejos, sentimientos de inferioridad">Complejos, sentimientos de inferioridad</option>
+                      <option value="Obesidad - Adelgazar con hipnosis">Obesidad - Adelgazar con hipnosis</option>
+                      <option value="Dolor - Hipoanalgesia e hipnoanestesia">Dolor - Hipoanalgesia e hipnoanestesia</option>
+                      <option value="Infertilidad">Infertilidad</option>
+                      <option value="Disfunciones sexuales">Disfunciones sexuales</option>
+                      <option value="Insomnio">Insomnio</option>
+                      <option value="Alergias">Alergias</option>
+                      <option value="Adicciones">Adicciones</option>
+                      <option value="Deportes - Entrenamiento propioceptivo">Deportes - Entrenamiento propioceptivo</option>
+                      <option value="Enfermedades psicosomáticas">Enfermedades psicosomáticas</option>
+                      <option value="Concentración, memoria, estudio">Concentración, memoria, estudio</option>
+                      <option value="Anti-aging">Anti-aging</option>
+                      <option value="Enuresis">Enuresis</option>
+                      <option value="Otros servicios">Otros servicios</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-md-flex">
+              <div class="form-group">
+                <input type="email" name="userEmail" class="form-control" placeholder="* Email" required>
+              </div>
+              <div class="form-group ml-md-4">
+                <input type="tel" name="userTelephone" class="form-control" placeholder="* Phone" required>
+              </div>
+            </div>
+
+            <div class="d-md-flex">
+              <div class="form-group">
+                <div class="input-wrap">
+                  <div class="icon"><span class="fa-regular fa-calendar-check"></span></div>
+                  <input type="text" name="userAppointmentDate" class="form-control appointment_date" placeholder="* Date" autocomplete="off" readonly="readonly" required>
+                </div>
+              </div>
+              <div class="form-group ml-md-4">
+                <div class="input-wrap">
+                  <div class="icon"><span class="fa-regular fa-clock"></span></div>
+                  <input type="text" name="userAppointmentTime" class="form-control appointment_time" placeholder="** Time" autocomplete="off" required>
+                </div>
+              </div>
+            </div>
+            <div class="d-md-flex">
+              <div class="form-group">
+                <textarea name="userMessage" id="" cols="30" rows="2" class="form-control" placeholder="Message"></textarea>
+              </div>
+              <div class="form-group ml-md-4">
+                <input type="submit" value="Send" class="btn btn-secondary py-3 px-4">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- <script src="/public/site/js/jquery.min.js"></script>
+<script src="/public/site/js/jquery-migrate-3.0.1.min.js"></script> -->
+<script src="/public/site/js/popper.min.js"></script>
+<script src="/public/site/js/bootstrap.min.js"></script>
+<script src="/public/site/js/jquery.easing.1.3.js"></script>
+<script src="/public/site/js/jquery.waypoints.min.js"></script>
+<script src="/public/site/js/jquery.stellar.min.js"></script>
+<script src="/public/site/js/owl.carousel.min.js"></script>
+<script src="/public/site/js/jquery.magnific-popup.min.js"></script>
+<script src="/public/site/js/aos.js"></script>
+<script src="/public/site/js/jquery.animateNumber.min.js"></script>
+<script src="/public/site/js/bootstrap-datepicker.js"></script>
+<script src="/public/site/js/jquery.timepicker.min.js"></script>
+<script src="/public/site/js/scrollax.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script src="/public/site/js/google-map.js"></script>
+<script src="/public/admin/js/alertify.min.js"></script>
+
+<script src="/public/admin/js/videojs-ie8.min.js"></script>
+<script src="/public/admin/js/video.js"></script>
+
+<script src="/public/site/js/main.js"></script>
+  
+</body>
+</html>

@@ -1,0 +1,260 @@
+<%- include ("includes/header") %>
+
+<form method="POST" action="/admin/edit?v=<%= video.watch %>" enctype="multipart/form-data">
+	
+	<input type="hidden" name="videoId" value="<%= video._id %>">
+	<input type="hidden" name="thumbnailPath" value="<%= video.thumbnail %>">
+	<input type="hidden" name="videoWatch" value="<%= video.watch %>">
+
+	<div class="container-fluid upload-details">
+
+		<div class="row">
+			<div class="col-md-12">
+				<% if (typeof message !== "undefined") { %>
+					<div class="alert alert-success">
+						<%= message %>
+					</div>
+				<% } %>
+            
+            <% if (typeof error !== "undefined" && error !== "") { %>
+               <div class="alert alert-danger">
+                  <%= error %>
+               </div>
+            <% } %>
+			</div>
+		</div>
+
+       <div class="row">
+          <div class="col-lg-12">
+             <div class="main-title">
+                <h6>Video Details</h6>
+             </div>
+          </div>
+          <div class="col-lg-6">
+             <div class="imgplace1">
+             	<img class="thumbnail" id="thumbnail" src="<%= video.thumbnail %>">
+			       </div>
+          </div>
+          <div class="col-lg-6">
+             <div class="videohost-title" id="video-title">
+             	<a href="/admin/watch?v=<%= video.watch %>" style="color: black;">
+             		<%= video.title ? video.title : "" %>
+             	</a>
+             </div>
+             <div class="videohost-size" id="file-information"><%= video.minutes ? (video.minutes + ":" + video.seconds + " MIN") : "" %></div>
+          </div>
+       </div>
+       <hr>
+       
+       	<div class="row">
+          <div class="col-lg-12">
+             <div class="videohost-form">
+
+             	<div class="row">
+             		<div class="col-md-12">
+             			<div class="form-group">
+             				<label>Select thumbnail</label>
+             				<input type="file" name="thumbnail" onchange="previewThumnail(this);" accept="image/*">
+             			</div>
+             		</div>
+             	</div>
+
+             	<script type="text/javascript">
+             		function previewThumnail(file) {
+             			var fileReader = new FileReader();
+             			fileReader.onload = function (e) {
+             				document.getElementById("thumbnail").setAttribute("src", e.target.result);
+             			};
+             			fileReader.readAsDataURL(file.files[0]);
+             		}
+             	</script>
+
+                <div class="row">
+                   <div class="col-lg-12">
+                      <div class="form-group">
+                         <label for="input-video-title">Title</label>
+                         <input type="text" name="title" id="input-video-title" class="form-control" value="<%= video.title %>" required>
+                      </div>
+                   </div>
+                   <div class="col-lg-12">
+                     <div class="form-group">
+                        <label for="price">Price <span style="color:#85bb65;">(usd)</span></label>
+                        <div class="input-group mb-3">
+                           <div class="input-group-prepend">
+                           <span class="input-group-text" style="font-size: 1em;">$</span>
+                           </div>
+                           <input type="number" id="price" name="price" min="0.00" max="10000.00" step="0.01" class="form-control" onfocusout="roundDecimals(this);" value="<%= video.price/100 %>" required>
+                        </div>
+                     </div>
+                  </div>
+                   <div class="col-lg-12">
+                      <div class="form-group">
+                         <label for="description">Description</label>
+                         <textarea rows="5" id="description" name="description" class="form-control"><%= video.description %></textarea>
+                      </div>
+                   </div>
+                </div>
+                <div class="row">
+                   <div class="col-lg-5">
+                      <div class="form-group">
+                         <label for="tags">Tags (comma separated)</label>
+                         <input type="text" id="tags" name="tags" class="form-control" value="<%= video.tags %>">
+                      </div>
+                   </div>
+
+                   <div class="col-lg-5">
+                      <div class="form-group">
+                         <label for="category">Category</label>
+                         <select id="category" name="category" class="form-control">
+                              <option value="Wellbeing" <%= video.category == 'Wellbeing' ? 'selected' : '' %>>Wellbeing</option>
+                              <option value="Healthy Food" <%= video.category == 'Healthy Food' ? 'selected' : '' %>Healthy Food</option>
+                              <option value="Education" <%= video.category == 'Education' ? 'selected' : '' %>>Education</option>
+                              <!-- <option value="Unboxing" <%= video.category == 'Unboxing' ? 'selected' : '' %>>Unboxing</option>
+                              <option value="Challenge" <%= video.category == 'Challenge' ? 'selected' : '' %>>Challenge</option>
+                              <option value="Comedy" <%= video.category == 'Comedy' ? 'selected' : '' %>>Comedy</option>
+                              <option value="Vlogs" <%= video.category == 'Vlogs' ? 'selected' : '' %>>Vlogs</option>
+                              <option value="How-To" <%= video.category == 'How-To' ? 'selected' : '' %>>How-To</option>
+                              <option value="Product Review" <%= video.category == 'Product Review' ? 'selected' : '' %>>Product Review</option> -->
+                         </select>
+                      </div>
+                   </div>
+                </div>
+
+             </div>
+
+             <div class="videohost-area text-center mt-3">
+                <button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                <p id="save-status" style="margin-top: 10px;"></p>
+
+				<!-- <a href="/delete-video?v=<%= video.watch %>" class="btn btn-danger border-none" onclick="return confirm('Are you sure you want to delete this video ?');">Delete video</a> -->
+				<!-- <a href="javascript:void(0)" class="btn btn-danger border-none" id="some_id" onclick="deleteVideo();">Delete video</a> -->
+				<a href="javascript:void(0)" class="btn btn-danger border-none" id="delete_video_button" onclick="deleteVideo();">Delete video</a>
+				<!-- <a href="javascript:void(0)" class="btn btn-danger border-none" id="delete_video_button" onclick="deleteVideo();"><span id="button_loader"></span></a> -->
+             </div>
+             <hr>
+          </div>
+       </div>
+   		
+    </div>
+    <!-- /.container-fluid -->
+
+    <input type="hidden" id="videoId" value="<%= video._id %>">
+
+</form>
+
+    <script type="text/javascript">
+      function deleteVideo() {
+         if (confirm("Are you sure you want to delete this video ?")) {
+            const previousButtonValue = document.getElementById("delete_video_button").innerHTML;
+            document.getElementById("delete_video_button").innerHTML = '<span id="button_loader"></span>';
+
+            const watchId = document.querySelector('input[name=videoWatch]').value;
+
+            const ajax = new XMLHttpRequest();
+            ajax.open("POST", "/admin/delete-video", true);
+            ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            ajax.onreadystatechange = function () {
+               if (this.readyState == 4 ) {
+                  const response = JSON.parse(this.responseText);
+
+                  document.getElementById("delete_video_button").innerHTML = previousButtonValue;
+
+                  if (this.status == 200 && response.status == "Success") {
+                     // macOSNotif({
+                     //    "title": response.message,
+                     //    "sounds": true,
+                     //    "subtitle": "You will be redirecting to your channel soon",
+                     //    "theme": macOSNotifThemes.Success,
+                     //    "autoDismiss": 3.5,
+                     //    "btn2Text": null
+                     // });
+
+                     // setTimeout(() => {
+                     //    window.location.href = '/my_channel?message=Video+has+been+deleted';
+                     // }, 4500);
+
+                     window.location.href = '/admin/my_channel?message=Video+has+been+deleted';
+
+                  } else if (this.status == 403) {
+                     // macOSNotif({
+                     //    "title": response.message,
+                     //    "sounds": true,
+                     //    "subtitle": "You will be redirecting to the login page soon",
+                     //    "theme": macOSNotifThemes.Warning,
+                     //    "autoDismiss": 3,
+                     //    "btn2Text": null
+                     // });
+
+                     // setTimeout(() => {
+                     //    window.location.href = '/login?error=Your+session+expired';
+                     // }, 3000);
+
+                     window.location.href = '/admin/login?error=Your+session+expired';
+
+                  } else {
+                     macOSNotif({
+                        "title": this.status,
+                        "sounds": true,
+                        "subtitle": response.message,
+                        "theme": macOSNotifThemes.Danger,
+                        "autoDismiss": 8,
+                        "btn2Text": null
+                     });
+                  }
+               }
+            };
+
+            ajax.send("watchId=" + watchId);
+         }
+      }
+
+       function saveVideo() {
+          var ajax = new XMLHttpRequest();
+          ajax.open("POST", "/admin/update-video", true);
+          ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+          ajax.onreadystatechange = function () {
+             if (this.readyState == 4 && this.status == 200) {
+             	var response = JSON.parse(this.responseText);
+
+                document.getElementById("save-status").setAttribute("class", "text-" + response.status);
+                document.getElementById("save-status").innerHTML = response.message;
+             }
+          };
+
+          var title = document.getElementById("input-video-title").value;
+          var description = document.getElementById("description").value;
+          var tags = document.getElementById("tags").value;
+          var category = document.getElementById("category").value;
+          var videoId = document.getElementById("videoId").value;
+		  var playlist = document.getElementById("playlist").value;
+
+          ajax.send("title=" + title + "&description=" + description + "&tags=" + tags + "&videoId=" + videoId + "&category=" + category + "&playlist=" + playlist);
+       }
+    </script>
+    <style>
+      #button_loader {
+         width: 17px;
+         height: 17px;
+         margin-left: 37px;
+         margin-right: 37px;
+         border: 4px solid #FFF;
+         border-bottom-color: transparent;
+         border-radius: 50%;
+         display: inline-block;
+         box-sizing: border-box;
+         animation: rotation 1s linear infinite;
+      }
+
+      @keyframes rotation {
+         0% {
+            transform: rotate(0deg);
+         }
+         100% {
+            transform: rotate(360deg);
+         }
+      } 
+    </style>
+
+<%- include ("includes/footer") %>

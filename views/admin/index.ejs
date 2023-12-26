@@ -1,0 +1,56 @@
+<%- include ("includes/header") %>
+
+      <div class="container-fluid pb-0">
+         <div class="video-block section-padding">
+            <div class="row" id="videos-section">
+
+               <% videos.forEach(function (video) { %>
+                  <!-- <div class="col-xl-3 col-sm-3 mb-3"> -->
+                  <!-- <div class="ml-3 mb-3"> -->
+                  <div class="mb-3 video-card-container">
+                     <div class="video-card">
+                        <div class="video-card-image">
+                           <a class="play-icon" href="/admin/watch?v=<%= video.watch %>"><i class="fas fa-play-circle"></i></a>
+                           <a href="/admin/watch?v=<%= video.watch %>">
+                              <img class="thumbnail" src="<%= video.thumbnail %>">
+                              <!-- <img class="thumbnail" src="<%= video.thumbnail %>" style="width: 270px; height: 169px;"> -->
+                              <!-- <img class="thumbnail" src="<%= video.thumbnail %>" > -->
+                           </a>
+                           <div class="time"><%= video.minutes + ":" + video.seconds %></div>
+                        </div>
+                        <div class="video-card-body">
+                           <div class="video-title">
+                              <a href="/admin/watch?v=<%= video.watch %>"><%= video.title %></a>
+                           </div>
+                           <div class="video-page text-success">
+                              
+                                 <%= video.category %> <i class="fas fa-check-circle text-success"></i>
+                              
+                           </div>
+                           <div class="video-view">
+                              <%= video.views %> views &nbsp;<i class="fas fa-calendar-alt"></i> <%
+                                 var createdAt = new Date(video.createdAt);
+                                 var date = createdAt.getDate() + "";
+                              %>
+                                 <%= date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear() %>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               <% }) %>
+
+            </div>
+         </div>
+      </div>
+      <!-- /.container-fluid -->
+
+      <% if (isLogin && message === "Login success") { %>
+         <script>
+            addEventListener("DOMContentLoaded", () => {
+               alertify.notify('Successfully Logged in', 'success', 1.5);
+            });   
+         </script>
+      <% } %>
+   
+
+<%- include ("includes/footer") %>

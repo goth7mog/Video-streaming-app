@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta property="title" content="HIPNO NUTRICIÓN - Admin Panel">
+   <meta name="robots" content="noindex,follow" />
+   <meta name="description" content="HIPNO NUTRICIÓN - Admin Panel">
+
+   <title>HIPNO NUTRICIÓN - Admin Panel</title>
+   <!-- Favicon Icon -->
+   <!-- <link rel="icon" type="image/png" href="/public/admin/img/admin-favicon.png"> -->
+
+   <!-- Bootstrap core CSS-->
+   <link href="/public/admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Custom fonts for this template-->
+   <link href="/public/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+   <!-- Custom styles for this template-->
+   <link href="/public/admin/css/main.css" rel="stylesheet">
+   <!-- Owl Carousel -->
+   <link rel="stylesheet" href="/public/admin/vendor/owl-carousel/owl.carousel.css">
+   <link rel="stylesheet" href="/public/admin/vendor/owl-carousel/owl.theme.css">
+
+   <link rel="stylesheet" type="text/css" href="/public/admin/css/macOSNotif.min.css">
+   <link rel="stylesheet" type="text/css" href="/public/admin/css/x0popup.min.css">
+   <link rel="stylesheet" type="text/css" href="/public/admin/css/video-js.css">
+
+   <link rel="stylesheet" href="/public/admin/css/alertify.min.css">
+   <link rel="stylesheet" href="/public/admin/css/preloader.css">
+   <link rel="stylesheet" href="/public/admin/css/popup.css">
+
+   <script src="/public/admin/vendor/jquery/jquery.min.js"></script>
+   <style type="text/css">
+      .thumbnail {
+         /* width: 370px;
+         height: 270px; */
+         width: 100%;
+         height: auto;
+         object-fit: cover;
+      }
+      .ajs-success {
+         color: white;
+      }
+   </style>
+
+</head>
+
+<!-- <%
+   mainURL = "http://localhost:4300"
+%> -->
+
+<!-- <script>
+   const mainURL = "http://localhost:4300";
+</script> -->
+
+<body id="page-top" class="sidebar-toggled">
+
+   <nav class="navbar navbar-expand navbar-light bg-white static-top videohost-nav sticky-top">
+         &nbsp;&nbsp;
+         <button class="btn btn-link btn-sm text-secondary order-1 order-sm-0" id="sidebarToggle">
+         <!-- <button class="btn btn-link btn-sm text-secondary order-1 order-sm-0"> -->
+         <i class="fas fa-bars"></i>
+         </button> 
+         &nbsp;&nbsp;
+         <!-- <a class="navbar-brand mr-1" href="/admin"><img class="img-fluid" alt="" src="/public/admin/img/logo.png"></a> -->
+         <a class="navbar-brand mr-1" href="/admin">Admin<span>Panel</span></a>
+         <!-- Navbar Search -->
+         <form method="GET" action="/admin/search" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-5 my-2 my-md-0 videohost-navbar-search">
+            <div class="input-group">
+               <input autocomplete="off" type="text" name="search_query" class="form-control" placeholder="Search for...">
+               <div class="input-group-append">
+                  <button class="btn btn-light" type="submit">
+                  <i class="fas fa-search"></i>
+                  </button>
+               </div>
+            </div>
+         </form>
+         <!-- Navbar -->
+
+         <ul class="navbar-nav ml-auto ml-md-0 videohost-right-navbar">
+
+            <% if (isLogin) { %>
+               <li class="nav-item mx-1">
+                  <a class="nav-link" href="/admin/upload">
+                     <i class="fas fa-plus-circle fa-fw"></i>
+                     Upload Video
+                  </a>
+               </li>
+
+               <li class="nav-item dropdown no-arrow videohost-right-navbar-user">
+                  <a class="nav-link dropdown-toggle user-dropdown-link" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <img alt="Avatar" id="my-profile-picture" style="object-fit: cover;" onerror="this.src = '/public/admin/img/user_placeholder.jpg'">
+                     <span id="username"></span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                     <!-- <a class="dropdown-item" href="/admin/my_channel"><i class="fas fa-fw fa-user"></i> &nbsp; My Channel</a> -->
+                     <a class="dropdown-item" href="/admin"><i class="fas fa-fw fa-user-circle"></i> &nbsp; AdminPanel</a>
+                     <!-- <a class="dropdown-item" href="/admin/my_settings"><i class="fas fa-fw fa-cog"></i> &nbsp; Settings</a> -->
+                     <a class="dropdown-item" href="/"><i class="fas fa-fw fa-globe"></i> &nbsp; Website</a>
+                     <div class="dropdown-divider"></div>
+                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-fw fa-sign-out-alt"></i> &nbsp; Logout</a>
+                  </div>
+               </li>
+            <% } else { %>
+                <li class="nav-item mx-1">
+                    <a class="nav-link" href="/admin/login"><i class="fas fa-fw fa-user-circle"></i> &nbsp; Login</a>
+                </li>
+
+                <li class="nav-item mx-1">
+                    <a class="nav-link" href="/admin/register"><i class="fas fa-fw fa-user"></i> &nbsp; Register</a>
+                </li>
+            <% } %>
+         </ul>
+      </nav>
+
+      <%
+         months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      %>
+
+      <script type="text/javascript">
+         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      </script>
+      
+      <script type="text/javascript">
+         function roundDecimals(input) {
+            return input.value = parseFloat(input.value).toFixed(2);
+      
+         }
+
+         /* Video Player's height calculating based on its width */
+			addEventListener("DOMContentLoaded", () => {
+				$(function() {
+					const vidPlayer = $('.videoPlayer-dimensions');
+					const width = vidPlayer.width();
+					
+					vidPlayer.css('height', width / 2 );
+				});
+			});
+      </script>
+
+      <% if (isLogin) { %>
+         <script type="text/javascript">
+
+            var ajax = new XMLHttpRequest();
+            ajax.open("GET", "/admin/get_user", true);
+
+            ajax.onreadystatechange = function () {
+               if (this.readyState == 4 && this.status == 200) {
+                  var response = JSON.parse(this.responseText);
+
+                  if (response.status == "success") {
+                     window.user = response.user;
+                     document.getElementById("username").innerHTML = user.first_name + " " + user.last_name;
+                     document.getElementById("my-profile-picture").setAttribute("src", window.user.image);
+                  }
+               }
+            };
+
+            ajax.send();
+         </script>
+      <% } %>
+
+      <div id="wrapper">
+
+         <!-- Sidebar -->
+         <ul class="sidebar toggled navbar-nav" id="left-sidebar">
+
+            <li class="nav-item <%= url == '/admin' ? 'active' : '' %>">
+               <a class="nav-link" href="/admin">
+               <i class="fas fa-fw fa-play"></i>
+               <span>My videos</span>
+               </a>
+            </li>
+
+            <li class="nav-item <%= url == '/admin/my_channel' ? 'active' : '' %>">
+               <a class="nav-link" href="/admin/my_channel">
+               <i class="fas fa-fw fa-home"></i>
+               <span>My channel</span>
+               </a>
+            </li>
+
+            <li class="nav-item <%= url == '/admin/my_settings' ? 'active' : '' %>">
+               <a class="nav-link" href="/admin/my_settings">
+               <i class="fas fa-fw fa-cog"></i>
+               <span>Settings</span>
+               </a>
+            </li>
+
+         </ul>
+
+         <div id="content-wrapper" class="<%= typeof headerClass == "undefined" ? '' : headerClass %>">

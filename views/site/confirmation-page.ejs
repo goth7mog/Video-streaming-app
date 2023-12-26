@@ -1,0 +1,30 @@
+<%- include ("includes/header") %>
+
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-8 mx-auto text-center accident-page pt-4 pb-5">
+         <!-- <h1><img alt="404" src="/public/admin/img/404.png" class="img-fluid"></h1> -->
+
+         <% if (message == "Booked") { %>
+            <h3>Your appointment has been booked <i style="color: green;" class="fa fa-check-circle" aria-hidden="true"></i></h3>
+            <p style="font-size: 15px;margin-top: 1rem;">We will contact you as soon as possible</p>
+         <% } else if (message == "Canceled") { %>
+            <h3>Your appointment has been canceled <i style="color: red;" class="fa-solid fa-circle-xmark" aria-hidden="true"></i></h3>
+         <% } else if (message == "Finished") { %>
+            <h3>Your appointment is already finished <i style="color: #bbbb44;" class="fa fa-check-circle" aria-hidden="true"></i></h3>
+         <% } else if (message == "Not found") { %>
+            <h3>Your appointment not found <i style="color: grey;" class="fa-solid fa-circle-xmark" aria-hidden="true"></i></h3>
+         <% } else { %>
+            <h3>Status of your appointment is unknown <i style="color: grey;" class="fa-solid fa-circle-xmark" aria-hidden="true"></i></h3>
+         <% } %> 
+
+
+         <div class="mt-5">
+            <a class="btn btn-outline-primary" href="/"><i class="mdi mdi-home"></i> GO TO HOME PAGE</a>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- /.container-fluid -->
+
+<%- include ("includes/footer") %>

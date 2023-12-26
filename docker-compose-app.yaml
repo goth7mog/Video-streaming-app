@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    command: mongod
+    volumes:
+      - mongodb_data_container2:/data/db
+  app:
+    build: .
+    container_name: app-container
+    ports:
+      - "3000:3000"
+
+volumes:
+  mongodb_data_container2:
+    driver: local
