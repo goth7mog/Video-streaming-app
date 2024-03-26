@@ -1,12 +1,20 @@
 version: '3.8'
 services:
-  mongo-container:
+  mongo:
     image: mongo:latest
+    container_name: mongo
     ports:
-      - "27027:27017"
+      - "27017:27017"
     command: mongod
     volumes:
       - mongodb_data_container2:/data/db
+  app:
+    build: .
+    container_name: app-container
+    ports:
+      - "4300:4300"
+    # volumes:
+    #   - ./:/usr/src/app
 
 volumes:
   mongodb_data_container2:

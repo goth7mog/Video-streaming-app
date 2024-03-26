@@ -3,9 +3,16 @@ const router = express.Router();
 const adminController = require(global.approute + '/controllers/adminController');
 const formidable = require("formidable");
 const fileSystem = require("fs");
+// const fs = require('fs').promises;
+// const createReadStream = require('fs').createReadStream;
 const ObjectId = require("mongodb").ObjectId;
 const bcrypt = require("bcryptjs");
-const { getVideoDurationInSeconds } = require('get-video-duration');
+const Promise_add = require("bluebird");
+const ffmpeg = Promise_add.promisify(require("fluent-ffmpeg"));
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
+const ffprobePath = require("@ffprobe-installer/ffprobe").path;
+ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfprobePath(ffprobePath);
 // const _KEYS = require(global.approute + '/config/keys');
 // const { verifyToken } = require(global.approute + "/middleware/verifyToken");
 
@@ -106,6 +113,7 @@ router.post("/upload-video", async (req, res) => {
 
 
 			const formData = new formidable.IncomingForm();
+			// console.log(formData);
 			formData.maxFileSize = 1000 * 1024 * 1204;
 
 			const [fields, files] = await new Promise((resolve, reject) => {
@@ -123,39 +131,49 @@ router.post("/upload-video", async (req, res) => {
 				});
 			});
 
-
-			// console.log(typeof fields.price);
-			// console.log(parseFloat(fields.price) * 100);
-
-			// return res.redirect("/upload");
-
-
 			const oldPath = files.video.path;
-			// const newPath = "public/videos/" + currentTime + "-" + files.video.name;
 			const newPath = "assets/videos/" + currentTime + "-" + files.video.name;
 
 			const title = fields.title;
 			const price = parseFloat(fields.price) * 100 // * 100 As the price stores in cents 
 			const description = fields.description;
 			const tags = fields.tags;
-			// const videoId = fields.videoId;
-			// const thumbnail = fields.thumbnailPath;
 
 			const oldPathThumbnail = files.thumbnail.path;
 			const thumbnail = "public/admin/thumbnails/" + currentTime + "-" + files.thumbnail.name;
 
-			await fileSystem.promises.rename(oldPathThumbnail, thumbnail); // .promises - for the asynchronous execution
-
 			await fileSystem.promises.rename(oldPath, newPath);
+
+			await fileSystem.promises.rename(oldPathThumbnail, thumbnail); // .promises - for the asynchronous execution
 
 			delete User.password;
 
+			// const duration = await getVideoDurationInSeconds(newPath);
 
-			const duration = await getVideoDurationInSeconds(newPath);
+			const duration = await new Promise((resolve, reject) => {
+
+				ffmpeg.ffprobe(newPath, function (err, metadata) {
+					if (err) {
+						reject(err);
+					} else {
+						if (metadata) {
+							resolve(metadata.format.duration);
+						} else {
+							reject(new Error('No video metadata retrieved'));
+						}
+					}
+				});
+
+			});
+
 
 			const hours = Math.floor(duration / 60 / 60);
 			const minutes = Math.floor(duration / 60) - (hours * 60);
 			const seconds = Math.floor(duration % 60);
+
+			// const hours = 0;
+			// const minutes = 0;
+			// const seconds = 0;
 
 			const data = await global.database.collection("videos").insertOne({
 				"user": {

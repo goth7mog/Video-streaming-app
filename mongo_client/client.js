@@ -9,6 +9,8 @@ module.exports = async (database) => {
             URL = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
         }
 
+        // console.log(URL);
+
         // Connect to the MongoDB
         const client = await MongoClient.connect(URL, { useUnifiedTopology: true });
         const DB = client.db(database);
