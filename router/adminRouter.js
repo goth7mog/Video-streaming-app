@@ -142,9 +142,11 @@ router.post("/upload-video", async (req, res) => {
 			const oldPathThumbnail = files.thumbnail.path;
 			const thumbnail = "public/admin/thumbnails/" + currentTime + "-" + files.thumbnail.name;
 
-			await fileSystem.promises.rename(oldPath, newPath);
+			// await fileSystem.promises.rename(oldPath, newPath);
+			await fileSystem.promises.copyFile(oldPath, newPath);
 
-			await fileSystem.promises.rename(oldPathThumbnail, thumbnail); // .promises - for the asynchronous execution
+			// await fileSystem.promises.rename(oldPathThumbnail, thumbnail); // .promises - for the asynchronous execution
+			await fileSystem.promises.copyFile(oldPathThumbnail, thumbnail); // .promises - for the asynchronous execution
 
 			delete User.password;
 
@@ -351,7 +353,8 @@ router.post("/edit", async (req, res) => {
 			const newPath = "public/admin/thumbnails/" + new Date().getTime() + "-" + files.thumbnail.name;
 			thumbnail = '/' + newPath;
 
-			await fileSystem.promises.rename(oldPath, newPath);
+			// await fileSystem.promises.rename(oldPath, newPath);
+			await fileSystem.promises.copyFile(oldPath, newPath);
 		}
 
 		const updatedVideo = await global.database.collection("videos").findOneAndUpdate({

@@ -13,9 +13,11 @@ services:
     container_name: app-container
     ports:
       - "4300:4300"
-    # volumes:
-    #   - ./:/usr/src/app
+    volumes:
+      - app-data_container2:/usr/src/app
 
 volumes:
   mongodb_data_container2:
+    driver: local
+  app-data_container2:
     driver: local
