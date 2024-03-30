@@ -2,7 +2,5 @@ package-lock.json
 /node_modules
 /assets
 *.yaml
-
-# -- Commented for now -- #
-# .env*
-# .env
+.env*
+.env

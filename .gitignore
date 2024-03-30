@@ -4,6 +4,6 @@
 *.yaml
 /assets/videos/
 /public/admin/thumbnails/
-### Except the docker-compose files
-!docker-compose*.yaml
+### Except the docker-compose-dev files
+!dev-compose*.yaml
 .DS_Store
