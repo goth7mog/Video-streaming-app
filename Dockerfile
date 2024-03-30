@@ -15,6 +15,7 @@ COPY package.json ./
 # ENV HOST 0.0.0.0
 
 RUN npm install
+RUN npm install -g nodemon
 # RUN yarn install
 
 # ENV TZ=Europe/London
@@ -22,6 +23,7 @@ RUN npm install
 # EXPOSE 8081
 COPY . .
 
-# CMD [ "npm", "start" ]
-CMD [ "node", "server.js" ] 
+
+CMD [ "npm", "start" ]
+# CMD [ "node", "server.js" ] 
 # Making the node command a top-level process (to avoid errors when Docker shuts down)

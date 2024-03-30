@@ -13,8 +13,8 @@ services:
     container_name: app-container
     ports:
       - "4300:4300"
-    # volumes:
-    #   - app-data_container3:/usr/src/app
+    volumes:
+      - app-data_container3:/usr/src/app
 
 volumes:
   mongodb_data_container2:

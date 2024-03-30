@@ -3,7 +3,8 @@
 .env
 *.yaml
 /assets/videos/
-/public/admin/thumbnails/
+/public/admin/img/
+/public/site/img/
 ### Except the docker-compose-dev files
 !dev-compose*.yaml
 .DS_Store

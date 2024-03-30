@@ -141,6 +141,8 @@ const startup = async () => {
 	try {
 		await connectMongo();
 
+		console.log("Hi")
+
 		app.emit('ready');
 
 	} catch (err) {

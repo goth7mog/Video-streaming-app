@@ -13,6 +13,7 @@ const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffprobePath = require("@ffprobe-installer/ffprobe").path;
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
+const Helper = require(global.approute + '/helpers/helpFunctions.js');
 // const _KEYS = require(global.approute + '/config/keys');
 // const { verifyToken } = require(global.approute + "/middleware/verifyToken");
 
@@ -140,7 +141,7 @@ router.post("/upload-video", async (req, res) => {
 			const tags = fields.tags;
 
 			const oldPathThumbnail = files.thumbnail.path;
-			const thumbnail = "public/admin/thumbnails/" + currentTime + "-" + files.thumbnail.name;
+			const thumbnail = "public/admin/img/thumbnails/" + currentTime + "-" + files.thumbnail.name;
 
 			// await fileSystem.promises.rename(oldPath, newPath);
 			await fileSystem.promises.copyFile(oldPath, newPath);
@@ -345,12 +346,12 @@ router.post("/edit", async (req, res) => {
 
 		if (files.thumbnail.size > 0) {
 
-			if (typeof fields.thumbnailPath !== "undefined" && fields.thumbnailPath != "") {
+			if (typeof fields.thumbnailPath !== "undefined" && fields.thumbnailPath != "" && await Helper.fileExists(fields.thumbnailPath.slice(1))) {
 				await fileSystem.promises.unlink(fields.thumbnailPath.slice(1));
 			}
 
 			const oldPath = files.thumbnail.path;
-			const newPath = "public/admin/thumbnails/" + new Date().getTime() + "-" + files.thumbnail.name;
+			const newPath = "public/admin/img/thumbnails/" + new Date().getTime() + "-" + files.thumbnail.name;
 			thumbnail = '/' + newPath;
 
 			// await fileSystem.promises.rename(oldPath, newPath);
@@ -857,8 +858,15 @@ router.post("/delete-video", async (req, res) => {
 				return res.status(403).json({ message: "Error. You don't own this video" });
 			}
 
-			await fileSystem.promises.unlink(Video.filePath.slice(1));
-			await fileSystem.promises.unlink(Video.thumbnail.slice(1));
+			console.log(await Helper.fileExists(Video.filePath));
+
+			if (await Helper.fileExists(Video.filePath.slice(1))) {
+				await fileSystem.promises.unlink(Video.filePath.slice(1));
+			}
+
+			if (await Helper.fileExists(Video.thumbnail.slice(1))) {
+				await fileSystem.promises.unlink(Video.thumbnail.slice(1));
+			}
 
 			await global.database.collection("videos").remove({
 				$and: [{
