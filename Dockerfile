@@ -22,7 +22,8 @@ RUN npm install -g nodemon
 
 # EXPOSE 8081
 COPY . .
-
+RUN chown -R node /usr/src/app
+USER node
 
 CMD [ "npm", "start" ]
 # CMD [ "node", "server.js" ] 
