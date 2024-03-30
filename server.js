@@ -142,10 +142,14 @@ const startup = async () => {
 		await connectMongo();
 
 		app.emit('ready');
+
 	} catch (err) {
 		console.log(err);
 	}
 }
+
+// process.on('SIGTERM', process.exit);
+// process.on('SIGINT', process.exit);
 
 
 //----------------------------RUN APP------------------------------//

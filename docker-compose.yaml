@@ -3,8 +3,8 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongo
-    ports:
-      - "27017:27017"
+    # ports:
+    #   - "27017:27017"
     command: mongod
     volumes:
       - mongodb_data_container2:/data/db
@@ -13,11 +13,11 @@ services:
     container_name: app-container
     ports:
       - "4300:4300"
-    volumes:
-      - app-data_container2:/usr/src/app
+    # volumes:
+    #   - app-data_container3:/usr/src/app
 
 volumes:
   mongodb_data_container2:
     driver: local
-  app-data_container2:
+  app-data_container3:
     driver: local
