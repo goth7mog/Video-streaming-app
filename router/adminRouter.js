@@ -37,8 +37,8 @@ function getUser(userId, callBack) {
  * Admin Routes 
 */
 router.get('/', adminController.index);
-router.get('/register', adminController.getRegistrationPage);
-router.post('/register', adminController.register);
+// router.get('/register', adminController.getRegistrationPage); /* Closed in production */
+// router.post('/register', adminController.register); /* Closed in production */
 router.get('/login', adminController.getLoginPage);
 router.post('/login', adminController.login);
 
@@ -115,7 +115,8 @@ router.post("/upload-video", async (req, res) => {
 
 			const formData = new formidable.IncomingForm();
 			// console.log(formData);
-			formData.maxFileSize = 1000 * 1024 * 1204;
+			// formData.maxFileSize = 1000 * 1024 * 1204;
+			formData.maxFileSize = 10000 * 1024 * 1204; // 10GB per upload
 
 			const [fields, files] = await new Promise((resolve, reject) => {
 				formData.parse(req, (err, fields, files) => {
@@ -858,7 +859,7 @@ router.post("/delete-video", async (req, res) => {
 				return res.status(403).json({ message: "Error. You don't own this video" });
 			}
 
-			console.log(await Helper.fileExists(Video.filePath));
+
 
 			if (await Helper.fileExists(Video.filePath.slice(1))) {
 				await fileSystem.promises.unlink(Video.filePath.slice(1));

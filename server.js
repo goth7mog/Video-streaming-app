@@ -79,8 +79,8 @@ const connectMongo = async () => {
 		const createMongoDB = require(global.approute + '/mongo_client/client.js');
 
 		/* Creating a connection. 
-		And assigning the database 'youtube' to the global variable */
-		global.database = await createMongoDB('youtube');
+		And assigning the database to the global variable */
+		global.database = await createMongoDB(process.env.MONGO_DATABASE);
 
 		console.log('MongoDB connection is running');
 	} catch (err) {
@@ -120,7 +120,7 @@ app.get('/app/info', (req, res) => {
 			VERSION: process.env.npm_package_version,
 			NODE_ENV: process.env.NODE_ENV,
 			MONGO_HOST: process.env.MONGO_HOST,
-			MONGO_PORT: process.env.MONGO_PORT,
+			// MONGO_PORT: process.env.MONGO_PORT,
 		},
 		error: null
 	});
@@ -141,7 +141,7 @@ const startup = async () => {
 	try {
 		await connectMongo();
 
-		console.log("Hi")
+		// console.log("Hi")
 
 		app.emit('ready');
 
