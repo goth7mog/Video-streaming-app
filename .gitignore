@@ -1,4 +1,4 @@
-*.env
+.env*
 .env
 *.yaml
 ### Except the docker-compose files

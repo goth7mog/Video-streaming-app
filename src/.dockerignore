@@ -4,5 +4,5 @@
 /public/admin/img/thumbnails/*
 /public/site/img/temp/*
 *.yaml
-*.env
+.env*
 .env
