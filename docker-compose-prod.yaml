@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: ./src
+      target: prod
+    container_name: app-container
+    ports:
+      - "4300:4300"
+    volumes:
+      - app-assets8:/usr/src/app/assets
+      - app-admin-img8:/usr/src/app/public/admin/img
+      - app-site-img8:/usr/src/app/public/site/img
+    env_file: production.env
+    environment:
+      - TZ=America/Panama
+      - NODE_ENV=production
+
+volumes:
+  app-assets8:
+    driver: local
+  app-admin-img8:
+    driver: local
+  app-site-img8:
+    driver: local

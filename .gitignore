@@ -1,10 +1,6 @@
-/node_modules
-.env*
+*.env
 .env
 *.yaml
-/assets/videos/
-/public/admin/img/
-/public/site/img/
-### Except the docker-compose-dev files
-!dev-compose*.yaml
+### Except the docker-compose files
+!docker-compose*.yaml
 .DS_Store

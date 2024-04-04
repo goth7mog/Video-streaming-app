@@ -132,7 +132,7 @@ app.on('ready', () => {
 		console.log('server is running  on port ' + port);
 		console.log('NODE_ENV =', process.env.NODE_ENV);
 		console.log('MONGO_HOST =', process.env.MONGO_HOST);
-		console.log('MONGO_PORT =', process.env.MONGO_PORT);
+		// console.log('MONGO_PORT =', process.env.MONGO_PORT);
 	});
 });
 
