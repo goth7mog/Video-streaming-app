@@ -4,3 +4,4 @@
 ### Except the docker-compose files
 !docker-compose*.yaml
 .DS_Store
+usefull-commands.txt

@@ -24,13 +24,13 @@ services:
     volumes:
       - ./src:/usr/src/app/
       - /usr/src/app/node_modules
-      - /usr/src/app/assets/videos
-      - /usr/src/app/public/admin/img/thumbnails
-      - /usr/src/app/public/site/img/temp
+      - app-assets:/usr/src/app/assets
+      - app-admin-img:/usr/src/app/public/admin/img/thumbnails
+      - app-site-img:/usr/src/app/public/site/img/temp
     # volumes:
-    #   - app-assets:/usr/src/app/assets
-    #   - app-admin-img:/usr/src/app/public/admin/img
-    #   - app-site-img:/usr/src/app/public/site/img
+    # - app-assets:/usr/src/app/assets
+    # - app-admin-img:/usr/src/app/public/admin/img/thumbnails
+    # - app-site-img:/usr/src/app/public/site/img/temp
     depends_on:
       - mongo
     networks:

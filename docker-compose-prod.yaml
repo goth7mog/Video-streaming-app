@@ -10,8 +10,8 @@ services:
       - "80:8080"
     volumes:
       - app-assets:/usr/src/app/assets
-      - app-admin-img:/usr/src/app/public/admin/img
-      - app-site-img:/usr/src/app/public/site/img
+      - app-admin-img:/usr/src/app/public/admin/img/thumbnails
+      - app-site-img:/usr/src/app/public/site/img/temp
     env_file: .env.production
     environment:
       - TZ=America/Panama
