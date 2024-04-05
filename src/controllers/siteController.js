@@ -8,50 +8,50 @@ const ObjectId = require("mongodb").ObjectId;
 
 // CREATE STREAM
 exports.createStream = async (req, res) => {
-    
-        try {
-            // console.log(req.params.watch)
-            const path = global.approute + `/assets/videos/${req.params.watch}`;
-            const stat = fs.statSync(path);
-            const fileSize = stat.size;
-            const range = req.headers.range;
-    
-            if (range) {
-                const parts = range.replace(/bytes=/, "").split("-");
-                const start = parseInt(parts[0], 10);
-                const end = parts[1]
-                    ? parseInt(parts[1], 10)
-                    : fileSize - 1
-                if (start >= fileSize) {
-                    res.status(416).send('Requested range not satisfiable\n' + start + ' >= ' + fileSize);
-                    return;
-                }
-    
-                const chunksize = (end - start) + 1;
-                const file = fs.createReadStream(path, { start, end });
-                const head = {
-                    'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-                    'Accept-Ranges': 'bytes',
-                    'Content-Length': chunksize,
-                    'Content-Type': 'video/mp4'
-                };
-    
-                res.writeHead(206, head);
-                file.pipe(res);
-    
-            } else {
-                const head = {
-                    'Content-Length': fileSize,
-                    'Content-Type': 'video/mp4'
-                };
-                res.writeHead(200, head);
-                fs.createReadStream(path).pipe(res);
+
+    try {
+        // console.log(req.params.watch)
+        const path = global.approute + `/assets/videos/${req.params.watch}`;
+        const stat = fs.statSync(path);
+        const fileSize = stat.size;
+        const range = req.headers.range;
+
+        if (range) {
+            const parts = range.replace(/bytes=/, "").split("-");
+            const start = parseInt(parts[0], 10);
+            const end = parts[1]
+                ? parseInt(parts[1], 10)
+                : fileSize - 1
+            if (start >= fileSize) {
+                res.status(416).send('Requested range not satisfiable\n' + start + ' >= ' + fileSize);
+                return;
             }
-        } catch (error) {
-            // console.log(error);
-            res.status(500).send(`Internal server error while creating a stream`);
+
+            const chunksize = (end - start) + 1;
+            const file = fs.createReadStream(path, { start, end });
+            const head = {
+                'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                'Accept-Ranges': 'bytes',
+                'Content-Length': chunksize,
+                'Content-Type': 'video/mp4'
+            };
+
+            res.writeHead(206, head);
+            file.pipe(res);
+
+        } else {
+            const head = {
+                'Content-Length': fileSize,
+                'Content-Type': 'video/mp4'
+            };
+            res.writeHead(200, head);
+            fs.createReadStream(path).pipe(res);
         }
-    
+    } catch (error) {
+        // console.log(error);
+        res.status(500).send(`Internal server error while creating a stream`);
+    }
+
 };
 
 
@@ -65,10 +65,10 @@ exports.chargeClient = async (req, res) => {
         // throw new Error(`Couldn't find the content by id ${req.body.productId} or it's deleted`);
 
         // const promise = new Promise((resolve, reject) => {
-		// 	setTimeout(() => resolve("done!"), 100000)
-		//   });
-		
-		// const result = await promise; // wait until the promise resolves (*)
+        // 	setTimeout(() => resolve("done!"), 100000)
+        //   });
+
+        // const result = await promise; // wait until the promise resolves (*)
         // res.redirect(`/`);
         // return;
 
@@ -109,14 +109,14 @@ exports.chargeClient = async (req, res) => {
         if (req.accessToken) {
 
             await global.database.collection("customers").updateOne({
-				"_id": ObjectId(req.accessToken.customerId)
-			}, {
-				$addToSet: {
-					"purchaseIDs": charge.id,
+                "_id": ObjectId(req.accessToken.customerId)
+            }, {
+                $addToSet: {
+                    "purchaseIDs": charge.id,
                     "access": Video.watch,
                     "email": req.body.stripeEmail,
-				}
-			});
+                }
+            });
 
             // Embeding the access information into the token
             ACCESS_TOKEN = jwt.sign(
@@ -129,19 +129,19 @@ exports.chargeClient = async (req, res) => {
             );
 
             await global.database.collection("tokens").updateOne({
-				// "customer_id": ObjectId(req.accessToken.customerId)
+                // "customer_id": ObjectId(req.accessToken.customerId)
                 $and: [
                     { "customer_id": ObjectId(req.accessToken.customerId) },
                     { "token": req.cookies.accessToken }
                 ]
-			}, {
+            }, {
                 $set: {
-					"token": ACCESS_TOKEN
-				},
-				$addToSet: {
-					"browser": req.headers['user-agent']
-				}
-			});
+                    "token": ACCESS_TOKEN
+                },
+                $addToSet: {
+                    "browser": req.headers['user-agent']
+                }
+            });
 
             // And just deleting the old one
             res.clearCookie('accessToken');
@@ -149,16 +149,16 @@ exports.chargeClient = async (req, res) => {
         } else {
             // If the token is absent or not valid
             const Customer = await global.database.collection("customers").insertOne({
-                "purchaseIDs": [ charge.id ],
-                "access": [ Video.watch ],
-                "email": [ req.body.stripeEmail ],
+                "purchaseIDs": [charge.id],
+                "access": [Video.watch],
+                "email": [req.body.stripeEmail],
                 "thumbnail": null,
                 "verification_token": null,
             });
 
             ACCESS_TOKEN = jwt.sign(
                 {
-                    access: [ Video.watch ],
+                    access: [Video.watch],
                     customerId: Customer.insertedId
                 },
                 process.env.JWT_SEC,
@@ -168,7 +168,7 @@ exports.chargeClient = async (req, res) => {
             const Token = await global.database.collection("tokens").insertOne({
                 "customer_id": Customer.insertedId,
                 "token": ACCESS_TOKEN,
-                "browser": [ req.headers['user-agent'] ],
+                "browser": [req.headers['user-agent']],
                 "createdAt": currentTime
             });
 
@@ -176,7 +176,11 @@ exports.chargeClient = async (req, res) => {
 
 
         // Ten years token and cookie
-        res.cookie('accessToken', ACCESS_TOKEN, { maxAge: 10 * 12 * 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+        res.cookie('accessToken', ACCESS_TOKEN, {
+            maxAge: 10 * 12 * 30 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            // domain: process.env.DOMAIN
+        });
         // Cookie for the popup
         req.flash('paymentResult', "success-payment");
         res.redirect(`/videos/watch?v=${Video.watch}`);

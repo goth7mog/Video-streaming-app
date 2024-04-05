@@ -7,7 +7,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data_container27:/data/db
+      - mongodb_data_container:/data/db
     networks:
       - app-network
     environment:
@@ -20,13 +20,17 @@ services:
     build: .
     container_name: app-container
     ports:
-      - "4300:4300"
+      - "80:8080"
     volumes:
-      # - .:/usr/src/app/
-      # - /usr/src/app/node_modules
-      - app-assets8:/usr/src/app/assets
-      - app-admin-img8:/usr/src/app/public/admin/img
-      - app-site-img8:/usr/src/app/public/site/img
+      - ./src:/usr/src/app/
+      - /usr/src/app/node_modules
+      - /usr/src/app/assets/videos
+      - /usr/src/app/public/admin/img/thumbnails
+      - /usr/src/app/public/site/img/temp
+    # volumes:
+    #   - app-assets:/usr/src/app/assets
+    #   - app-admin-img:/usr/src/app/public/admin/img
+    #   - app-site-img:/usr/src/app/public/site/img
     depends_on:
       - mongo
     networks:
@@ -41,11 +45,11 @@ networks:
     driver: bridge
 
 volumes:
-  mongodb_data_container27:
+  mongodb_data_container:
     driver: local
-  app-assets8:
+  app-assets:
     driver: local
-  app-admin-img8:
+  app-admin-img:
     driver: local
-  app-site-img8:
+  app-site-img:
     driver: local

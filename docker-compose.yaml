@@ -6,22 +6,26 @@ services:
       target: debug
     container_name: app-container
     ports:
-      - "4300:4300"
+      - "80:8080"
     volumes:
       - ./src:/usr/src/app/
       - /usr/src/app/node_modules
-      # - app-assets8:/usr/src/app/assets
-      # - app-admin-img8:/usr/src/app/public/admin/img
-      # - app-site-img8:/usr/src/app/public/site/img
-    env_file: development.env
+      - /usr/src/app/assets/videos
+      - /usr/src/app/public/admin/img/thumbnails
+      - /usr/src/app/public/site/img/temp
+    # volumes:
+    #   - app-assets:/usr/src/app/assets
+    #   - app-admin-img:/usr/src/app/public/admin/img
+    #   - app-site-img:/usr/src/app/public/site/img
+    env_file: .env.development
     environment:
       - TZ=America/Panama
       - NODE_ENV=development
 
 volumes:
-  app-assets8:
+  app-assets:
     driver: local
-  app-admin-img8:
+  app-admin-img:
     driver: local
-  app-site-img8:
+  app-site-img:
     driver: local

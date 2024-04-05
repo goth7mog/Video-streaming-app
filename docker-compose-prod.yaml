@@ -1,25 +1,26 @@
 version: '3.8'
 services:
   app:
-    build:
-      context: ./src
-      target: prod
+    # build:
+    #   context: ./src
+    #   target: prod
+    image: kuzurik797/videoapp-stripe:latest
     container_name: app-container
     ports:
-      - "4300:4300"
+      - "80:8080"
     volumes:
-      - app-assets8:/usr/src/app/assets
-      - app-admin-img8:/usr/src/app/public/admin/img
-      - app-site-img8:/usr/src/app/public/site/img
-    env_file: production.env
+      - app-assets:/usr/src/app/assets
+      - app-admin-img:/usr/src/app/public/admin/img
+      - app-site-img:/usr/src/app/public/site/img
+    env_file: .env.production
     environment:
       - TZ=America/Panama
       - NODE_ENV=production
 
 volumes:
-  app-assets8:
+  app-assets:
     driver: local
-  app-admin-img8:
+  app-admin-img:
     driver: local
-  app-site-img8:
+  app-site-img:
     driver: local

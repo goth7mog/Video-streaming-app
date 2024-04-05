@@ -10,6 +10,7 @@ const app = express();
 // const ObjectId = require("mongodb").ObjectId;
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
+const MemoryStore = require('memorystore')(expressSession);
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 // const bcrypt = require("bcryptjs");
@@ -29,7 +30,7 @@ global.dayjs = dayjs;
 // console.log(some.valueOf(),);
 
 
-const port = process.env.PORT || 4300;
+const port = process.env.PORT || 8080;
 
 // Create Global Directory to use throughout the app
 const path = require('path');
@@ -47,12 +48,18 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "10000mb", parameterLimit
 
 app.use(cookieParser());
 app.use(expressSession({
+	"cookie": { maxAge: 86400000 },
+	"store": new MemoryStore({
+		checkPeriod: 86400000 // prune expired entries every 24h
+	}),
 	"key": process.env.EXPRESS_SESSION_KEY,
 	"secret": process.env.EXPRESS_SESSION_SECRET,
 	"resave": true,
 	"saveUninitialized": true
 }));
 app.use(flash());
+
+// console.log('s')
 
 app.use("/public", express.static(global.approute + "/public"));
 app.set("view engine", "ejs");

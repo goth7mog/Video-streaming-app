@@ -15,9 +15,6 @@ RUN chown -R node /usr/src/app
 USER node
 
 ENTRYPOINT [ "nodemon", "server.js" ]
-# ENTRYPOINT [ "npm", "start" ]
-# Making the node command a top-level process (to avoid errors when Docker shuts down)
-
 
 
 
