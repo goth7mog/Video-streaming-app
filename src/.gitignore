@@ -1,8 +1,8 @@
-/node_modules
+node_modules
 .env*
 .env
 *.yaml
-/assets/videos/*
-/public/admin/img/*
-/public/site/img/*
+assets/videos/*
+public/admin/img/*
+public/site/img/*
 .DS_Store
