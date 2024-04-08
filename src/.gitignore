@@ -2,7 +2,7 @@
 .env*
 .env
 *.yaml
-/assets/videos/
+/assets/videos/*
 /public/admin/img/*
 /public/site/img/*
 .DS_Store
