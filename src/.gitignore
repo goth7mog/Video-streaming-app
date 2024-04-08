@@ -3,6 +3,6 @@
 .env
 *.yaml
 /assets/videos/
-/public/admin/img/
-/public/site/img/
+/public/admin/img/*
+/public/site/img/*
 .DS_Store
