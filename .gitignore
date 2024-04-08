@@ -1,9 +1,6 @@
 .env*
 .env
 *.yaml
-/src/assets/videos/*
-/src/public/admin/img/*
-/src/public/site/img/*
 ### Except the docker-compose files
 !docker-compose*.yaml
 .DS_Store
