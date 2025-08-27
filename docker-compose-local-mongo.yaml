@@ -35,7 +35,7 @@ services:
       - mongo
     networks:
       - app-network
-    env_file: development.env
+    env_file: .env.development
     environment:
       - TZ=Europe/London
       - NODE_ENV=development
