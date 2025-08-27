@@ -1,4 +1,4 @@
-FROM node:16 as debug
+FROM node:18-bullseye as debug
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
@@ -18,7 +18,7 @@ ENTRYPOINT [ "nodemon", "server.js" ]
 
 
 
-FROM node:16 as prod
+FROM node:18-bullseye as prod
 
 RUN apt-get update -y
 RUN apt-get upgrade -y

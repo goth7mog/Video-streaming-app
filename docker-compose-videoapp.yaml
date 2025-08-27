@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  videoapp:
+    image: kuzurik797/videoapp-stripe:latest
+    container_name: app-container
+    ports:
+      - "80:8080"
