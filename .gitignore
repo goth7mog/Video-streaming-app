@@ -1,6 +1,7 @@
 .env*
 .env
 *.yaml
+create-admin.sh
 ### Except the docker-compose files
 !docker-compose*.yaml
 .DS_Store
