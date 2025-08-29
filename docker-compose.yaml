@@ -8,15 +8,15 @@ services:
     ports:
       - "80:8080"
     volumes:
-      - ./src:/usr/src/app/
-      - /usr/src/app/node_modules
-      - app-assets:/usr/src/app/assets
-      - app-admin-img:/usr/src/app/public/admin/img/thumbnails
-      - app-site-img:/usr/src/app/public/site/img/temp
-      # volumes:
-      # - app-assets:/usr/src/app/assets
-      # - app-admin-img:/usr/src/app/public/admin/img/thumbnails
-      # - app-site-img:/usr/src/app/public/site/img/temp
+    # - ./src:/usr/src/app/
+    # - /usr/src/app/node_modules
+    # - app-assets:/usr/src/app/assets
+    # - app-admin-img:/usr/src/app/public/admin/img/thumbnails
+    # - app-site-img:/usr/src/app/public/site/img/temp
+    # volumes:
+    - app-assets:/usr/src/app/assets
+    - app-admin-img:/usr/src/app/public/admin/img/thumbnails
+    - app-site-img:/usr/src/app/public/site/img/temp
     env_file: .env.development
     environment:
       - TZ=America/Panama
