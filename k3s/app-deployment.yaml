@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: app-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: video-app
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: app-container
-        image: kuzurik797/videoapp-stripe:latest # Replace with your built image name
+        image: kuzurik797/videoapp-stripe:latest
         ports:
         - containerPort: 8080
         env:
