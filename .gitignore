@@ -1,9 +1,8 @@
 .env*
 .env
-*.yaml
 create-admin.sh
-### Except the docker-compose files
 !docker-compose*.yaml
 .DS_Store
 usefull-commands.txt
 .vscode/
+k3s/app-configmap.yaml

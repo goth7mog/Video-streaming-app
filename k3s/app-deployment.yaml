@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-app
+  template:
+    metadata:
+      labels:
+        app: video-app
+    spec:
+      containers:
+      - name: app-container
+        image: kuzurik797/videoapp-stripe:latest # Replace with your built image name
+        ports:
+        - containerPort: 8080
+        env:
+        - name: TZ
+          value: "America/Panama"
+        - name: NODE_ENV
+          value: "development"
+        envFrom:
+        - configMapRef:
+            name: app-config
+        volumeMounts:
+        - name: app-assets
+          mountPath: /usr/src/app/assets
+        - name: app-admin-img
+          mountPath: /usr/src/app/public/admin/img/thumbnails
+        - name: app-site-img
+          mountPath: /usr/src/app/public/site/img/temp
+      volumes:
+      - name: app-assets
+        persistentVolumeClaim:
+          claimName: app-assets-pvc
+      - name: app-admin-img
+        persistentVolumeClaim:
+          claimName: app-admin-img-pvc
+      - name: app-site-img
+        persistentVolumeClaim:
+          claimName: app-site-img-pvc
