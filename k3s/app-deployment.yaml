@@ -15,6 +15,7 @@ spec:
       containers:
       - name: app-container
         image: kuzurik797/videoapp-stripe:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
