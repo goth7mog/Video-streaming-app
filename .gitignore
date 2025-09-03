@@ -7,3 +7,4 @@ usefull-commands.txt
 .vscode/
 k3s/app-configmap.yaml
 ks-commands.txt
+k8s-commands.txt
