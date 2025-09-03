@@ -30,9 +30,9 @@ spec:
         - name: app-assets
           mountPath: /usr/src/app/assets
         - name: app-admin-img
-          mountPath: /usr/src/app/public/admin/img/thumbnails
+          mountPath: /usr/src/app/public/admin
         - name: app-site-img
-          mountPath: /usr/src/app/public/site/img/temp
+          mountPath: /usr/src/app/public/site
       volumes:
       - name: app-assets
         persistentVolumeClaim:
