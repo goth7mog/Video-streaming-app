@@ -7,6 +7,7 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteMany
+  storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/assets
