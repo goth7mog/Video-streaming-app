@@ -10,5 +10,5 @@ spec:
   storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/public/admin
-    server: 10.170.174.117
+  path: /home/vagrant/Code/Video-streaming-app/src/public/admin
+  server: 192.168.236.172
