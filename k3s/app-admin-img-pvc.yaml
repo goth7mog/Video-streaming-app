@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  volumeName: nfs-admin-img-pv
+  # volumeName: nfs-admin-img-pv

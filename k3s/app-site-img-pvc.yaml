@@ -9,5 +9,5 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  volumeName: nfs-site-img-pv
+  # volumeName: nfs-site-img-pv
 #

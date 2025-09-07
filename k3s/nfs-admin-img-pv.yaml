@@ -11,4 +11,4 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /home/vagrant/Code/Video-streaming-app/src/public/admin
-    server: 192.168.236.172
+  # server: 192.168.236.172

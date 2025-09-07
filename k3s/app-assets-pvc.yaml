@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  volumeName: nfs-assets-pv
+  # volumeName: nfs-assets-pv
