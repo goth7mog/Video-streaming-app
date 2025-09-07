@@ -32,10 +32,26 @@ spec:
           securityContext:
             privileged: true
           args:
-            - /exports
+            - /exports/admin
+            - /exports/assets
+            - /exports/site
           volumeMounts:
-            - name: nfs-data
-              mountPath: /exports
+            - name: nfs-admin-img
+              mountPath: /exports/admin
+            - name: nfs-assets
+              mountPath: /exports/assets
+            - name: nfs-site-img
+              mountPath: /exports/site
       volumes:
-        - name: nfs-data
-          emptyDir: {}
+        - name: nfs-admin-img
+          hostPath:
+            path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/public/admin
+            type: DirectoryOrCreate
+        - name: nfs-assets
+          hostPath:
+            path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/assets
+            type: DirectoryOrCreate
+        - name: nfs-site-img
+          hostPath:
+            path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/public/site
+            type: DirectoryOrCreate
