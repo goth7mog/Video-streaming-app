@@ -25,25 +25,18 @@ spec:
         app: nfs-server
     spec:
       containers:
-        - name: nfs-server
-          image: itsthenetwork/nfs-server-alpine:latest
-          ports:
-            - containerPort: 2049
-          securityContext:
-            privileged: true
-          env:
-            - name: SHARED_DIRECTORY
-              value: /exports
-          volumeMounts:
-            - name: nfs-exports
-              mountPath: /assets
-              subPath: assets
-            - name: nfs-exports
-              mountPath: /public/admin
-              subPath: public/admin
-            - name: nfs-exports
-              mountPath: /public/site
-              subPath: public/site
+            - name: nfs-server
+              image: itsthenetwork/nfs-server-alpine:latest
+              ports:
+                - containerPort: 2049
+              securityContext:
+                privileged: true
+              env:
+                - name: SHARED_DIRECTORY
+                  value: /exports
+              volumeMounts:
+                - name: nfs-exports
+                  mountPath: /exports
       volumes:
         - name: nfs-exports
           hostPath:
