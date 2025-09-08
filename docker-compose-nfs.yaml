@@ -9,4 +9,5 @@ services:
     ports:
       - "2049:2049"
     volumes:
-      - /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/exports:/exports
+      # - /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/exports:/exports
+      - /tmp/exports:/exports
