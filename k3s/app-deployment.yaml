@@ -33,13 +33,19 @@ spec:
           mountPath: /usr/src/app/public/admin
         - name: app-site-img
           mountPath: /usr/src/app/public/site
+
       volumes:
       - name: app-assets
-        persistentVolumeClaim:
-          claimName: app-assets-pvc
+        nfs:
+          server: nfs-server.default.svc.cluster.local
+          path: /exports/assets
+
       - name: app-admin-img
-        persistentVolumeClaim:
-          claimName: app-admin-img-pvc
+        nfs:
+          server: nfs-server.default.svc.cluster.local
+          path: /exports/admin
+          
       - name: app-site-img
-        persistentVolumeClaim:
-          claimName: app-site-img-pvc
+        nfs:
+          server: nfs-server.default.svc.cluster.local
+          path: /exports/site

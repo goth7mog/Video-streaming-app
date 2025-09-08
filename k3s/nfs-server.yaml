@@ -26,15 +26,14 @@ spec:
     spec:
       containers:
         - name: nfs-server
-          image: k8s.gcr.io/volume-nfs:0.8
+          image: itsthenetwork/nfs-server-alpine:latest
           ports:
             - containerPort: 2049
           securityContext:
             privileged: true
-          args:
-            - /exports/admin
-            - /exports/assets
-            - /exports/site
+          env:
+            - name: SHARED_DIRECTORY
+              value: /exports
           volumeMounts:
             - name: nfs-admin-img
               mountPath: /exports/admin
@@ -46,12 +45,12 @@ spec:
         - name: nfs-admin-img
           hostPath:
             path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/public/admin
-            type: DirectoryOrCreate
+            type: Directory
         - name: nfs-assets
           hostPath:
             path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/assets
-            type: DirectoryOrCreate
+            type: Directory
         - name: nfs-site-img
           hostPath:
             path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/public/site
-            type: DirectoryOrCreate
+            type: Directory
