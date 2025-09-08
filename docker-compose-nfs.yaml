@@ -1,7 +1,8 @@
 version: '3.8'
 services:
   nfs-server:
-    image: itsthenetwork/nfs-server-alpine:latest
+    # image: itsthenetwork/nfs-server-alpine:latest
+    image: my-nfs-server:latest
     platform: linux/amd64
     privileged: true
     environment:
@@ -10,4 +11,8 @@ services:
       - "2049:2049"
     volumes:
       # - /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/exports:/exports
-      - /tmp/exports:/exports
+      - videoapp-exports:/exports
+
+volumes:
+  videoapp-exports:
+    driver: local
