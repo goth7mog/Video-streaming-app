@@ -27,25 +27,18 @@ spec:
         - configMapRef:
             name: app-config
         volumeMounts:
-        - name: app-assets
+        - name: app-nfs-exports
           mountPath: /usr/src/app/assets
-        - name: app-admin-img
+          subPath: assets
+        - name: app-nfs-exports
           mountPath: /usr/src/app/public/admin
-        - name: app-site-img
+          subPath: public/admin
+        - name: app-nfs-exports
           mountPath: /usr/src/app/public/site
+          subPath: public/site
 
       volumes:
-      - name: app-assets
+      - name: app-nfs-exports
         nfs:
           server: nfs-server.default.svc.cluster.local
-          path: /exports/assets
-
-      - name: app-admin-img
-        nfs:
-          server: nfs-server.default.svc.cluster.local
-          path: /exports/admin
-          
-      - name: app-site-img
-        nfs:
-          server: nfs-server.default.svc.cluster.local
-          path: /exports/site
+          path: /exports

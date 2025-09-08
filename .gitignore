@@ -1,5 +1,8 @@
 .env*
 .env
+exports/assets/videos/*
+exports/public/admin/img/*
+exports/public/site/img/*
 create-admin.sh
 !docker-compose*.yaml
 .DS_Store

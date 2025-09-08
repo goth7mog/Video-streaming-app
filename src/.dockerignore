@@ -3,9 +3,9 @@
 # /assets/videos/*
 # /public/admin/img/thumbnails/*
 # /public/site/img/temp/*
-/assets/*
-/public/admin/*
-/public/site/*
+# /assets/*
+# /public/admin/*
+# /public/site/*
 *.yaml
 .env*
 .env

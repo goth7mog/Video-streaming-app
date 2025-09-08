@@ -24,13 +24,9 @@ services:
     volumes:
       - ./src:/usr/src/app/
       - /usr/src/app/node_modules
-      - app-assets:/usr/src/app/assets
-      - app-admin-img:/usr/src/app/public/admin/img/thumbnails
-      - app-site-img:/usr/src/app/public/site/img/temp
-    # volumes:
-    # - app-assets:/usr/src/app/assets
-    # - app-admin-img:/usr/src/app/public/admin/img/thumbnails
-    # - app-site-img:/usr/src/app/public/site/img/temp
+      - nfs-assets:/usr/src/app/assets
+      - nfs-admin-img:/usr/src/app/public/admin/img/thumbnails
+      - nfs-site-img:/usr/src/app/public/site/img/temp
     depends_on:
       - mongo
     networks:
@@ -40,6 +36,17 @@ services:
       - TZ=Europe/London
       - NODE_ENV=development
 
+  nfs-server:
+    image: itsthenetwork/nfs-server-alpine:latest
+    container_name: nfs-server
+    privileged: true
+    environment:
+      - SHARED_DIRECTORY=/exports
+    ports:
+      - "2049:2049"
+    volumes:
+      - ./exports:/exports
+
 networks:
   app-network:
     driver: bridge
@@ -47,9 +54,21 @@ networks:
 volumes:
   mongodb_data_container:
     driver: local
-  app-assets:
+  nfs-assets:
     driver: local
-  app-admin-img:
+    driver_opts:
+      type: nfs
+      o: addr=127.0.0.1,rw,nfsvers=4
+      device: :/exports/assets
+  nfs-admin-img:
     driver: local
-  app-site-img:
+    driver_opts:
+      type: nfs
+      o: addr=127.0.0.1,rw,nfsvers=4
+      device: :/exports/public/admin/img/thumbnails
+  nfs-site-img:
     driver: local
+    driver_opts:
+      type: nfs
+      o: addr=127.0.0.1,rw,nfsvers=4
+      device: :/exports/public/site/img/temp

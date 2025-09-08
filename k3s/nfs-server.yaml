@@ -35,22 +35,17 @@ spec:
             - name: SHARED_DIRECTORY
               value: /exports
           volumeMounts:
-            - name: nfs-admin-img
-              mountPath: /exports/admin
-            - name: nfs-assets
-              mountPath: /exports/assets
-            - name: nfs-site-img
-              mountPath: /exports/site
+            - name: nfs-exports
+              mountPath: /assets
+              subPath: assets
+            - name: nfs-exports
+              mountPath: /public/admin
+              subPath: public/admin
+            - name: nfs-exports
+              mountPath: /public/site
+              subPath: public/site
       volumes:
-        - name: nfs-admin-img
+        - name: nfs-exports
           hostPath:
-            path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/public/admin
-            type: Directory
-        - name: nfs-assets
-          hostPath:
-            path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/assets
-            type: Directory
-        - name: nfs-site-img
-          hostPath:
-            path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/src/public/site
+            path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/exports
             type: Directory
