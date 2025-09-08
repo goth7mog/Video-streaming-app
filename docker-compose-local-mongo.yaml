@@ -25,8 +25,8 @@ services:
       - ./src:/usr/src/app/
       - /usr/src/app/node_modules
       - nfs-assets:/usr/src/app/assets
-      - nfs-admin-img:/usr/src/app/public/admin/img/thumbnails
-      - nfs-site-img:/usr/src/app/public/site/img/temp
+      - nfs-admin-folder:/usr/src/app/public/admin
+      - nfs-site-folder:/usr/src/app/public/site
     depends_on:
       - mongo
     networks:
@@ -60,13 +60,13 @@ volumes:
       type: nfs
       o: addr=127.0.0.1,rw,nfsvers=4
       device: :/exports/assets
-  nfs-admin-img:
+  nfs-admin-folder:
     driver: local
     driver_opts:
       type: nfs
       o: addr=127.0.0.1,rw,nfsvers=4
       device: :/exports/public/admin/img/thumbnails
-  nfs-site-img:
+  nfs-site-folder:
     driver: local
     driver_opts:
       type: nfs
