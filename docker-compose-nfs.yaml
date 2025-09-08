@@ -2,6 +2,7 @@ version: '3.8'
 services:
   nfs-server:
     image: itsthenetwork/nfs-server-alpine:latest
+    platform: linux/amd64
     privileged: true
     environment:
       - SHARED_DIRECTORY=/exports
