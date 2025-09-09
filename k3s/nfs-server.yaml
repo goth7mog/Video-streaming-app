@@ -40,5 +40,6 @@ spec:
       volumes:
         - name: nfs-exports
           hostPath:
-            path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/exports
+            # path: /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/exports
+            path: /home/vagrant/Code/Video-streaming-app/exports
             type: Directory

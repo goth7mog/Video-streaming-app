@@ -11,8 +11,4 @@ services:
       - "2049:2049"
     volumes:
       # - /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/exports:/exports
-      - videoapp-exports:/exports
-
-volumes:
-  videoapp-exports:
-    driver: local
+      - ./exports:/exports
