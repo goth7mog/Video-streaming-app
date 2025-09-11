@@ -8,11 +8,11 @@ services:
     ports:
       - "8080:8080"
     volumes:
-    - ./src:/usr/src/app/
-    - /usr/src/app/node_modules
-    - app-assets:/usr/src/app/assets
-    - app-admin-img:/usr/src/app/public/admin/img/thumbnails
-    - app-site-img:/usr/src/app/public/site/img/temp
+      - ./src:/usr/src/app/
+      - /usr/src/app/node_modules
+      - ./exports/assets:/usr/src/app/assets
+      - ./exports/public/admin:/usr/src/app/public/admin
+      - ./exports/public/site:/usr/src/app/public/site
     # volumes:
     # - app-assets:/usr/src/app/assets
     # - app-admin-img:/usr/src/app/public/admin/img/thumbnails
@@ -22,10 +22,3 @@ services:
       - TZ=America/Panama
       - NODE_ENV=development
 
-volumes:
-  app-assets:
-    driver: local
-  app-admin-img:
-    driver: local
-  app-site-img:
-    driver: local

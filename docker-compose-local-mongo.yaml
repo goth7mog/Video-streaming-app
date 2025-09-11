@@ -22,11 +22,11 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./src:/usr/src/app/
-      - /usr/src/app/node_modules
-      - app-assets:/usr/src/app/assets
-      - app-admin-img:/usr/src/app/public/admin/img/thumbnails
-      - app-site-img:/usr/src/app/public/site/img/temp
+  - ./src:/usr/src/app/
+  - /usr/src/app/node_modules
+  - app-assets:/usr/src/app/assets
+  - app-admin-img:/usr/src/app/public/admin/img/thumbnails
+  - app-site-img:/usr/src/app/public/site/img/temp
     # volumes:
     # - app-assets:/usr/src/app/assets
     # - app-admin-img:/usr/src/app/public/admin/img/thumbnails
@@ -49,7 +49,19 @@ volumes:
     driver: local
   app-assets:
     driver: local
+    driver_opts:
+      type: nfs
+      o: addr=<NFS_SERVER_IP>,rw,nfsvers=4
+      device: :/exports/assets
   app-admin-img:
     driver: local
+    driver_opts:
+      type: nfs
+      o: addr=<NFS_SERVER_IP>,rw,nfsvers=4
+      device: :/exports/public/admin/img/thumbnails
   app-site-img:
     driver: local
+    driver_opts:
+      type: nfs
+      o: addr=<NFS_SERVER_IP>,rw,nfsvers=4
+      device: :/exports/public/site/img/temp
