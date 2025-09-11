@@ -3,13 +3,14 @@ kind: Service
 metadata:
   name: nfs-server
 spec:
+  type: NodePort
   selector:
     app: nfs-server
   ports:
     - name: nfs
       port: 2049
       targetPort: 2049
----
+      nodePort: 32049
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,6 +28,8 @@ spec:
       containers:
             - name: nfs-server
               image: itsthenetwork/nfs-server-alpine:latest
+              # image: registry.k8s.io/volume-nfs:0.8
+              # imagePullPolicy: IfNotPresent
               ports:
                 - containerPort: 2049
               securityContext:
