@@ -39,6 +39,5 @@ spec:
 
       volumes:
       - name: app-nfs-exports
-        nfs:
-          server: nfs-server.default.svc.cluster.local
-          path: /exports
+        persistentVolumeClaim:
+          claimName: nfs-pvc
