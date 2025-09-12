@@ -4,7 +4,7 @@ services:
     image: kuzurik797/videoapp-stripe:latest
     pull_policy: always
     # platform: linux/amd64 # or
-    platform: linux/arm64
+    # platform: linux/arm64
     container_name: app-container
     ports:
       - "8080:8080"
