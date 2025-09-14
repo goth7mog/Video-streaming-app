@@ -13,6 +13,7 @@ const expressSession = require("express-session");
 const MemoryStore = require('memorystore')(expressSession);
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
+const MongoStore = require('connect-mongo')(expressSession);
 // const bcrypt = require("bcryptjs");
 // const { getVideoDurationInSeconds } = require('get-video-duration');
 const dayjs = require('dayjs');
@@ -48,14 +49,19 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "10000mb", parameterLimit
 
 app.use(cookieParser());
 app.use(expressSession({
-	"cookie": { maxAge: 86400000 },
-	"store": new MemoryStore({
-		checkPeriod: 86400000 // prune expired entries every 24h
+	cookie: { maxAge: 86400000 },
+	// store: new MemoryStore({
+	//   checkPeriod: 86400000 // prune expired entries every 24h
+	// }),
+	store: new MongoStore({
+		url: process.env.MONGO_DATABASE,
+		collection: 'sessions', // optional
+		ttl: 24 * 60 * 60 // 24 hours
 	}),
-	"key": process.env.EXPRESS_SESSION_KEY,
-	"secret": process.env.EXPRESS_SESSION_SECRET,
-	"resave": true,
-	"saveUninitialized": true
+	key: process.env.EXPRESS_SESSION_KEY,
+	secret: process.env.EXPRESS_SESSION_SECRET,
+	resave: true,
+	saveUninitialized: true
 }));
 app.use(flash());
 
