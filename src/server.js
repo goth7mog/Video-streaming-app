@@ -14,6 +14,7 @@ const MemoryStore = require('memorystore')(expressSession);
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const MongoStore = require('connect-mongo')(expressSession);
+const RedisStore = require('connect-redis').default;
 // const bcrypt = require("bcryptjs");
 // const { getVideoDurationInSeconds } = require('get-video-duration');
 const dayjs = require('dayjs');
@@ -48,22 +49,6 @@ app.use(bodyParser.json({ limit: "10000mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10000mb", parameterLimit: 1000000 }));
 
 app.use(cookieParser());
-app.use(expressSession({
-	cookie: { maxAge: 86400000 },
-	// store: new MemoryStore({
-	//   checkPeriod: 86400000 // prune expired entries every 24h
-	// }),
-	store: new MongoStore({
-		url: process.env.MONGO_DATABASE,
-		collection: 'sessions', // optional
-		ttl: 24 * 60 * 60 // 24 hours
-	}),
-	key: process.env.EXPRESS_SESSION_KEY,
-	secret: process.env.EXPRESS_SESSION_SECRET,
-	resave: true,
-	saveUninitialized: true
-}));
-app.use(flash());
 
 // console.log('s')
 
@@ -89,7 +74,7 @@ app.set("view engine", "ejs");
 // Assign Mongo connection
 const connectMongo = async () => {
 	try {
-		const createMongoDB = require(global.approute + '/mongo_client/client.js');
+		const createMongoDB = require(global.approute + '/connect-db/mongo_client.js');
 
 		/* Creating a connection. 
 		And assigning the database to the global variable */
@@ -100,6 +85,20 @@ const connectMongo = async () => {
 		console.log(err);
 	}
 
+}
+
+const connectRedis = async () => {
+	try {
+		const createRedisClient = require(global.approute + '/connect-db/redis_client.js');
+
+		/* Creating a connection. 
+		And assigning the database to the global variable */
+		global.redisClient = await createRedisClient();
+
+		console.log('Redis connection is running');
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 const siteRouter = require(global.approute + "/router/siteRouter.js");
@@ -153,8 +152,21 @@ app.on('ready', () => {
 const startup = async () => {
 	try {
 		await connectMongo();
+		await connectRedis();
 
-		// console.log("Hi")
+		const sessionOptions = {
+			cookie: { maxAge: 86400000 },
+			store: new RedisStore({
+				client: global.redisClient,
+				ttl: 24 * 60 * 60 // 24 hours
+			}),
+			key: process.env.EXPRESS_SESSION_KEY,
+			secret: process.env.EXPRESS_SESSION_SECRET,
+			resave: true,
+			saveUninitialized: true
+		};
+		app.use(expressSession(sessionOptions));
+		app.use(flash());
 
 		app.emit('ready');
 
