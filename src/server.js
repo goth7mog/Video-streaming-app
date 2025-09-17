@@ -14,7 +14,7 @@ const MemoryStore = require('memorystore')(expressSession);
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const MongoStore = require('connect-mongo')(expressSession);
-const RedisStore = require('connect-redis').default;
+const { RedisStore } = require('connect-redis');
 // const bcrypt = require("bcryptjs");
 // const { getVideoDurationInSeconds } = require('get-video-duration');
 const dayjs = require('dayjs');
@@ -29,8 +29,8 @@ global.dayjs = dayjs;
 
 // const some = global.dayjs.tz(`${userAppointmentDate} ${userAppointmentTime}`, "America/Panama").valueOf();
 
-// console.log(some.valueOf(),);
-
+console.log(RedisStore);
+console.log('Hi');
 
 const port = process.env.PORT || 8080;
 
@@ -111,32 +111,7 @@ const adminRouter = require(global.approute + "/router/adminRouter.js");
 // const createStreamRoute = require(global.approute + "/routes/createStream.js");
 // const chargeRoute = require(global.approute + "/routes/charge.js");
 
-app.use("/", siteRouter);
-app.use("/admin", adminRouter);
-// app.use("/register", registerRoute);
-// app.use("/login", loginRoute);
-// app.use("/charge", chargeRoute);
-// app.use("/assets/videos/", createStreamRoute);
 
-
-
-
-
-app.get('/app/info', (req, res) => {
-	// console.log(req.headers.authorization)
-	res.json({
-		code: 1,
-		message: `${process.env.npm_package_name} is running`,
-		data: {
-			NAME: process.env.npm_package_name,
-			VERSION: process.env.npm_package_version,
-			NODE_ENV: process.env.NODE_ENV,
-			MONGO_HOST: process.env.MONGO_HOST,
-			// MONGO_PORT: process.env.MONGO_PORT,
-		},
-		error: null
-	});
-});
 
 app.on('ready', () => {
 	// Start the server only when the app is ready
@@ -167,6 +142,31 @@ const startup = async () => {
 		};
 		app.use(expressSession(sessionOptions));
 		app.use(flash());
+
+		app.use("/", siteRouter);
+		app.use("/admin", adminRouter);
+		// app.use("/register", registerRoute);
+		// app.use("/login", loginRoute);
+		// app.use("/charge", chargeRoute);
+		// app.use("/assets/videos/", createStreamRoute);
+
+
+
+		app.get('/app/info', (req, res) => {
+			// console.log(req.headers.authorization)
+			res.json({
+				code: 1,
+				message: `${process.env.npm_package_name} is running`,
+				data: {
+					NAME: process.env.npm_package_name,
+					VERSION: process.env.npm_package_version,
+					NODE_ENV: process.env.NODE_ENV,
+					MONGO_HOST: process.env.MONGO_HOST,
+					// MONGO_PORT: process.env.MONGO_PORT,
+				},
+				error: null
+			});
+		});
 
 		app.emit('ready');
 

@@ -1,5 +1,13 @@
 version: '3.8'
 services:
+  redis:
+    image: "redis:7.2-alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    volumes:
+      - /data
   app:
     build:
       context: ./src
@@ -21,4 +29,6 @@ services:
     environment:
       - TZ=America/Panama
       - NODE_ENV=development
+
+
 
