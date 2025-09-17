@@ -10,13 +10,9 @@ module.exports = async () => {
         
         if (password) options.password = password;
 
-        const redis = new Redis(options);
-
-        await redis.connect();
-
-        await redis.ping();
-
-        return redis;
+    const redis = new Redis(options);
+    await redis.ping();
+    return redis;
     } catch (err) {
         // console.error('Failed to connect to Redis:', err);
         throw err;

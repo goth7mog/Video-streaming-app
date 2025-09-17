@@ -11,6 +11,7 @@ usefull-commands.txt
 k3s/app-configmap.yaml
 ks-commands.txt
 k8s-commands.txt
+helm.txt
 nfs.txt
 nfs-log.txt
 Notes.txt
