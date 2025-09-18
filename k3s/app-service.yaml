@@ -1,3 +1,20 @@
+---
+# Standalone Redis Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: 6379
+  selector:
+    app: redis
+---
+# App Service
 apiVersion: v1
 kind: Service
 metadata:
