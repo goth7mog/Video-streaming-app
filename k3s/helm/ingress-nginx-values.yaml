@@ -1,0 +1,34 @@
+# Example custom values for ingress-nginx Helm chart
+controller:
+  replicaCount: 1
+  service:
+    type: LoadBalancer
+    nodePorts:
+      http: 31155
+      https: 32408
+  ingressClassResource:
+    name: nginx
+    enabled: true
+    default: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  metrics:
+    enabled: true
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# Enable admission webhooks (optional, for advanced features)
+
+admissionWebhooks:
+  enabled: false
+
+# Set default backend (optional)
+
+defaultBackend:
+  enabled: false
