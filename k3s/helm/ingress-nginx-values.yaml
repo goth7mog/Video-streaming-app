@@ -1,6 +1,7 @@
 # Example custom values for ingress-nginx Helm chart
 controller:
   config:
+    limit-req-zone-size: "10m" 
     limit-req: "20"
   replicaCount: 1
   service:
