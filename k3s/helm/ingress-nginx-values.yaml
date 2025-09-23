@@ -1,5 +1,7 @@
 # Example custom values for ingress-nginx Helm chart
 controller:
+  config:
+    limit-req: "20"
   replicaCount: 1
   service:
     type: LoadBalancer
