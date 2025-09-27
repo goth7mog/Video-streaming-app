@@ -8,7 +8,7 @@ create-admin.sh
 .DS_Store
 usefull-commands.txt
 .vscode/
-k3s/app-configmap.yaml
+# k3s/app-configmap.yaml
 ks-commands.txt
 k8s-commands.txt
 helm.txt
