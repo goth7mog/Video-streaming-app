@@ -19,4 +19,5 @@ nfs.txt
 nfs-log.txt
 Notes.txt
 certificates.txt
+ansible-commands.txt
 certificate-issuance-sequence.md
