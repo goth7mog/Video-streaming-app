@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  tasks:
+    - name: List installed apt packages
+      ansible.builtin.shell: dpkg-query -W -f='${binary:Package}\n'
+      register: apt_packages
+      changed_when: false
+
+    - name: Show installed apt packages
+      debug:
+        var: apt_packages.stdout_lines
+
+    - name: List running services
+      ansible.builtin.shell: systemctl list-units --type=service --state=running
+      register: running_services
+      changed_when: false
+
+    - name: Show running services
+      debug:
+        var: running_services.stdout_lines
