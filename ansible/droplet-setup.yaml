@@ -48,7 +48,6 @@
     - name: Enable UFW
       ufw:
         state: enabled
-        policy: enabled
 
     - name: Disable root login in sshd_config
       lineinfile:
