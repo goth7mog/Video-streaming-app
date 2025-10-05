@@ -1,0 +1,8 @@
+---
+- hosts: droplets
+  gather_facts: yes
+  vars_files:
+    - ../vault.yaml
+  tasks:
+    - name: Ping NFS server
+      ansible.builtin.ping:

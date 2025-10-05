@@ -1,5 +1,5 @@
 ---
-- hosts: nfs_servers
+- hosts: droplets
   become: yes
   tasks:
     - name: Install NFS server packages
