@@ -1,7 +1,9 @@
 ---
-- name: Initial setup as root
+  name: Initial setup as root
   hosts: all
   become: yes
+  vars_files:
+    - vault.yaml
   tasks:
     - name: Create non-root user
       user:
@@ -78,10 +80,12 @@
         name: sshd
         state: reloaded
 
-- name: Continue as non-root user
+  name: Continue as non-root user
   hosts: all
   become: yes
   become_user: main
+  vars_files:
+    - vault.yaml
   tasks:
     - name: Do something as main
       shell: whoami
