@@ -1,0 +1,91 @@
+---
+- name: Initial setup as root
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create non-root user
+      user:
+        name: main
+        groups: sudo
+        shell: /bin/bash
+
+    - name: Add authorized key for non-root user
+      authorized_key:
+        user: main
+        state: present
+        key: "{{ lookup('file', '/Users/alexander/.ssh/DigitalOcean/main.pub') }}"
+
+
+    - name: Set UFW default to deny incoming
+      ufw:
+        direction: incoming
+        policy: deny
+
+    - name: Set UFW default to allow outgoing
+      ufw:
+        direction: outgoing
+        policy: allow
+
+    - name: Allow SSH through UFW
+      ufw:
+        rule: allow
+        port: 22
+        proto: tcp
+
+    - name: Allow HTTP through UFW
+      ufw:
+        rule: allow
+        port: 80
+        proto: tcp
+
+    - name: Allow HTTPS through UFW
+      ufw:
+        rule: allow
+        port: 443
+        proto: tcp
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
+        policy: enabled
+
+    - name: Disable root login in sshd_config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+        state: present
+        backup: yes
+
+    - name: Disable password authentication in sshd_config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
+        backup: no
+
+    - name: Disable PAM in sshd_config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^UsePAM'
+        line: 'UsePAM no'
+        state: present
+        backup: no
+
+    - name: Reload sshd
+      service:
+        name: sshd
+        state: reloaded
+
+- name: Continue as non-root user
+  hosts: all
+  become: yes
+  become_user: main
+  tasks:
+    - name: Do something as main
+      shell: whoami
+      register: whoami_result
+
+    - debug:
+        var: whoami_result.stdout
