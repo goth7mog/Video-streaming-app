@@ -1,5 +1,5 @@
 ---
-  name: Initial setup as root
+- name: Initial setup as root
   hosts: all
   become: yes
   vars_files:
@@ -16,7 +16,6 @@
         user: main
         state: present
         key: "{{ lookup('file', '/Users/alexander/.ssh/DigitalOcean/main.pub') }}"
-
 
     - name: Set UFW default to deny incoming
       ufw:
@@ -80,7 +79,7 @@
         name: sshd
         state: reloaded
 
-  name: Continue as non-root user
+- name: Continue as non-root user
   hosts: all
   become: yes
   become_user: main
