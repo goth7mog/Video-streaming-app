@@ -12,6 +12,8 @@ k3s/app-configmap.yaml
 # k3s/letsencrypt-clusterissuer.yaml
 # k3s/app-certificate.yaml
 ansible/nfs-server-instructions.txt
+ansible/ansible-commands.txt
+ansible/ansible-to-do-list.md
 k3s/variables.env
 ks-commands.txt
 k8s-commands.txt
@@ -20,5 +22,4 @@ nfs.txt
 nfs-log.txt
 Notes.txt
 certificates.txt
-ansible-commands.txt
 certificate-issuance-sequence.md
