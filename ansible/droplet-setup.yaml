@@ -17,45 +17,6 @@
         state: present
         key: "{{ lookup('file', '/Users/alexander/.ssh/DigitalOcean/main.pub') }}"
 
-    - name: Set UFW default to deny incoming
-      ufw:
-        direction: incoming
-        policy: deny
-
-    - name: Set UFW default to allow outgoing
-      ufw:
-        direction: outgoing
-        policy: allow
-
-    - name: Allow SSH through UFW
-      ufw:
-        rule: allow
-        port: 22
-        proto: tcp
-
-    - name: Allow HTTP through UFW
-      ufw:
-        rule: allow
-        port: 80
-        proto: tcp
-
-    - name: Allow HTTPS through UFW
-      ufw:
-        rule: allow
-        port: 443
-        proto: tcp
-
-    - name: Allow all traffic from localhost
-      ufw:
-        rule: allow
-        from_ip: 127.0.0.1
-        to_ip: 127.0.0.1
-        port: 'any'
-        proto: any
-
-    - name: Enable UFW
-      ufw:
-        state: enabled
 
     - name: Disable root login in sshd_config
       lineinfile:
