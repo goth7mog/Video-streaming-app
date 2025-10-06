@@ -2,6 +2,8 @@
 - name: UFW setup
   hosts: all
   become: yes
+  vars_files:
+    - vault.yaml
   tasks:
     - name: Set UFW default to deny incoming
       ufw:
@@ -36,8 +38,6 @@
         rule: allow
         from_ip: 127.0.0.1
         to_ip: 127.0.0.1
-        port: 'any'
-        proto: any
 
     - name: Enable UFW
       ufw:
