@@ -65,11 +65,11 @@
         state: present
         backup: no
 
-    - name: Disable PAM in sshd_config
+    - name: Enable PAM in sshd_config
       lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^UsePAM'
-        line: 'UsePAM no'
+        line: 'UsePAM yes'
         state: present
         backup: no
 
