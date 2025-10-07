@@ -8,11 +8,11 @@
 
 - name: Create export directory
   file:
-  path: /home/main/Video-streaming-app/exports
-  state: directory
-  owner: nobody
-  group: nogroup
-  mode: '0777'
+    path: /home/main/Video-streaming-app/exports
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0777'
 
 - name: Configure NFS exports
   copy:
