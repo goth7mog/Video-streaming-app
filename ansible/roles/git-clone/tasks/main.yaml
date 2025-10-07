@@ -1,0 +1,15 @@
+
+- name: Clone Video-streaming-app repository
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ git_clone_dest }}"
+    update: yes
+
+- name: Move into the rest of the files, but skip node_modules
+  synchronize:
+    src: "{{ synchronize_src }}"
+    dest: "{{ synchronize_dest }}"
+    recursive: yes
+    rsync_opts:
+      - "--ignore-existing"
+      - "--exclude={{ synchronize_src }}/src/node_modules/"
