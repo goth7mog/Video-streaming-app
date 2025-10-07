@@ -1,8 +1,8 @@
 ---
-- name: Test git-clone role
+- name: Test nf role
   hosts: droplets
-  # become: yes
+  become: yes
   vars_files:
     - vault.yaml
   roles:
-    - git-clone
+    - nfs-server
