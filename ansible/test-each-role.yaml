@@ -1,0 +1,8 @@
+---
+- name: Test UFW role
+  hosts: all
+  become: yes
+  vars_files:
+    - vault.yaml
+  roles:
+    - ufw

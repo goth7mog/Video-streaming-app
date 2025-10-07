@@ -1,0 +1,42 @@
+---
+# Tasks for droplet setup role
+- name: Create non-root user
+  user:
+    name: main
+    groups: sudo
+    shell: /bin/bash
+
+- name: Add authorized key for non-root user
+  authorized_key:
+    user: main
+    state: present
+    key: "{{ lookup('file', '/Users/alexander/.ssh/DigitalOcean/main.pub') }}"
+
+- name: Disable root login in sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+    backup: yes
+
+- name: Disable password authentication in sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+    state: present
+    backup: no
+
+- name: Enable PAM in sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^UsePAM'
+    line: 'UsePAM yes'
+    state: present
+    backup: no
+
+- name: Reload sshd
+  service:
+    name: sshd
+    state: reloaded
