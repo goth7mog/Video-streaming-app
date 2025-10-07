@@ -1,8 +1,8 @@
 ---
-- name: Test UFW role
+- name: Test git-clone role
   hosts: droplets
-  become: yes
+  # become: yes
   vars_files:
     - vault.yaml
   roles:
-    - ufw
+    - git-clone

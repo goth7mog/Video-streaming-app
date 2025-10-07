@@ -1,6 +1,6 @@
-git_clone_dest: "{{ ansible_env.HOME }}"
 repo_name: "Video-streaming-app"
 repo_url: "https://github.com/goth7mog/{{ repo_name }}"
+git_clone_dest: "{{ ansible_env.HOME }}/{{ repo_name }}"
 synchronize_src: "/Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/"
-synchronize_dest: "{{ git_clone_dest }}/{{ repo_name }}/"
+synchronize_dest: "{{ ansible_user }}@{{ ansible_host }}:{{ git_clone_dest }}"
 
