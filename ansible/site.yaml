@@ -7,4 +7,6 @@
   roles:
     - initial-setup
     - ufw
+    - role: git-clone
+      become: false
     - nfs-server
