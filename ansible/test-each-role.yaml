@@ -1,6 +1,6 @@
 ---
 - name: Test UFW role
-  hosts: all
+  hosts: droplets
   become: yes
   vars_files:
     - vault.yaml
