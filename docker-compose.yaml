@@ -14,7 +14,7 @@ services:
       target: debug
     container_name: app-container
     ports:
-      - "8080:8080"
+      - "80:8080"
     volumes:
       - ./src:/usr/src/app/
       - /usr/src/app/node_modules
