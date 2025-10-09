@@ -1,0 +1,76 @@
+---
+- name: Install required system packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+    update_cache: yes
+
+- name: Download Docker GPG key
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /usr/share/keyrings/docker-archive-keyring.asc
+    mode: '0644'
+
+- name: Add Docker repository
+  apt_repository:
+    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+    state: present
+
+- name: Install Docker
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+
+- name: Add main user to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+    state: present
+
+- name: Ensure Docker service is running and enabled
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Install Docker Compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+
+- name: Download Helm archive
+  get_url:
+    url: https://get.helm.sh/helm-v3.13.3-linux-amd64.tar.gz
+    dest: /tmp/helm.tar.gz
+    mode: '0644'
+
+- name: Extract Helm binary
+  unarchive:
+    src: /tmp/helm.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Move Helm binary to /usr/local/bin
+  copy:
+    src: /tmp/linux-amd64/helm
+    dest: /usr/local/bin/helm
+    mode: '0755'
+    remote_src: yes
+
+- name: Remove Helm archive and extracted files
+  file:
+    path: /tmp/helm.tar.gz
+    state: absent
+
+- name: Remove extracted Helm directory
+  file:
+    path: /tmp/linux-amd64
+    state: absent
