@@ -10,3 +10,4 @@
     - role: git-clone
       become: false
     - nfs-server
+    - docker-setup
