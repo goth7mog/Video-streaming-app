@@ -17,9 +17,9 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - app-assets:/usr/src/app/assets
-      - app-admin:/usr/src/app/public/admin
-      - app-site:/usr/src/app/public/site
+      - ./exports/assets:/usr/src/app/assets
+      - ./exports/public/admin:/usr/src/app/public/admin
+      - ./exports/public/site:/usr/src/app/public/site
     env_file: .env.production
     environment:
       - TZ=America/Panama
