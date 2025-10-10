@@ -1,0 +1,4 @@
+---
+# Default variables for k3s role
+k3s_version: "latest"
+k3s_install_url: "https://get.k3s.io"
