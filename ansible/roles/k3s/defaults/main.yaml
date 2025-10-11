@@ -2,3 +2,13 @@
 # Default variables for k3s role
 k3s_version: "latest"
 k3s_install_url: "https://get.k3s.io"
+# MetalLB configuration defaults
+metal_lb_controller_tag_version: "v0.14.3"
+metal_lb_speaker_tag_version: "v0.14.3"
+metal_lb_type: "native"  # valid values: native, frr
+metal_lb_mode: "layer2"  # valid values: layer2, bgp
+metal_lb_ip_range: "{{ droplet1_ip }}"
+metal_lb_available_timeout: "240s"
+metal_lb_bgp_my_asn: ""
+metal_lb_bgp_peer_asn: ""
+metal_lb_bgp_peer_address: ""
