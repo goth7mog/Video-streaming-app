@@ -11,3 +11,30 @@
     state: started
     enabled: true
   become: true
+
+# Deploy MetalLB manifests
+- name: Download MetalLB manifest
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/metallb/metallb/v{{ metal_lb_controller_tag_version }}/config/manifests/metallb-native.yaml
+    dest: /tmp/metallb.yaml
+
+- name: Apply MetalLB manifest
+  ansible.builtin.shell: "kubectl apply -f /tmp/metallb.yaml"
+  become: true
+
+- name: Create MetalLB IP address pool config
+  ansible.builtin.copy:
+    dest: /tmp/metallb-ip-pool.yaml
+    content: |
+      apiVersion: metallb.io/v1beta1
+      kind: IPAddressPool
+      metadata:
+        name: default-address-pool
+        namespace: metallb-system
+      spec:
+        addresses:
+        - {{ metal_lb_ip_range }}
+
+- name: Apply MetalLB IP address pool config
+  ansible.builtin.shell: "kubectl apply -f /tmp/metallb-ip-pool.yaml"
+  become: true
