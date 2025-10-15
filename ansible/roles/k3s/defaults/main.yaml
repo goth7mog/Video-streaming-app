@@ -9,6 +9,6 @@ metal_lb_type: "native"  # valid values: native, frr
 metal_lb_mode: "layer2"  # valid values: layer2, bgp
 metal_lb_ip_range: "{{ droplet1_ip }}"
 metal_lb_available_timeout: "240s"
-metal_lb_bgp_my_asn: ""
-metal_lb_bgp_peer_asn: ""
-metal_lb_bgp_peer_address: ""
+# metal_lb_bgp_my_asn: ""
+# metal_lb_bgp_peer_asn: ""
+# metal_lb_bgp_peer_address: ""
