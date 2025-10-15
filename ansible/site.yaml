@@ -11,3 +11,4 @@
       become: false
     - nfs-server
     - docker-setup
+    - k3s
