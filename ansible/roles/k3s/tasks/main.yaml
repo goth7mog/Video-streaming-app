@@ -12,7 +12,15 @@
     enabled: true
   become: true
 
-# Deploy MetalLB manifests
+ # Deploy MetalLB manifests
+- name: Wait for k3s API to be available
+  ansible.builtin.shell: "kubectl version --request-timeout=5s"
+  register: kubectl_status
+  until: kubectl_status.rc == 0
+  retries: 10
+  delay: 6
+  become: true
+
 - name: Download MetalLB manifest
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/metallb/metallb/v{{ metal_lb_controller_tag_version }}/config/manifests/metallb-native.yaml
