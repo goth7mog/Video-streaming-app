@@ -17,7 +17,7 @@
   ansible.builtin.shell: "kubectl version --request-timeout=5s"
   register: kubectl_status
   until: kubectl_status.rc == 0
-  retries: 10
+  retries: 5
   delay: 6
   become: true
 
