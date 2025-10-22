@@ -1,6 +1,6 @@
 ---
 - name: Test k3s role
-  hosts: droplets
+  hosts: droplet1-main
   become: yes
   vars_files:
     - vault.yaml
