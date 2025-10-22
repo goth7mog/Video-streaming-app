@@ -2,6 +2,8 @@
 - name: Initial setup as root
   hosts: droplets
   remote_user: root
+  vars_files:
+    - vault.yaml
   roles:
     - create-main-user
 
