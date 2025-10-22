@@ -1,21 +1,4 @@
 ---
-# Tasks for droplet setup role
-- name: Create non-root user
-  user:
-    name: main
-    groups: sudo
-    shell: /bin/bash
-
-- name: Add authorized key for non-root user
-  authorized_key:
-    user: main
-    state: present
-    key: "{{ lookup('file', '/Users/alexander/.ssh/DigitalOcean/main.pub') }}"
-
-- name: Set password for non-root user
-  user:
-    name: main
-    password: "{{ main_user_password }}"
 
 - name: Disable root login in sshd_config
   lineinfile:
