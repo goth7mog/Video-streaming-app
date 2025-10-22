@@ -1,15 +1,15 @@
 ---
+
 - name: Initial setup as root
-  hosts: droplets
-  remote_user: root
+  hosts: droplet1-root
   vars_files:
     - vault.yaml
   roles:
     - create-main-user
 
+
 - name: Full site setup
-  hosts: droplets
-  remote_user: main
+  hosts: droplet1-main
   become: yes
   vars_files:
     - vault.yaml
