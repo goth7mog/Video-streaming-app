@@ -14,4 +14,4 @@
 - name: Set password for non-root user
   user:
     name: main
-    password: "{{ main_user_password }}"
+    password: "{{ main_user_password | password_hash('sha512') }}"

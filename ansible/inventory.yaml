@@ -5,6 +5,7 @@ all:
         droplet1-main:
           ansible_host: "{{ droplet1_ip }}"
           ansible_user: main
+          # ansible_become_password: "{{ main_user_password }}"
           ansible_ssh_private_key_file: /Users/alexander/.ssh/DigitalOcean/main
         droplet1-root:
           ansible_host: "{{ droplet1_ip }}"
