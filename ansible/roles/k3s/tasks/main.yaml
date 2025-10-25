@@ -1,5 +1,18 @@
 ---
-# Tasks for k3s role
+### Tasks for k3s role
+
+# Checking the server's capacity before installation
+- name: Check server RAM
+  ansible.builtin.shell: "free -m | awk '/^Mem:/ { print $2 }'"
+  register: ram_check
+  changed_when: false
+
+- name: Warn if RAM is less than 1024MB
+  ansible.builtin.debug:
+    msg: "WARNING: Server has less than 1GB RAM ({{ ram_check.stdout }}MB). k3s may not run reliably."
+  when: ram_check.stdout|int < 1024
+
+# Install k3s
 - name: Install k3s
   ansible.builtin.shell: |
     curl -sfL https://get.k3s.io | sh -
