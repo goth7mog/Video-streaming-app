@@ -5,6 +5,13 @@
     dest: "{{ git_clone_dest }}"
     update: yes
 
+- name: Debug synchronize variables
+  debug:
+    msg:
+      - "Synchronize src: {{ synchronize_src }}"
+      - "Synchronize dest: {{ synchronize_dest }}"
+      - "Rsync opts: --ignore-existing, --exclude={{ synchronize_src }}/src/node_modules/"
+
 - name: Move into the rest of the files, but skip node_modules
   synchronize:
     src: "{{ synchronize_src }}"
@@ -13,3 +20,7 @@
     rsync_opts:
       - "--ignore-existing"
       - "--exclude={{ synchronize_src }}/src/node_modules/"
+
+- name: Debug synchronize completed
+  debug:
+    msg: "Synchronize task completed."
