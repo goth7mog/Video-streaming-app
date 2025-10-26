@@ -21,6 +21,3 @@
       - "--ignore-existing"
       - "--exclude={{ synchronize_src }}/src/node_modules/"
 
-- name: Debug synchronize completed
-  debug:
-    msg: "Synchronize task completed."
