@@ -12,7 +12,8 @@
       - "Synchronize dest: {{ synchronize_dest }}"
       - "Rsync opts: --ignore-existing, --exclude={{ synchronize_src }}/src/node_modules/"
 
-- name: Move into the rest of the files, but skip node_modules
+- name: Move the rest of the files, but skip node_modules
+  tags: sync_files
   synchronize:
     src: "{{ synchronize_src }}"
     dest: "{{ synchronize_dest }}"
