@@ -36,7 +36,7 @@
 
 - name: Download MetalLB manifest
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/metallb/metallb/v{{ metal_lb_controller_tag_version }}/config/manifests/metallb-native.yaml
+    url: https://raw.githubusercontent.com/metallb/metallb/{{ metal_lb_controller_tag_version }}/config/manifests/metallb-native.yaml
     dest: /tmp/metallb.yaml
 
 - name: Apply MetalLB manifest
