@@ -10,7 +10,7 @@
 
 - name: Deploy ingress-nginx with Helm
   ansible.builtin.shell: |
-   helm install ingress-nginx ingress-nginx/ingress-nginx --namespace default -f /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/k3s/helm/ingress-nginx-values.yaml
+   helm install ingress-nginx ingress-nginx/ingress-nginx --namespace default -f {{ working_dir | default('/home/main/Video-streaming-app') }}/k3s/helm/ingress-nginx-values.yaml
   register: helm_deploy_result
   changed_when: helm_deploy_result.rc == 0
   failed_when: helm_deploy_result.rc != 0
