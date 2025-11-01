@@ -27,22 +27,22 @@ services:
 
 
 
-volumes:
-  app-assets:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.236.172,rw,nfsvers=4
-      device: :/home/vagrant/Code/Video-streaming-app/exports/assets
-  app-admin:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.236.172,rw,nfsvers=4
-      device: :/home/vagrant/Code/Video-streaming-app/exports/public/admin
-  app-site:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.236.172,rw,nfsvers=4
-      device: :/home/vagrant/Code/Video-streaming-app/exports/public/site
+# volumes:
+#   app-assets:
+#     driver: local
+#     driver_opts:
+#       type: nfs
+#       o: addr=192.168.236.172,rw,nfsvers=4
+#       device: :/home/vagrant/Code/Video-streaming-app/exports/assets
+#   app-admin:
+#     driver: local
+#     driver_opts:
+#       type: nfs
+#       o: addr=192.168.236.172,rw,nfsvers=4
+#       device: :/home/vagrant/Code/Video-streaming-app/exports/public/admin
+#   app-site:
+#     driver: local
+#     driver_opts:
+#       type: nfs
+#       o: addr=192.168.236.172,rw,nfsvers=4
+#       device: :/home/vagrant/Code/Video-streaming-app/exports/public/site
