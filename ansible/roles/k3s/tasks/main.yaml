@@ -56,6 +56,15 @@
         addresses:
         - {{ metal_lb_ip_range }}
 
+- name: Wait for all MetalLB pods to be running
+  ansible.builtin.shell: |
+    kubectl get pods -n metallb-system -o jsonpath='{range .items[*]}{.metadata.name}: {.status.phase}{"\n"}{end}'
+  register: metallb_pods_status
+  until: metallb_pods_status.stdout is search("Running")
+  retries: 10
+  delay: 6
+  become: true
+
 - name: Apply MetalLB IP address pool config
   ansible.builtin.shell: "kubectl apply -f /tmp/metallb-ip-pool.yaml"
   become: true
