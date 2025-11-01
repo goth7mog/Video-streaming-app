@@ -1,22 +1,16 @@
 ---
-
 - name: Add ingress-nginx Helm repository
   ansible.builtin.shell: |
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
     helm repo update
-  args:
-    chdir: "{{ playbook_dir }}"
   register: helm_repo_result
   changed_when: helm_repo_result.rc == 0
   failed_when: helm_repo_result.rc != 0
   become: true
 
-  
 - name: Deploy ingress-nginx with Helm
   ansible.builtin.shell: |
-    helm install ingress-nginx ingress-nginx/ingress-nginx --namespace default -f k3s/helm/ingress-nginx-values.yaml
-  args:
-    chdir: "{{ playbook_dir }}"
+   helm install ingress-nginx ingress-nginx/ingress-nginx --namespace default -f /Users/alexander/Code/Development/Larissa_docs/Development/VideoApp/k3s/helm/ingress-nginx-values.yaml
   register: helm_deploy_result
   changed_when: helm_deploy_result.rc == 0
   failed_when: helm_deploy_result.rc != 0

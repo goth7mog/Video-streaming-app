@@ -22,3 +22,7 @@
       - "--ignore-existing"
       - "--exclude={{ synchronize_src }}/src/node_modules/"
 
+- name: Set working directory fact
+  set_fact:
+    working_dir: "{{ git_clone_dest }}"
+
