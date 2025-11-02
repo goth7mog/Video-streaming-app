@@ -12,6 +12,16 @@
     msg: "WARNING: Server has less than 1GB RAM ({{ ram_check.stdout }}MB). k3s may not run reliably."
   when: ram_check.stdout|int < 1024
 
+- name: Get Kubernetes node IP address
+  ansible.builtin.shell: |
+    ip route get 1 | awk '{print $7; exit}'
+  register: k3s_node_ip
+  changed_when: false
+
+- name: Set Kubernetes node IP as fact
+  ansible.builtin.set_fact:
+    k3s_node_ip: "{{ k3s_node_ip.stdout }}"
+
 # Install k3s
 - name: Install k3s
   ansible.builtin.shell: |
