@@ -12,6 +12,7 @@ copy-gitignores.txt
 k3s/app-configmap.yaml
 # k3s/letsencrypt-clusterissuer.yaml
 # k3s/app-certificate.yaml
+k3s/deploy-sequence.md
 ansible/nfs-server-instructions.txt
 ansible/ansible-commands.txt
 ansible/ansible-to-do-list.md
