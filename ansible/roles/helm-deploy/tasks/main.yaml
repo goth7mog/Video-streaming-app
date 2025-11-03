@@ -10,7 +10,7 @@
 
 - name: Deploy ingress-nginx with Helm
   ansible.builtin.shell: |
-    helm install ingress-nginx ingress-nginx/ingress-nginx --namespace default -f {{ working_dir | default('/home/main/Video-streaming-app') }}/k3s/helm/ingress-nginx-values.yaml
+    helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx --namespace default -f {{ working_dir | default('/home/main/Video-streaming-app') }}/k3s/helm/ingress-nginx-values.yaml
   environment:
     KUBECONFIG: /etc/rancher/k3s/k3s.yaml
   register: helm_deploy_result
