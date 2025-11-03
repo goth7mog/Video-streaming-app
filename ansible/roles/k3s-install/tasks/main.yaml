@@ -22,6 +22,10 @@
   ansible.builtin.set_fact:
     k3s_node_ip: "{{ k3s_node_ip.stdout }}"
 
+- name: Show Kubernetes node IP
+  ansible.builtin.debug:
+    msg: "Kubernetes node IP is {{ k3s_node_ip }}"
+
 # Install k3s
 - name: Install k3s
   ansible.builtin.shell: |
