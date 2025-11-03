@@ -14,11 +14,12 @@ k3s/app-configmap.yaml
 # k3s/app-certificate.yaml
 k3s/deploy-sequence.md
 k3s/deployment-check.md
+k3s/variables.env
+k3s/saved-tls-cert.yaml
 ansible/nfs-server-instructions.txt
 ansible/ansible-commands.txt
 ansible/ansible-to-do-list.md
 ansible/vault.yaml
-k3s/variables.env
 ks-commands.txt
 k8s-commands.txt
 helm.txt
