@@ -7,14 +7,14 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     # nginx.ingress.kubernetes.io/limit-rps: "20"
-    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
-  # tls:
-  #   - hosts:
-  #       - ${DOMAIN_NAME}
-  #     secretName: app-tls
+  tls:
+    - hosts:
+        - ${DOMAIN_NAME}
+      secretName: app-tls
   rules:
     - host: ${DOMAIN_NAME}
       http:
