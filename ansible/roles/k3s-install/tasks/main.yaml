@@ -15,7 +15,7 @@
 # Install k3s
 - name: Install k3s
   ansible.builtin.shell: |
-    curl -sfL https://get.k3s.io | sh -
+    curl -sfL https://get.k3s.io | sh -s - --disable traefik
   become: true
 
 - name: Ensure k3s service is running
