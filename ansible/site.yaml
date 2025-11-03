@@ -20,5 +20,5 @@
       become: false
     - docker-setup
     - k3s-install
-    - helm-deploy
     - nfs-server
+    - helm-deploy
