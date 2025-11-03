@@ -75,6 +75,9 @@
   register: cert_manager_crds
   changed_when: cert_manager_crds.rc == 0
 
+- name: Apply cert-manager deployment
+  ansible.builtin.shell: "kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml"
+  become: true
 
 # - name: Get Kubernetes node private IP address
 #   ansible.builtin.shell: |
