@@ -69,6 +69,12 @@
   ansible.builtin.shell: "kubectl apply -f /tmp/metallb-ip-pool.yaml"
   become: true
 
+- name: Apply cert-manager CRDs
+  ansible.builtin.shell: "kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.crds.yaml"
+  become: true
+  register: cert_manager_crds
+  changed_when: cert_manager_crds.rc == 0
+
 
 # - name: Get Kubernetes node private IP address
 #   ansible.builtin.shell: |
