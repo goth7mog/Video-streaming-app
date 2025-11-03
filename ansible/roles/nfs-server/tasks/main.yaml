@@ -18,5 +18,5 @@
   copy:
     dest: /etc/exports
     content: |
-      /home/main/Video-streaming-app/exports  {{ k3s_node_ip }}(rw,sync,no_subtree_check)
+      /home/main/Video-streaming-app/exports  10.46.0.5(rw,sync,no_subtree_check)
   notify: Restart NFS

@@ -12,20 +12,6 @@
     msg: "WARNING: Server has less than 1GB RAM ({{ ram_check.stdout }}MB). k3s may not run reliably."
   when: ram_check.stdout|int < 1024
 
-- name: Get Kubernetes node IP address
-  ansible.builtin.shell: |
-    ip route get 1 | awk '{print $7; exit}'
-  register: k3s_node_ip
-  changed_when: false
-
-- name: Set Kubernetes node IP as fact
-  ansible.builtin.set_fact:
-    k3s_node_ip: "{{ k3s_node_ip.stdout }}"
-
-- name: Show Kubernetes node IP
-  ansible.builtin.debug:
-    msg: "Kubernetes node IP is {{ k3s_node_ip }}"
-
 # Install k3s
 - name: Install k3s
   ansible.builtin.shell: |
@@ -82,3 +68,30 @@
 - name: Apply MetalLB IP address pool config
   ansible.builtin.shell: "kubectl apply -f /tmp/metallb-ip-pool.yaml"
   become: true
+
+
+# - name: Get Kubernetes node private IP address
+#   ansible.builtin.shell: |
+#     ip -4 addr show eth0 | awk '/inet / {print $2}' | cut -d/ -f1 | grep -E '^10\\.|^192\\.168\\.|^172\\.(1[6-9]|2[0-9]|3[0-1])\\.'
+#   register: k3s_node_ip
+#   changed_when: false
+
+# - name: Get Kubernetes node private IP address
+#   ansible.builtin.shell: |
+#     ip -4 addr | awk '/inet / {print $2}' | cut -d/ -f1 | grep -E '^10\\.|^192\\.168\\.|^172\\.(1[6-9]|2[0-9]|3[0-1])\\.' | head -n 1
+#   register: k3s_node_ip
+#   changed_when: false
+
+# - name: Get Kubernetes node IP address
+#   ansible.builtin.shell: |
+#     ip route get 1 | awk '{print $7; exit}'
+#   register: k3s_node_ip
+#   changed_when: false
+
+# - name: Set Kubernetes node IP as fact
+#   ansible.builtin.set_fact:
+#     k3s_node_ip: "{{ k3s_node_ip.stdout }}"
+
+# - name: Show Kubernetes node IP
+#   ansible.builtin.debug:
+#     msg: "Kubernetes node IP is {{ k3s_node_ip }}"
