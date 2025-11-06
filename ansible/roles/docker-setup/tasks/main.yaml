@@ -41,10 +41,17 @@
     enabled: yes
 
 - name: Install Docker Compose
+
   get_url:
     url: https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: '0755'
+
+- name: Check if docker-compose is installed
+  command: docker-compose --version
+  register: docker_compose_check
+  changed_when: false
+  failed_when: docker_compose_check.rc != 0
 
 - name: Download Helm archive
   get_url:
