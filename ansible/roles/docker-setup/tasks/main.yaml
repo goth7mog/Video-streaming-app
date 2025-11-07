@@ -72,6 +72,12 @@
     mode: '0755'
     remote_src: yes
 
+- name: Check if Helm is installed
+  command: helm version
+  register: helm_check
+  changed_when: false
+  failed_when: helm_check.rc != 0
+
 - name: Remove Helm archive and extracted files
   file:
     path: /tmp/helm.tar.gz
