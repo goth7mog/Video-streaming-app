@@ -130,7 +130,12 @@ const startup = async () => {
 		await connectRedis();
 
 		const sessionOptions = {
-			cookie: { maxAge: 86400000 },
+			cookie: {
+				maxAge: 86400000,
+				httpOnly: true,
+				secure: process.env.NODE_ENV === 'production' ? true : false, // auto-enabled in production
+				sameSite: 'lax'      // blocks CSRF
+			},
 			store: new RedisStore({
 				client: global.redisClient,
 				ttl: 24 * 60 * 60 // 24 hours
