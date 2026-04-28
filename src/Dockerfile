@@ -1,4 +1,4 @@
-FROM node:18-bullseye as debug
+FROM node:25-bookworm as debug
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
@@ -18,10 +18,10 @@ ENTRYPOINT [ "nodemon", "server.js" ]
 
 
 
-FROM node:18-bullseye as prod
+FROM node:25-bookworm as prod
 
 RUN apt-get update -y
-RUN apt-get upgrade -y
+# RUN apt-get upgrade -y
 RUN apt-get install ffmpeg -y
 
 WORKDIR /usr/src/app
