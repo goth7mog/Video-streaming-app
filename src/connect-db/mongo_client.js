@@ -57,6 +57,7 @@ module.exports = async (database) => {
 
     } catch (err) {
         console.log(err);
+        process.exit(1);
     }
 
 };
