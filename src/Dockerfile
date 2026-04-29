@@ -1,4 +1,4 @@
-FROM node:25-bookworm as debug
+FROM node:21-bullseye as debug
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
@@ -18,7 +18,7 @@ ENTRYPOINT [ "nodemon", "server.js" ]
 
 
 
-FROM node:25-bookworm as prod
+FROM node:21-bullseye as prod
 
 RUN apt-get update -y
 # RUN apt-get upgrade -y

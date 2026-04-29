@@ -1,3 +1,4 @@
+node_modules/
 .env*
 .env
 exports/assets/videos/*
