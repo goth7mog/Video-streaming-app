@@ -1,0 +1,21 @@
+<%- include ("includes/header") %>
+
+    <div class="container-fluid upload-details">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-title">
+                    <h6>MFA & Biometric Authentication</h6>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="mfa-message"></div>
+                <button id="register-webauthn" class="btn btn-primary">Register Biometric Device</button>
+                <button id="authenticate-webauthn" class="btn btn-success">Test Biometric Authentication</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/public/admin/js/webauthn-mfa-bundle.js"></script>
+    <%- include ("includes/footer") %>

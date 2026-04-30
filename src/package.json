@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build:webauthn": "esbuild ../exports/public/admin/js/webauthn-mfa.js --bundle --outfile=../exports/public/admin/js/webauthn-mfa-bundle.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "@sendgrid/mail": "^7.7.0",
     "@simplewebauthn/browser": "^13.3.0",
     "@simplewebauthn/server": "^13.3.0",
+    "base64url": "^3.0.1",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
@@ -41,5 +43,8 @@
     "redis": "^5.8.2",
     "socket.io": "^2.3.0",
     "stripe": "^12.18.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
   }
 }

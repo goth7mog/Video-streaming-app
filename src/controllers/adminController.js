@@ -1,3 +1,26 @@
+// MFA management page
+exports.getMfaPage = async (req, res) => {
+    try {
+        if (!req.session.user_id) {
+            return res.redirect("/admin/login?error=Your+session+expired");
+        }
+        // Optionally fetch user info if needed
+        const user = await global.database.collection("users").findOne({ _id: require("mongodb").ObjectId(req.session.user_id) });
+        res.status(200).render("admin/mfa", {
+            isLogin: true,
+            user,
+            url: req.url,
+            error: "",
+            message: ""
+        });
+    } catch (err) {
+        res.status(500).render("admin/500", {
+            isLogin: req.session.user_id ? true : false,
+            message: "500 - Error occured",
+            url: req.url
+        });
+    }
+};
 const bcrypt = require("bcryptjs");
 
 
