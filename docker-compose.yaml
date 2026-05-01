@@ -4,7 +4,7 @@ services:
     image: "redis:7.2-alpine"
     container_name: redis-container
     ports:
-      - "6380:6379"
+      - "127.0.0.1:6380:6379"
     restart: unless-stopped
     volumes:
       - /data
@@ -14,7 +14,7 @@ services:
       target: debug
     container_name: app-container
     ports:
-      - "80:8080"
+      - "127.0.0.1:80:8080"
     volumes:
       - ./src:/usr/src/app/
       - /usr/src/app/node_modules

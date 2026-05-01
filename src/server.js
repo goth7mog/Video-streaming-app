@@ -50,26 +50,11 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "10000mb", parameterLimit
 
 app.use(cookieParser());
 
-// console.log('s')
 
 app.use("/public", express.static(global.approute + "/public"));
 app.set("view engine", "ejs");
 
-// let database = null;
 
-// function getUser(userId, callBack) {
-// 	global.database.collection("users").findOne({
-// 		"_id": ObjectId(userId)
-// 	}, function (error, result) {
-// 		if (error) {
-// 			console.log(error);
-// 			return;
-// 		}
-// 		if (callBack != null) {
-// 			callBack(result);
-// 		}
-// 	});
-// }
 
 // Assign Mongo connection
 const connectMongo = async () => {
@@ -113,15 +98,20 @@ const adminRouter = require(global.approute + "/router/adminRouter.js");
 
 
 
+
+
+
 app.on('ready', () => {
 	// Start the server only when the app is ready
-	app.listen(port, () => {
-		console.log('server is running  on port ' + port);
+	const host = process.env.HOST;
+	app.listen(port, host, () => {
+		console.log(`server is running on port ${port}`);
 		console.log('NODE_ENV =', process.env.NODE_ENV);
 		console.log('MONGO_HOST =', process.env.MONGO_HOST);
 		// console.log('MONGO_PORT =', process.env.MONGO_PORT);
 	});
 });
+
 
 
 const startup = async () => {
