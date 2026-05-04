@@ -5,7 +5,7 @@ variable "digitalocean_token" {
   default     = ""
 }
 
-variable "ssh_fingerprint" {
+variable "root_ssh_fingerprint" {
   description = "SSH key fingerprint for DigitalOcean"
   type        = string
   default     = ""

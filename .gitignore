@@ -22,6 +22,11 @@ ansible/ansible-commands.txt
 ansible/ansible-to-do-list.md
 ansible/vault.yaml
 terraform/secrets.auto.tfvars
+terraform/.terraform/
+terraform/terraform.tfvars
+terraform/terraform.tfstate.*
+terraform/*.tfstate
+terraform/*.tfstate.backup
 ks-commands.txt
 k8s-commands.txt
 helm.txt

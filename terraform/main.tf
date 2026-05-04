@@ -21,7 +21,7 @@ resource "digitalocean_droplet" "web" {
   image  = "ubuntu-22-04-x64"
 
   ssh_keys = [
-    var.ssh_fingerprint
+    var.root_ssh_fingerprint
   ]
 
   user_data = templatefile("${path.module}/cloud-init.yaml", {
@@ -30,7 +30,7 @@ resource "digitalocean_droplet" "web" {
   })
 
   provisioner "local-exec" {
-    command = "sed -E -i '' 's|^droplet1_ip: \".*\"$|droplet1_ip: \"${self.ipv4_address}\"|' ${dirname(path.module)}/ansible/vault.yaml"
+    command = "sed -E -i '' 's|^droplet1_ip: \".*\"$|droplet1_ip: \"${self.ipv4_address}\"|' ${abspath("${path.module}/../ansible/vault.yaml")}"
   }
 }
 
