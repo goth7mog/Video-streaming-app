@@ -3,9 +3,10 @@ users:
   - name: main
     groups: sudo
     shell: /bin/bash
+    lock_passwd: false
     sudo: ["ALL=(ALL) ALL"]
     ssh-authorized-keys:
       - ${ssh_public_key}
-    passwd: ${main_user_password}
+    plain_text_passwd: ${main_user_password}
 package_update: true
 package_upgrade: true

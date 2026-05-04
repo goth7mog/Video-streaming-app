@@ -21,6 +21,7 @@ ansible/nfs-server-instructions.txt
 ansible/ansible-commands.txt
 ansible/ansible-to-do-list.md
 ansible/vault.yaml
+ansible/group_vars/all/
 terraform/secrets.auto.tfvars
 terraform/.terraform/
 terraform/terraform.tfvars

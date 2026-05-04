@@ -17,7 +17,7 @@ provider "digitalocean" {
 resource "digitalocean_droplet" "web" {
   name   = "videohosting"
   region = "ams3"        # Amsterdam region
-  size   = "s-1vcpu-1gb" # 512 MiB, 1 vCPU, $4/month (`s-1vcpu-512mb-10gb`);   1 GiB, 1 vCPU, $6/month (`s-1vcpu-1gb`);   2 GiB, 1 vCPU, $12/month (`s-1vcpu-2gb`)
+  size   = "s-1vcpu-2gb" # 512 MiB, 1 vCPU, $4/month (`s-1vcpu-512mb-10gb`);   1 GiB, 1 vCPU, $6/month (`s-1vcpu-1gb`);   2 GiB, 1 vCPU, $12/month (`s-1vcpu-2gb`)
   image  = "ubuntu-22-04-x64"
 
   ssh_keys = [
@@ -30,7 +30,7 @@ resource "digitalocean_droplet" "web" {
   })
 
   provisioner "local-exec" {
-    command = "sed -E -i '' 's|^droplet1_ip: \".*\"$|droplet1_ip: \"${self.ipv4_address}\"|' ${abspath("${path.module}/../ansible/vault.yaml")}"
+    command = "sed -E -i '' 's|^droplet1_ip: \".*\"$|droplet1_ip: \"${self.ipv4_address}\"|' ${abspath("${path.module}/../ansible/group_vars/all/vault.yaml")}"
   }
 }
 

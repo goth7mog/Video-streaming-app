@@ -43,6 +43,16 @@
   ansible.builtin.shell: "kubectl apply -f /tmp/metallb.yaml"
   become: true
 
+- name: Wait for MetalLB deployments to become available
+  ansible.builtin.shell: |
+    kubectl wait -n metallb-system --for=condition=available deployment --all --timeout=180s
+  register: metallb_deployments_ready
+  changed_when: false
+  until: metallb_deployments_ready.rc == 0
+  retries: 10
+  delay: 6
+  become: true
+
 - name: Create MetalLB IP address pool config
   ansible.builtin.copy:
     dest: /tmp/metallb-ip-pool.yaml
