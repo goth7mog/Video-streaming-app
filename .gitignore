@@ -21,6 +21,7 @@ ansible/nfs-server-instructions.txt
 ansible/ansible-commands.txt
 ansible/ansible-to-do-list.md
 ansible/vault.yaml
+terraform/secrets.auto.tfvars
 ks-commands.txt
 k8s-commands.txt
 helm.txt

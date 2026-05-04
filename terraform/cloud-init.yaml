@@ -1,0 +1,11 @@
+#cloud-config
+users:
+  - name: main
+    groups: sudo
+    shell: /bin/bash
+    sudo: ["ALL=(ALL) ALL"]
+    ssh-authorized-keys:
+      - ${ssh_public_key}
+    passwd: ${main_user_password}
+package_update: true
+package_upgrade: true

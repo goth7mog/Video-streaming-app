@@ -1,11 +1,12 @@
 ---
 
-- name: Initial setup as root
-  hosts: droplet1-root
-  vars_files:
-    - vault.yaml
-  roles:
-    - create-main-user
+# #Replaced by cloud-init script
+# - name: Initial setup as root
+#   hosts: droplet1-root
+#   vars_files:
+#     - vault.yaml
+#   roles:
+#     - create-main-user
 
 
 - name: Full site setup
