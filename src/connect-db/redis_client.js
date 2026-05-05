@@ -32,7 +32,7 @@ module.exports = async () => {
         await client.connect();
         return client;
     } catch (err) {
-        console.error('[Redis Debug] Failed to connect to Redis:', err);
-        throw err;
+        console.log(err);
+        process.exit(1);
     }
 };
