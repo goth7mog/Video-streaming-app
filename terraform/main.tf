@@ -30,7 +30,7 @@ resource "digitalocean_droplet" "web" {
   })
 
   provisioner "local-exec" {
-    command = "sed -E -i '' 's|^droplet1_ip: \".*\"$|droplet1_ip: \"${self.ipv4_address}\"|' ${abspath("${path.module}/../ansible/group_vars/all/vault.yaml")}"
+    command = "sed -E -i '' 's|^droplet1_ip: \".*\"$|droplet1_ip: \"${self.ipv4_address}\"|' ${abspath("${path.module}/../ansible/group_vars/all/vault.yaml")} && sed -E -i '' 's|^NFS_SERVER_IP=.*$|NFS_SERVER_IP=${self.ipv4_address}|' ${abspath("${path.module}/../k3s/variables.env")}"
   }
 }
 
