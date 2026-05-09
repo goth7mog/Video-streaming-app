@@ -4,18 +4,17 @@ services:
     image: "redis:7.2-alpine"
     container_name: redis
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6380:6379"
     restart: unless-stopped
     volumes:
       - /data
   app:
     image: kuzurik797/videoapp-stripe:latest
     pull_policy: always
-    # platform: linux/amd64 # or
-    # platform: linux/arm64
+    platform: linux/amd64 
     container_name: app-container
     ports:
-      - "80:8080"
+      - "127.0.0.1:80:8080"
     volumes:
       - ./exports/assets:/usr/src/app/assets
       - ./exports/public/admin:/usr/src/app/public/admin
@@ -23,8 +22,8 @@ services:
     env_file: .env.production
     environment:
       - TZ=America/Panama
-      - NODE_ENV=production
-
+      # - NODE_ENV=production
+      - NODE_ENV=development # Yet for some features that might not work with HTTP (ex. my current setup with Express Session cookies)
 
 
 # volumes:

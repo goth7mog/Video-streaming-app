@@ -21,7 +21,7 @@ ENTRYPOINT [ "nodemon", "server.js" ]
 FROM node:21-bullseye as prod
 
 RUN apt-get update -y
-# RUN apt-get upgrade -y
+RUN apt-get upgrade -y
 RUN apt-get install ffmpeg -y
 
 WORKDIR /usr/src/app
