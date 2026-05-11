@@ -19,6 +19,8 @@ const Helper = require(global.approute + '/helpers/helpFunctions.js');
 // const _KEYS = require(global.approute + '/config/keys');
 // const { verifyToken } = require(global.approute + "/middleware/verifyToken");
 
+const PUBLIC_ORIGIN = process.env.PUBLIC_ORIGIN || (process.env.DOMAIN ? `https://${process.env.DOMAIN}` : null);
+
 function normalizeCredentialID(credID) {
 	if (!credID) return null;
 	if (Buffer.isBuffer(credID)) return base64url.encode(credID);
@@ -64,44 +66,44 @@ router.get('/mfa', adminController.getMfaPage);
 // WebAuthn Registration Options
 router.post('/webauthn/register/options', async (req, res) => {
 	try {
-		console.log('[WebAuthn Register Options] Starting...');
-		console.log('[WebAuthn Register Options] req.session:', req.session);
+		// console.log('[WebAuthn Register Options] Starting...');
+		// console.log('[WebAuthn Register Options] req.session:', req.session);
 
 		if (!req.session.user_id) {
-			console.log('[WebAuthn Register Options] No user_id in session');
+			// console.log('[WebAuthn Register Options] No user_id in session');
 			return res.status(401).json({ error: 'Not authenticated' });
 		}
 
 		const userId = req.session.user_id;
-		console.log('[WebAuthn Register Options] userId:', userId);
+		// console.log('[WebAuthn Register Options] userId:', userId);
 
 		const user = await global.database.collection('users').findOne({ _id: ObjectId(userId) });
-		console.log('[WebAuthn Register Options] user found:', user ? 'yes' : 'no');
+		// console.log('[WebAuthn Register Options] user found:', user ? 'yes' : 'no');
 		if (!user) {
-			console.log('[WebAuthn Register Options] User not found in database');
+			// console.log('[WebAuthn Register Options] User not found in database');
 			return res.status(404).json({ error: 'User not found' });
 		}
 
-		console.log('[WebAuthn Register Options] user.email:', user.email);
+		// console.log('[WebAuthn Register Options] user.email:', user.email);
 
 		const webauthnUserID = Buffer.from(userId, 'hex');
-		console.log('[WebAuthn Register Options] webauthnUserID:', webauthnUserID);
+		// console.log('[WebAuthn Register Options] webauthnUserID:', webauthnUserID);
 
 		const credentials = user.credentials || [];
-		console.log('[WebAuthn Register Options] credentials count:', credentials.length);
+		// console.log('[WebAuthn Register Options] credentials count:', credentials.length);
 
-		function normalizeCredentialID(credID) {
-			if (!credID) return null;
-			if (Buffer.isBuffer(credID)) return base64url.encode(credID);
-			if (credID && credID._bsontype === 'Binary' && credID.buffer) return base64url.encode(credID.buffer);
-			if (credID.type === 'Buffer' && Array.isArray(credID.data)) return base64url.encode(Buffer.from(credID.data));
-			if (typeof credID === 'string') return credID;
-			return null;
-		}
+		// function normalizeCredentialID(credID) {
+		// 	if (!credID) return null;
+		// 	if (Buffer.isBuffer(credID)) return base64url.encode(credID);
+		// 	if (credID && credID._bsontype === 'Binary' && credID.buffer) return base64url.encode(credID.buffer);
+		// 	if (credID.type === 'Buffer' && Array.isArray(credID.data)) return base64url.encode(Buffer.from(credID.data));
+		// 	if (typeof credID === 'string') return credID;
+		// 	return null;
+		// }
 
 		const excludeCredentials = credentials.map(cred => {
 			const id = normalizeCredentialID(cred.credentialID);
-			console.log('[WebAuthn Register Options] exclude credential normalized:', id ? id.slice(0, 12) + '...' : null);
+			// console.log('[WebAuthn Register Options] exclude credential normalized:', id ? id.slice(0, 12) + '...' : null);
 			if (!id) return null;
 			return {
 				id,
@@ -116,20 +118,20 @@ router.post('/webauthn/register/options', async (req, res) => {
 			userID: webauthnUserID,
 			userName: user.email,
 			attestationType: 'none',
-			userVerification: 'preferred',
-			// authenticatorSelection: {
-			// 	userVerification: 'preferred',
-			// 	authenticatorAttachment: 'cross-platform',
-			// },
+			// userVerification: 'preferred',
+			authenticatorSelection: {
+				userVerification: 'preferred',
+				authenticatorAttachment: 'platform',
+			},
 			excludeCredentials,
 		});
-		console.log('[WebAuthn Register Options] options generated:', options ? 'yes' : 'no');
-		console.log('[WebAuthn Register Options] options keys:', Object.keys(options));
+		// console.log('[WebAuthn Register Options] options generated:', options ? 'yes' : 'no');
+		// console.log('[WebAuthn Register Options] options keys:', Object.keys(options));
 
 		req.session.challenge = options.challenge;
-		console.log('[WebAuthn Register Options] challenge saved to session');
+		// console.log('[WebAuthn Register Options] challenge saved to session');
 
-		console.log('[WebAuthn Register Options] Sending response');
+		// console.log('[WebAuthn Register Options] Sending response');
 		res.json(options);
 	} catch (error) {
 		console.error('[WebAuthn Register Options] Error:', error);
@@ -142,12 +144,13 @@ router.post('/webauthn/register/verify', async (req, res) => {
 	if (!req.session.user_id) return res.status(401).json({ error: 'Not authenticated' });
 	const userId = req.session.user_id;
 	const expectedChallenge = req.session.challenge;
+	if (!PUBLIC_ORIGIN) return res.status(500).json({ error: 'PUBLIC_ORIGIN is not configured' });
 	let verification;
 	try {
 		verification = await verifyRegistrationResponse({
 			response: req.body,
 			expectedChallenge,
-			expectedOrigin: `${req.protocol}://${req.get('host')}`,
+			expectedOrigin: PUBLIC_ORIGIN,
 			expectedRPID: req.hostname,
 		});
 	} catch (e) {
@@ -190,26 +193,26 @@ router.post('/webauthn/register/verify', async (req, res) => {
 // WebAuthn Authentication Options
 router.post('/webauthn/authenticate/options', async (req, res) => {
 	try {
-		console.log('[WebAuthn Authenticate Options] Starting...');
-		console.log('[WebAuthn Authenticate Options] req.session:', req.session);
+		// console.log('[WebAuthn Authenticate Options] Starting...');
+		// console.log('[WebAuthn Authenticate Options] req.session:', req.session);
 
 		if (!req.session.user_id) {
-			console.log('[WebAuthn Authenticate Options] No user_id in session');
+			// console.log('[WebAuthn Authenticate Options] No user_id in session');
 			return res.status(401).json({ error: 'Not authenticated' });
 		}
 
 		const userId = req.session.user_id;
-		console.log('[WebAuthn Authenticate Options] userId:', userId);
+		// console.log('[WebAuthn Authenticate Options] userId:', userId);
 
 		const user = await global.database.collection('users').findOne({ _id: ObjectId(userId) });
-		console.log('[WebAuthn Authenticate Options] user found:', user ? 'yes' : 'no');
+		// console.log('[WebAuthn Authenticate Options] user found:', user ? 'yes' : 'no');
 		if (!user) {
-			console.log('[WebAuthn Authenticate Options] User not found in database');
+			// console.log('[WebAuthn Authenticate Options] User not found in database');
 			return res.status(404).json({ error: 'User not found' });
 		}
 
 		const creds = user.credentials || [];
-		console.log('[WebAuthn Authenticate Options] registered credentials count:', creds.length);
+		// console.log('[WebAuthn Authenticate Options] registered credentials count:', creds.length);
 
 		function normalizeCredentialID(credID) {
 			if (!credID) return null;
@@ -226,7 +229,7 @@ router.post('/webauthn/authenticate/options', async (req, res) => {
 
 		const allowCredentials = creds.map(cred => {
 			const id = normalizeCredentialID(cred.credentialID);
-			console.log('[WebAuthn Authenticate Options] credential id normalized:', id ? id.slice(0, 12) + '...' : null, 'origType:', typeof cred.credentialID);
+			// console.log('[WebAuthn Authenticate Options] credential id normalized:', id ? id.slice(0, 12) + '...' : null, 'origType:', typeof cred.credentialID);
 			if (!id) return null;
 			return {
 				id,
@@ -242,13 +245,13 @@ router.post('/webauthn/authenticate/options', async (req, res) => {
 			rpID: req.hostname,
 		});
 
-		console.log('[WebAuthn Authenticate Options] options generated:', options ? 'yes' : 'no');
-		console.log('[WebAuthn Authenticate Options] options keys:', Object.keys(options));
+		// console.log('[WebAuthn Authenticate Options] options generated:', options ? 'yes' : 'no');
+		// console.log('[WebAuthn Authenticate Options] options keys:', Object.keys(options));
 
 		req.session.challenge = options.challenge;
-		console.log('[WebAuthn Authenticate Options] challenge saved to session');
+		// console.log('[WebAuthn Authenticate Options] challenge saved to session');
 
-		console.log('[WebAuthn Authenticate Options] Sending response');
+		// console.log('[WebAuthn Authenticate Options] Sending response');
 		res.json(options);
 	} catch (error) {
 		console.error('[WebAuthn Authenticate Options] Error:', error);
@@ -259,81 +262,85 @@ router.post('/webauthn/authenticate/options', async (req, res) => {
 // WebAuthn Authentication Verification
 router.post('/webauthn/authenticate/verify', async (req, res) => {
 	try {
-		console.log('[WebAuthn Authenticate Verify] Starting...');
-		console.log('[WebAuthn Authenticate Verify] req.session:', req.session);
+		// console.log('[WebAuthn Authenticate Verify] Starting...');
+		// console.log('[WebAuthn Authenticate Verify] req.session:', req.session);
 
 		if (!req.session.user_id) {
-			console.log('[WebAuthn Authenticate Verify] No user_id in session');
+			// console.log('[WebAuthn Authenticate Verify] No user_id in session');
 			return res.status(401).json({ error: 'Not authenticated' });
 		}
 
 		const userId = req.session.user_id;
-		console.log('[WebAuthn Authenticate Verify] userId:', userId);
+		// console.log('[WebAuthn Authenticate Verify] userId:', userId);
 
 		const expectedChallenge = req.session.challenge;
-		console.log('[WebAuthn Authenticate Verify] expectedChallenge exists:', expectedChallenge ? 'yes' : 'no');
+		// console.log('[WebAuthn Authenticate Verify] expectedChallenge exists:', expectedChallenge ? 'yes' : 'no');
+		if (!PUBLIC_ORIGIN) {
+			// console.log('[WebAuthn Authenticate Verify] PUBLIC_ORIGIN is not configured');
+			return res.status(500).json({ error: 'PUBLIC_ORIGIN is not configured' });
+		}
 
 		const user = await global.database.collection('users').findOne({ _id: ObjectId(userId) });
-		console.log('[WebAuthn Authenticate Verify] user found:', user ? 'yes' : 'no');
+		// console.log('[WebAuthn Authenticate Verify] user found:', user ? 'yes' : 'no');
 		if (!user) {
-			console.log('[WebAuthn Authenticate Verify] User not found in database');
+			// console.log('[WebAuthn Authenticate Verify] User not found in database');
 			return res.status(404).json({ error: 'User not found' });
 		}
 
 		const creds = user.credentials || [];
-		console.log('[WebAuthn Authenticate Verify] registered credentials count:', creds.length);
-		console.log('[WebAuthn Authenticate Verify] req.body.id:', req.body.id);
+		// console.log('[WebAuthn Authenticate Verify] registered credentials count:', creds.length);
+		// console.log('[WebAuthn Authenticate Verify] req.body.id:', req.body.id);
 
 		const matchingCred = creds.find(c => normalizeCredentialID(c.credentialID) === req.body.id);
-		console.log('[WebAuthn Authenticate Verify] matching credential found:', matchingCred ? 'yes' : 'no');
+		// console.log('[WebAuthn Authenticate Verify] matching credential found:', matchingCred ? 'yes' : 'no');
 		if (!matchingCred?.credentialID || !matchingCred?.credentialPublicKey) {
-			console.log('[WebAuthn Authenticate Verify] Credential validation failed:', {
-				credentialID: matchingCred?.credentialID ? 'present' : 'missing',
-				credentialPublicKey: matchingCred?.credentialPublicKey ? 'present' : 'missing',
-			});
+			// console.log('[WebAuthn Authenticate Verify] Credential validation failed:', {
+			// 	credentialID: matchingCred?.credentialID ? 'present' : 'missing',
+			// 	credentialPublicKey: matchingCred?.credentialPublicKey ? 'present' : 'missing',
+			// });
 			return res.status(400).json({ error: 'Registered credential is incomplete' });
 		}
 
 		let publicKey = matchingCred.credentialPublicKey;
-		console.log('[WebAuthn Authenticate Verify] Stored publicKey raw:', {
-			type: typeof publicKey,
-			isBuffer: Buffer.isBuffer(publicKey),
-			keys: publicKey ? Object.keys(publicKey).slice(0, 10) : null,
-			value: publicKey ? (typeof publicKey === 'object' ? JSON.stringify(publicKey).slice(0, 100) : publicKey.toString().slice(0, 100)) : null,
-			_bsontype: publicKey?._bsontype,
-		});
+		// console.log('[WebAuthn Authenticate Verify] Stored publicKey raw:', {
+		// 	type: typeof publicKey,
+		// 	isBuffer: Buffer.isBuffer(publicKey),
+		// 	keys: publicKey ? Object.keys(publicKey).slice(0, 10) : null,
+		// 	value: publicKey ? (typeof publicKey === 'object' ? JSON.stringify(publicKey).slice(0, 100) : publicKey.toString().slice(0, 100)) : null,
+		// 	_bsontype: publicKey?._bsontype,
+		// });
 		if (!Buffer.isBuffer(publicKey)) {
 			if (publicKey && publicKey.buffer && Array.isArray(publicKey.buffer.data)) {
 				// BSON Binary object returned by MongoDB
-				console.log('[WebAuthn Authenticate Verify] Converting from BSON Binary');
+				// console.log('[WebAuthn Authenticate Verify] Converting from BSON Binary');
 				publicKey = Buffer.from(publicKey.buffer.data);
 			} else if (publicKey && publicKey.data && Array.isArray(publicKey.data)) {
 				// Serialized Buffer object { type: 'Buffer', data: [...] }
-				console.log('[WebAuthn Authenticate Verify] Converting from serialized Buffer');
+				// console.log('[WebAuthn Authenticate Verify] Converting from serialized Buffer');
 				publicKey = Buffer.from(publicKey.data);
 			} else if (typeof publicKey === 'string') {
 				// Base64 string
-				console.log('[WebAuthn Authenticate Verify] Converting from base64 string');
+				// console.log('[WebAuthn Authenticate Verify] Converting from base64 string');
 				publicKey = Buffer.from(publicKey, 'base64');
 			} else if (publicKey && publicKey._bsontype === 'Binary') {
 				// BSON Binary with different structure
-				console.log('[WebAuthn Authenticate Verify] Converting from BSON Binary (alternate structure)');
+				// console.log('[WebAuthn Authenticate Verify] Converting from BSON Binary (alternate structure)');
 				publicKey = publicKey.buffer ? Buffer.from(publicKey.buffer) : Buffer.from(publicKey);
 			} else if (publicKey && typeof publicKey === 'object' && !publicKey._bsontype && !publicKey.type) {
 				// MongoDB serialized Buffer as plain object with numeric keys
-				console.log('[WebAuthn Authenticate Verify] Converting from MongoDB numeric object');
+				// console.log('[WebAuthn Authenticate Verify] Converting from MongoDB numeric object');
 				const keys = Object.keys(publicKey).filter(k => !isNaN(k)).sort((a, b) => parseInt(a) - parseInt(b));
 				if (keys.length > 0) {
 					const bytes = keys.map(k => publicKey[k]);
 					publicKey = Buffer.from(bytes);
-					console.log('[WebAuthn Authenticate Verify] Reconstructed from', bytes.length, 'bytes');
+					// console.log('[WebAuthn Authenticate Verify] Reconstructed from', bytes.length, 'bytes');
 				}
 			}
 		}
-		console.log('[WebAuthn Authenticate Verify] publicKey after conversion:', {
-			isBuffer: Buffer.isBuffer(publicKey),
-			length: publicKey ? publicKey.length : 0,
-		});
+		// console.log('[WebAuthn Authenticate Verify] publicKey after conversion:', {
+		// 	isBuffer: Buffer.isBuffer(publicKey),
+		// 	length: publicKey ? publicKey.length : 0,
+		// });
 
 		const verificationCredential = {
 			id: normalizeCredentialID(matchingCred.credentialID),
@@ -341,23 +348,23 @@ router.post('/webauthn/authenticate/verify', async (req, res) => {
 			counter: typeof matchingCred.counter === 'number' ? matchingCred.counter : 0,
 			transports: matchingCred.transports || [],
 		};
-		console.log('[WebAuthn Authenticate Verify] verificationCredential:', {
-			id: verificationCredential.id ? verificationCredential.id.slice(0, 12) + '...' : null,
-			publicKey: verificationCredential.publicKey ? (Buffer.isBuffer(verificationCredential.publicKey) ? 'Buffer(' + verificationCredential.publicKey.length + ')' : 'other') : null,
-			counter: verificationCredential.counter,
-		});
+		// console.log('[WebAuthn Authenticate Verify] verificationCredential:', {
+		// 	id: verificationCredential.id ? verificationCredential.id.slice(0, 12) + '...' : null,
+		// 	publicKey: verificationCredential.publicKey ? (Buffer.isBuffer(verificationCredential.publicKey) ? 'Buffer(' + verificationCredential.publicKey.length + ')' : 'other') : null,
+		// 	counter: verificationCredential.counter,
+		// });
 
 		let verification;
 		try {
-			console.log('[WebAuthn Authenticate Verify] Calling verifyAuthenticationResponse...');
+			// console.log('[WebAuthn Authenticate Verify] Calling verifyAuthenticationResponse...');
 			verification = await verifyAuthenticationResponse({
 				response: req.body,
 				expectedChallenge,
-				expectedOrigin: `${req.protocol}://${req.get('host')}`,
+				expectedOrigin: PUBLIC_ORIGIN,
 				expectedRPID: req.hostname,
 				credential: verificationCredential,
 			});
-			console.log('[WebAuthn Authenticate Verify] Verification result:', verification.verified);
+			// console.log('[WebAuthn Authenticate Verify] Verification result:', verification.verified);
 		} catch (e) {
 			console.error('[WebAuthn Authenticate Verify] Verification error:', e.message);
 			console.error('[WebAuthn Authenticate Verify] Verification error stack:', e.stack);
@@ -365,33 +372,33 @@ router.post('/webauthn/authenticate/verify', async (req, res) => {
 		}
 
 		if (!verification.verified) {
-			console.log('[WebAuthn Authenticate Verify] Verification failed');
+			// console.log('[WebAuthn Authenticate Verify] Verification failed');
 			return res.status(400).json({ error: 'Verification failed' });
 		}
 
-		console.log('[WebAuthn Authenticate Verify] verification object:', {
-			verified: verification.verified,
-			authenticationInfo: verification.authenticationInfo,
-		});
+		// console.log('[WebAuthn Authenticate Verify] verification object:', {
+		// 	verified: verification.verified,
+		// 	authenticationInfo: verification.authenticationInfo,
+		// });
 
 		const nextCounter = verification.authenticationInfo?.newCounter;
-		console.log('[WebAuthn Authenticate Verify] nextCounter from verification:', nextCounter);
+		// console.log('[WebAuthn Authenticate Verify] nextCounter from verification:', nextCounter);
 
 		if (typeof nextCounter === 'number') {
-			console.log('[WebAuthn Authenticate Verify] Updating counter to:', nextCounter);
+			// console.log('[WebAuthn Authenticate Verify] Updating counter to:', nextCounter);
 			const updateResult = await global.database.collection('users').updateOne(
 				{ _id: ObjectId(userId), 'credentials.credentialID': matchingCred.credentialID },
 				{ $set: { 'credentials.$.counter': nextCounter } }
 			);
-			console.log('[WebAuthn Authenticate Verify] Update result:', {
-				matchedCount: updateResult.matchedCount,
-				modifiedCount: updateResult.modifiedCount,
-			});
+			// console.log('[WebAuthn Authenticate Verify] Update result:', {
+			// 	matchedCount: updateResult.matchedCount,
+			// 	modifiedCount: updateResult.modifiedCount,
+			// });
 		} else {
-			console.log('[WebAuthn Authenticate Verify] nextCounter is not a number, counter not updated');
+			// console.log('[WebAuthn Authenticate Verify] nextCounter is not a number, counter not updated');
 		}
 
-		console.log('[WebAuthn Authenticate Verify] Verification successful');
+		// console.log('[WebAuthn Authenticate Verify] Verification successful');
 		res.json({ success: true });
 	} catch (error) {
 		console.error('[WebAuthn Authenticate Verify] Error:', error);

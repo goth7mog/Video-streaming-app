@@ -33,7 +33,10 @@ envsubst < k3s/letsencrypt-clusterissuer.yaml | sudo k3s kubectl apply -f -
 envsubst < k3s/app-certificate.yaml | sudo k3s kubectl apply -f -
 envsubst < k3s/app-ingress.yaml | sudo k3s kubectl apply -f -
 
-sudo k3s kubectl apply -f k3s/nfs-pv-pvc.yaml -f k3s/app-configmap.yaml -f k3s/app-deployment.yaml -f k3s/app-service.yaml
+envsubst < k3s/nfs-pv-pvc.yaml | sudo k3s kubectl apply -f -
+envsubst < k3s/app-configmap.yaml | sudo k3s kubectl apply -f -
+envsubst < k3s/app-deployment.yaml | sudo k3s kubectl apply -f -
+envsubst < k3s/app-service.yaml | sudo k3s kubectl apply -f -
 ```
 
 

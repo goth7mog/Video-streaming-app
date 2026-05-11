@@ -34,6 +34,8 @@ console.log('Hi');
 
 const port = process.env.PORT || 8080;
 
+// app.set('trust proxy', 1);
+
 // Create Global Directory to use throughout the app
 const path = require('path');
 global.approute = path.resolve(__dirname);
