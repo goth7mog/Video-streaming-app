@@ -19,8 +19,6 @@ const Helper = require(global.approute + '/helpers/helpFunctions.js');
 // const _KEYS = require(global.approute + '/config/keys');
 // const { verifyToken } = require(global.approute + "/middleware/verifyToken");
 
-const PUBLIC_ORIGIN = process.env.PUBLIC_ORIGIN || (process.env.DOMAIN ? `https://${process.env.DOMAIN}` : null);
-
 function normalizeCredentialID(credID) {
 	if (!credID) return null;
 	if (Buffer.isBuffer(credID)) return base64url.encode(credID);
@@ -66,6 +64,12 @@ router.get('/mfa', adminController.getMfaPage);
 // WebAuthn Registration Options
 router.post('/webauthn/register/options', async (req, res) => {
 	try {
+		const WEBAUTHN_RPID = process.env.WEBAUTHN_RPID || null;
+		const WEBAUTHN_ALLOWED_ORIGINS = (process.env.WEBAUTHN_ALLOWED_ORIGINS || '')
+			.split(',')
+			.map(origin => origin.trim())
+			.filter(Boolean);
+
 		// console.log('[WebAuthn Register Options] Starting...');
 		// console.log('[WebAuthn Register Options] req.session:', req.session);
 
@@ -91,6 +95,9 @@ router.post('/webauthn/register/options', async (req, res) => {
 
 		const credentials = user.credentials || [];
 		// console.log('[WebAuthn Register Options] credentials count:', credentials.length);
+		if (!WEBAUTHN_RPID) {
+			return res.status(500).json({ error: 'WEBAUTHN_RPID is not configured' });
+		}
 
 		// function normalizeCredentialID(credID) {
 		// 	if (!credID) return null;
@@ -114,7 +121,7 @@ router.post('/webauthn/register/options', async (req, res) => {
 
 		const options = await generateRegistrationOptions({
 			rpName: 'Video Streaming App',
-			rpID: req.hostname,
+			rpID: WEBAUTHN_RPID,
 			userID: webauthnUserID,
 			userName: user.email,
 			attestationType: 'none',
@@ -141,17 +148,25 @@ router.post('/webauthn/register/options', async (req, res) => {
 
 // WebAuthn Registration Verification
 router.post('/webauthn/register/verify', async (req, res) => {
+	const WEBAUTHN_RPID = process.env.WEBAUTHN_RPID || null;
+	const WEBAUTHN_ALLOWED_ORIGINS = (process.env.WEBAUTHN_ALLOWED_ORIGINS || '')
+		.split(',')
+		.map(origin => origin.trim())
+		.filter(Boolean);
+
 	if (!req.session.user_id) return res.status(401).json({ error: 'Not authenticated' });
 	const userId = req.session.user_id;
 	const expectedChallenge = req.session.challenge;
-	if (!PUBLIC_ORIGIN) return res.status(500).json({ error: 'PUBLIC_ORIGIN is not configured' });
+	if (!WEBAUTHN_RPID) return res.status(500).json({ error: 'WEBAUTHN_RPID is not configured' });
+	if (!WEBAUTHN_ALLOWED_ORIGINS.length) return res.status(500).json({ error: 'WEBAUTHN_ALLOWED_ORIGINS is not configured' });
+	const rpID = WEBAUTHN_RPID;
 	let verification;
 	try {
 		verification = await verifyRegistrationResponse({
 			response: req.body,
 			expectedChallenge,
-			expectedOrigin: PUBLIC_ORIGIN,
-			expectedRPID: req.hostname,
+			expectedOrigin: WEBAUTHN_ALLOWED_ORIGINS.length === 1 ? WEBAUTHN_ALLOWED_ORIGINS[0] : WEBAUTHN_ALLOWED_ORIGINS,
+			expectedRPID: rpID,
 		});
 	} catch (e) {
 		return res.status(400).json({ error: e.message });
@@ -169,6 +184,7 @@ router.post('/webauthn/register/verify', async (req, res) => {
 		credentialPublicKey: credentialData.publicKey,
 		counter: credentialData.counter,
 		transports: credentialData.transports || req.body?.response?.transports || [],
+		rpID,
 	};
 	await global.database.collection('users').updateOne(
 		{ _id: ObjectId(userId) },
@@ -193,6 +209,12 @@ router.post('/webauthn/register/verify', async (req, res) => {
 // WebAuthn Authentication Options
 router.post('/webauthn/authenticate/options', async (req, res) => {
 	try {
+		const WEBAUTHN_RPID = process.env.WEBAUTHN_RPID || null;
+		const WEBAUTHN_ALLOWED_ORIGINS = (process.env.WEBAUTHN_ALLOWED_ORIGINS || '')
+			.split(',')
+			.map(origin => origin.trim())
+			.filter(Boolean);
+
 		// console.log('[WebAuthn Authenticate Options] Starting...');
 		// console.log('[WebAuthn Authenticate Options] req.session:', req.session);
 
@@ -213,6 +235,9 @@ router.post('/webauthn/authenticate/options', async (req, res) => {
 
 		const creds = user.credentials || [];
 		// console.log('[WebAuthn Authenticate Options] registered credentials count:', creds.length);
+		if (!WEBAUTHN_RPID) {
+			return res.status(500).json({ error: 'WEBAUTHN_RPID is not configured' });
+		}
 
 		function normalizeCredentialID(credID) {
 			if (!credID) return null;
@@ -242,7 +267,7 @@ router.post('/webauthn/authenticate/options', async (req, res) => {
 			allowCredentials,
 			userVerification: 'preferred',
 			timeout: 60000,
-			rpID: req.hostname,
+			rpID: WEBAUTHN_RPID,
 		});
 
 		// console.log('[WebAuthn Authenticate Options] options generated:', options ? 'yes' : 'no');
@@ -262,6 +287,12 @@ router.post('/webauthn/authenticate/options', async (req, res) => {
 // WebAuthn Authentication Verification
 router.post('/webauthn/authenticate/verify', async (req, res) => {
 	try {
+		const WEBAUTHN_RPID = process.env.WEBAUTHN_RPID || null;
+		const WEBAUTHN_ALLOWED_ORIGINS = (process.env.WEBAUTHN_ALLOWED_ORIGINS || '')
+			.split(',')
+			.map(origin => origin.trim())
+			.filter(Boolean);
+
 		// console.log('[WebAuthn Authenticate Verify] Starting...');
 		// console.log('[WebAuthn Authenticate Verify] req.session:', req.session);
 
@@ -275,9 +306,13 @@ router.post('/webauthn/authenticate/verify', async (req, res) => {
 
 		const expectedChallenge = req.session.challenge;
 		// console.log('[WebAuthn Authenticate Verify] expectedChallenge exists:', expectedChallenge ? 'yes' : 'no');
-		if (!PUBLIC_ORIGIN) {
-			// console.log('[WebAuthn Authenticate Verify] PUBLIC_ORIGIN is not configured');
-			return res.status(500).json({ error: 'PUBLIC_ORIGIN is not configured' });
+		if (!WEBAUTHN_RPID) {
+			// console.log('[WebAuthn Authenticate Verify] WEBAUTHN_RPID is not configured');
+			return res.status(500).json({ error: 'WEBAUTHN_RPID is not configured' });
+		}
+		if (!WEBAUTHN_ALLOWED_ORIGINS.length) {
+			// console.log('[WebAuthn Authenticate Verify] WEBAUTHN_ALLOWED_ORIGINS is not configured');
+			return res.status(500).json({ error: 'WEBAUTHN_ALLOWED_ORIGINS is not configured' });
 		}
 
 		const user = await global.database.collection('users').findOne({ _id: ObjectId(userId) });
@@ -360,8 +395,8 @@ router.post('/webauthn/authenticate/verify', async (req, res) => {
 			verification = await verifyAuthenticationResponse({
 				response: req.body,
 				expectedChallenge,
-				expectedOrigin: PUBLIC_ORIGIN,
-				expectedRPID: req.hostname,
+				expectedOrigin: WEBAUTHN_ALLOWED_ORIGINS.length === 1 ? WEBAUTHN_ALLOWED_ORIGINS[0] : WEBAUTHN_ALLOWED_ORIGINS,
+				expectedRPID: matchingCred.rpID || WEBAUTHN_RPID,
 				credential: verificationCredential,
 			});
 			// console.log('[WebAuthn Authenticate Verify] Verification result:', verification.verified);
