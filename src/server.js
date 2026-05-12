@@ -24,7 +24,6 @@ console.log('Hi');
 
 const port = process.env.PORT || 8080;
 
-<<<<<<< HEAD
 
 
 /* 'TRUST PROXY', TRUE is only needed if I use any of these in my app: req.protocol, req.secure, req.ip, req.hostname give that my app is behind a proxy */
@@ -33,16 +32,10 @@ const port = process.env.PORT || 8080;
 
 
 
-=======
->>>>>>> 58e5b13 (another docker-compose is only for image testing now)
 // Create Global Directory to use throughout the app
 const path = require('path');
 global.approute = path.resolve(__dirname);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 58e5b13 (another docker-compose is only for image testing now)
 app.use(bodyParser.json({ limit: "10000mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10000mb", parameterLimit: 1000000 }));
 
