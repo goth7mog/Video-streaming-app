@@ -9,6 +9,9 @@ services:
     volumes:
       - /data
   app:
+    # image: kuzurik797/videoapp-stripe:latest
+    # pull_policy: always
+    # platform: linux/amd64 
     build:
       context: ./src
       target: debug

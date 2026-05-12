@@ -19,10 +19,9 @@ services:
       - ./exports/assets:/usr/src/app/assets
       - ./exports/public/admin:/usr/src/app/public/admin
       - ./exports/public/site:/usr/src/app/public/site
-    env_file: .env.production
+    env_file: .env.development
     environment:
       - TZ=America/Panama
-      # - NODE_ENV=production
       - NODE_ENV=development # Yet for some features that might not work with HTTP (ex. my current setup with Express Session cookies)
 
 

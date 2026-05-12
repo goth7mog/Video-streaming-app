@@ -2,12 +2,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const app = express();
-// // const http = require("http").createServer(app);
-// // const socketIO = require("socket.io")(http);
-// const formidable = require("formidable");
-// const fileSystem = require("fs");
-// // const mongoClient = require("mongodb").MongoClient;
-// const ObjectId = require("mongodb").ObjectId;
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
 const MemoryStore = require('memorystore')(expressSession);
@@ -15,8 +9,6 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const MongoStore = require('connect-mongo')(expressSession);
 const { RedisStore } = require('connect-redis');
-// const bcrypt = require("bcryptjs");
-// const { getVideoDurationInSeconds } = require('get-video-duration');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
@@ -24,28 +16,26 @@ const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone')
 dayjs.extend(utc);
 dayjs.extend(timezone);
-// dayjs.tz.setDefault("America/Panama");
 global.dayjs = dayjs;
 
-// const some = global.dayjs.tz(`${userAppointmentDate} ${userAppointmentTime}`, "America/Panama").valueOf();
 
 console.log(RedisStore);
 console.log('Hi');
 
 const port = process.env.PORT || 8080;
 
-// app.set('trust proxy', 1);
+
+
+/* 'TRUST PROXY', TRUE is only needed if I use any of these in my app: req.protocol, req.secure, req.ip, req.hostname give that my app is behind a proxy */
+// app.set('trust proxy', true); // If I set this to true, I need to understand that my app should be not accesible directly, but only via a proxy (Nginx). Otherwise it's a great security concern.
+
+
+
 
 // Create Global Directory to use throughout the app
 const path = require('path');
 global.approute = path.resolve(__dirname);
 
-// const _KEYS = require(global.approute + '/config/keys');
-// const { verifyToken } = require(global.approute + "/middleware/verifyToken");
-
-// const nodemailer = require("nodemailer");
-
-// const mainURL = `http://localhost:${port}`;
 
 app.use(bodyParser.json({ limit: "10000mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10000mb", parameterLimit: 1000000 }));
@@ -91,13 +81,6 @@ const connectRedis = async () => {
 const siteRouter = require(global.approute + "/router/siteRouter.js");
 const adminRouter = require(global.approute + "/router/adminRouter.js");
 
-// Import Routes
-// const mainRoute = require(global.approute + "/routes/admin/main.js");
-// const registerRoute = require(global.approute + "/routes/register.js");
-// const loginRoute = require(global.approute + "/routes/login.js");
-// const createStreamRoute = require(global.approute + "/routes/createStream.js");
-// const chargeRoute = require(global.approute + "/routes/charge.js");
-
 
 
 
@@ -142,15 +125,10 @@ const startup = async () => {
 
 		app.use("/", siteRouter);
 		app.use("/admin", adminRouter);
-		// app.use("/register", registerRoute);
-		// app.use("/login", loginRoute);
-		// app.use("/charge", chargeRoute);
-		// app.use("/assets/videos/", createStreamRoute);
 
 
 
 		app.get('/app/info', (req, res) => {
-			// console.log(req.headers.authorization)
 			res.json({
 				code: 1,
 				message: `${process.env.npm_package_name} is running`,
@@ -172,8 +150,6 @@ const startup = async () => {
 	}
 }
 
-// process.on('SIGTERM', process.exit);
-// process.on('SIGINT', process.exit);
 
 
 //----------------------------RUN APP------------------------------//
