@@ -24,6 +24,7 @@ console.log('Hi');
 
 const port = process.env.PORT || 8080;
 
+<<<<<<< HEAD
 
 
 /* 'TRUST PROXY', TRUE is only needed if I use any of these in my app: req.protocol, req.secure, req.ip, req.hostname give that my app is behind a proxy */
@@ -32,11 +33,16 @@ const port = process.env.PORT || 8080;
 
 
 
+=======
+>>>>>>> 58e5b13 (another docker-compose is only for image testing now)
 // Create Global Directory to use throughout the app
 const path = require('path');
 global.approute = path.resolve(__dirname);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 58e5b13 (another docker-compose is only for image testing now)
 app.use(bodyParser.json({ limit: "10000mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10000mb", parameterLimit: 1000000 }));
 
@@ -93,7 +99,6 @@ app.on('ready', () => {
 		console.log(`server is running on port ${port}`);
 		console.log('NODE_ENV =', process.env.NODE_ENV);
 		console.log('MONGO_HOST =', process.env.MONGO_HOST);
-		// console.log('MONGO_PORT =', process.env.MONGO_PORT);
 	});
 });
 
