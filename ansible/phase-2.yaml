@@ -1,4 +1,5 @@
-- name: Test k3s deploy role
+---
+- name: K3S deploy
   hosts: droplet1-main
   become: yes
   vars_files:

@@ -13,30 +13,23 @@ cd terraform
 ssh -i /Users/alexander/.ssh/DigitalOcean/main main@"$(terraform output -raw droplet_ip | tr -d '\r\n' | sed -E 's/[^0-9.]//g')"
 ```
 
-3. provision with Ansible:
+3. provision with Ansible (phase 1):
 
 ```
 cd ansible
 
-ansible-playbook -i inventory.yaml site.yaml -l droplet1-main
+ansible-playbook -i inventory.yaml phase-1.yaml -l droplet1-main
 ```
 <!-- If stalls at the Install Docker task, interrupt and try again -->
 
 4. Link the DNS name with the droplet's ip.
 
 
-5. Apply the rest of K3S manifests ultimately:
+5. After the DNS name points to the new droplet IP, continue with the phase 2:
 ```
-export $(cat k3s/variables.env | xargs)
+cd ansible
 
-envsubst < k3s/letsencrypt-clusterissuer.yaml | sudo k3s kubectl apply -f -
-envsubst < k3s/app-certificate.yaml | sudo k3s kubectl apply -f -
-envsubst < k3s/app-ingress.yaml | sudo k3s kubectl apply -f -
-
-envsubst < k3s/nfs-pv-pvc.yaml | sudo k3s kubectl apply -f -
-envsubst < k3s/app-configmap.yaml | sudo k3s kubectl apply -f -
-envsubst < k3s/app-deployment.yaml | sudo k3s kubectl apply -f -
-envsubst < k3s/app-service.yaml | sudo k3s kubectl apply -f -
+ansible-playbook -i inventory.yaml phase-2.yaml -l droplet1-main
 ```
 
 

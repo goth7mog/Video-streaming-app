@@ -1,0 +1,59 @@
+---
+- name: Wait for cert-manager deployments to be available
+  ansible.builtin.shell: |
+    kubectl wait -n cert-manager --for=condition=available deployment --all --timeout=180s
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  register: cert_manager_ready
+  changed_when: false
+  until: cert_manager_ready.rc == 0
+  retries: 10
+  delay: 6
+  become: true
+
+- name: Wait for ingress-nginx controller to be available
+  ansible.builtin.shell: |
+    kubectl wait -n default --for=condition=available deployment/ingress-nginx-controller --timeout=180s
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  register: ingress_nginx_ready
+  changed_when: false
+  until: ingress_nginx_ready.rc == 0
+  retries: 10
+  delay: 6
+  become: true
+
+- name: Apply K3S manifests
+  ansible.builtin.shell: |
+    set -euo pipefail
+    set -a
+    . "{{ k3s_manifest_dir }}/variables.env"
+    set +a
+
+    envsubst < "{{ k3s_manifest_dir }}/letsencrypt-clusterissuer.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/app-certificate.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/app-ingress.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/nfs-pv-pvc.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/app-configmap.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/app-deployment.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/app-service.yaml" | kubectl apply -f -
+  args:
+    executable: /bin/bash
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  register: k3s_manifest_apply
+  changed_when: k3s_manifest_apply.rc == 0
+  failed_when: k3s_manifest_apply.rc != 0
+  become: true
+
+- name: Wait for app deployment rollout
+  ansible.builtin.shell: |
+    kubectl rollout status deployment/app-deployment -n default --timeout=180s
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  register: app_deployment_ready
+  changed_when: false
+  until: app_deployment_ready.rc == 0
+  retries: 10
+  delay: 6
+  become: true
