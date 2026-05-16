@@ -32,10 +32,15 @@ cd ansible
 ansible-playbook -i inventory.yaml phase-2.yaml -l droplet1-main
 ```
 
-6. Trigger K3S redeployment:
+6a. Trigger K3S redeployment after src/ changes:
 ```
 sudo kubectl rollout restart deployment/app-deployment
 sudo kubectl rollout status deployment/app-deployment
+```
+
+6b. After changes in exports/ run:
+```
+git pull
 ```
 
 
