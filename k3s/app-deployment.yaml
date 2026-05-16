@@ -25,7 +25,9 @@ kind: Deployment
 metadata:
   name: app-deployment
 spec:
-  replicas: 3
+  replicas: 2
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: video-app

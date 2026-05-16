@@ -32,6 +32,12 @@ cd ansible
 ansible-playbook -i inventory.yaml phase-2.yaml -l droplet1-main
 ```
 
+6. Trigger K3S redeployment:
+```
+sudo kubectl rollout restart deployment/app-deployment
+sudo kubectl rollout status deployment/app-deployment
+```
+
 
 ## Destroying the Droplet and Cleaning SSH Known Hosts
 
