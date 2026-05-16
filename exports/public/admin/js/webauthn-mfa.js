@@ -9,7 +9,6 @@ function getUserAgentFingerprint() {
     return {
         userAgent: navigator.userAgent || null,
         platform: uaData?.platform || navigator.platform || null,
-        brands: uaData?.brands || [],
         mobile: typeof uaData?.mobile === 'boolean' ? uaData.mobile : null,
         language: navigator.language || null,
         languages: Array.isArray(navigator.languages) ? navigator.languages : [],
