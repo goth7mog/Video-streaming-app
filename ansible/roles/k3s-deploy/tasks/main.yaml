@@ -45,15 +45,3 @@
   changed_when: k3s_manifest_apply.rc == 0
   failed_when: k3s_manifest_apply.rc != 0
   become: true
-
-- name: Wait for app deployment rollout
-  ansible.builtin.shell: |
-    kubectl rollout status deployment/app-deployment -n default --timeout=180s
-  environment:
-    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
-  register: app_deployment_ready
-  changed_when: false
-  until: app_deployment_ready.rc == 0
-  retries: 10
-  delay: 6
-  become: true
