@@ -1,0 +1,9 @@
+---
+- name: K3S redeploy
+  hosts: droplet1-main
+  become: yes
+  vars_files:
+    - vault.yaml
+  roles:
+    - k3s-reset
+    - k3s-deploy

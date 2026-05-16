@@ -22,4 +22,4 @@
     - docker-setup
     - k3s-install
     - nfs-server
-    - helm-deploy
+    - helm-install

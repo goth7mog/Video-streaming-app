@@ -1,0 +1,44 @@
+---
+- name: Uninstall ingress-nginx Helm release if present
+  ansible.builtin.shell: |
+    if helm status ingress-nginx -n default >/dev/null 2>&1; then
+      helm uninstall ingress-nginx -n default
+    else
+      echo "ingress-nginx release not found; skipping Helm uninstall"
+    fi
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  register: ingress_nginx_uninstall
+  changed_when: "ingress_nginx_uninstall.stdout is not search('skipping Helm uninstall')"
+  failed_when: ingress_nginx_uninstall.rc != 0
+  become: true
+
+- name: Delete K3S app manifests
+  ansible.builtin.shell: |
+    set -euo pipefail
+    set -a
+    . "{{ k3s_manifest_dir }}/variables.env"
+    set +a
+
+    delete_manifest() {
+      local manifest_path="$1"
+      if [ -f "$manifest_path" ]; then
+        envsubst < "$manifest_path" | kubectl delete -f - --ignore-not-found=true
+      fi
+    }
+
+    delete_manifest "{{ k3s_manifest_dir }}/app-ingress.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/app-certificate.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/letsencrypt-clusterissuer.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/app-service.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/app-deployment.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/app-configmap.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/nfs-pv-pvc.yaml"
+  args:
+    executable: /bin/bash
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  register: k3s_manifest_delete
+  changed_when: k3s_manifest_delete.rc == 0
+  failed_when: k3s_manifest_delete.rc != 0
+  become: true

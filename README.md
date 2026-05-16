@@ -32,19 +32,19 @@ cd ansible
 ansible-playbook -i inventory.yaml phase-2.yaml -l droplet1-main
 ```
 
-6a. Trigger K3S redeployment after src/ changes:
+## Synchronizing changes
+a. Trigger redeploy of the app after src/ changes:
 ```
 sudo kubectl rollout restart deployment/app-deployment
 sudo kubectl rollout status deployment/app-deployment
 ```
 
-6b. After changes in exports/ run:
+b. After changes in exports/ run:
 ```
 git pull
 ```
 
-
-## Destroying the Droplet and Cleaning SSH Known Hosts
+### Destroying the Droplet and Cleaning SSH Known Hosts
 
 To destroy your droplet and remove its SSH key from known_hosts (to avoid SSH warnings when recreating):
 
