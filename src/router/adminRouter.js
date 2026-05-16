@@ -185,6 +185,7 @@ router.post('/webauthn/register/verify', async (req, res) => {
 		counter: credentialData.counter,
 		transports: credentialData.transports || req.body?.response?.transports || [],
 		rpID,
+		userAgent: req.body?.userAgent || null,
 	};
 	await global.database.collection('users').updateOne(
 		{ _id: ObjectId(userId) },

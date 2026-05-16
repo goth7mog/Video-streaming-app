@@ -420,7 +420,19 @@
   }
 
   // ../exports/public/admin/js/webauthn-mfa.js
-  document.addEventListener("DOMContentLoaded", function() {
+  function getUserAgentFingerprint() {
+    const uaData = navigator.userAgentData || null;
+    return {
+      userAgent: navigator.userAgent || null,
+      platform: uaData?.platform || navigator.platform || null,
+      brands: uaData?.brands || [],
+      mobile: typeof uaData?.mobile === "boolean" ? uaData.mobile : null,
+      language: navigator.language || null,
+      languages: Array.isArray(navigator.languages) ? navigator.languages : [],
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null
+    };
+  }
+  document.addEventListener("DOMContentLoaded", function () {
     const registerBtn = document.getElementById("register-webauthn");
     const authnBtn = document.getElementById("authenticate-webauthn");
     const messageDiv = document.getElementById("mfa-message");
@@ -439,7 +451,10 @@
           const verifyResp = await fetch("/admin/webauthn/register/verify", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(attResp)
+            body: JSON.stringify({
+              ...attResp,
+              userAgent: getUserAgentFingerprint()
+            })
           });
           const verifyResult = await verifyResp.json();
           console.log("webauthn: registration verify result", verifyResult);
