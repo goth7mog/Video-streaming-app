@@ -33,6 +33,30 @@
   delay: 6
   become: true
 
+- name: Check ingress-nginx bundled Nginx version
+  ansible.builtin.shell: |
+    set -euo pipefail
+    kubectl exec -n default deploy/ingress-nginx-controller -- nginx -v 2>&1 | sed -n 's/^nginx version: nginx\///p'
+  args:
+    executable: /bin/bash
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  register: nginx_version_check
+  changed_when: false
+  failed_when: nginx_version_check.rc != 0
+  become: true
+
+- name: Output ingress-nginx Nginx version
+  ansible.builtin.debug:
+    msg: "ingress-nginx is running Nginx {{ nginx_version_check.stdout | trim }}"
+
+- name: Warn when ingress-nginx Nginx is older than 1.30.0
+  ansible.builtin.debug:
+    msg: "WARNING: ingress-nginx is running Nginx {{ nginx_version_check.stdout | trim }}, which is older than 1.30.0"
+  when:
+    - nginx_version_check.stdout | trim != ""
+    - nginx_version_check.stdout | trim is version('1.30.0', '<')
+
 - name: Apply K3S manifests
   ansible.builtin.shell: |
     set -euo pipefail
