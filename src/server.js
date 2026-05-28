@@ -111,7 +111,7 @@ const startup = async () => {
 			},
 			store: new RedisStore({
 				client: global.redisClient,
-				ttl: 24 * 60 * 60 // 24 hours
+				ttl: 48 * 60 * 60 // 48 hours
 			}),
 			key: process.env.EXPRESS_SESSION_KEY,
 			secret: process.env.EXPRESS_SESSION_SECRET,
