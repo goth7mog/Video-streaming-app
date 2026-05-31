@@ -10,12 +10,14 @@ create-admin.sh
 usefull-commands.txt
 copy-gitignores.txt
 .vscode/
-k3s/app-configmap.yaml
+k3s/app-configmap-prod.yaml
+k3s/app-configmap-local.yaml
 # k3s/letsencrypt-clusterissuer.yaml
 # k3s/app-certificate.yaml
 k3s/deploy-sequence.md
 k3s/deployment-check.md
-k3s/variables.env
+k3s/variables.prod.env
+k3s/variables.local.env
 k3s/saved-tls-cert.yaml
 ansible/nfs-server-instructions.txt
 ansible/ansible-commands.txt

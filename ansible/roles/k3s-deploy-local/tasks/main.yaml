@@ -45,16 +45,16 @@
     - nginx_version_check.stdout | trim != ""
     - nginx_version_check.stdout | trim is version('1.30.0', '<')
 
-- name: Apply K3S manifests (local, no certs)
+- name: Apply K3S manifests
   ansible.builtin.shell: |
     set -euo pipefail
     set -a
-    . "{{ k3s_manifest_dir }}/variables.env"
+    . "{{ k3s_manifest_dir }}/variables.local.env"
     set +a
 
     envsubst < "{{ k3s_manifest_dir }}/app-ingress.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/nfs-pv-pvc.yaml" | kubectl apply -f -
-    envsubst < "{{ k3s_manifest_dir }}/app-configmap.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/app-configmap-local.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-deployment.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-service.yaml" | kubectl apply -f -
   args:

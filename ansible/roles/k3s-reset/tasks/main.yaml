@@ -17,7 +17,7 @@
   ansible.builtin.shell: |
     set -euo pipefail
     set -a
-    . "{{ k3s_manifest_dir }}/variables.env"
+    . "{{ k3s_manifest_dir }}/variables.prod.env"
     set +a
 
     delete_manifest() {
@@ -32,7 +32,7 @@
     delete_manifest "{{ k3s_manifest_dir }}/letsencrypt-clusterissuer.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-service.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-deployment.yaml"
-    delete_manifest "{{ k3s_manifest_dir }}/app-configmap.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/app-configmap-prod.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/nfs-pv-pvc.yaml"
   args:
     executable: /bin/bash
