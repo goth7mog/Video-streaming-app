@@ -27,7 +27,7 @@
       fi
     }
 
-    delete_manifest "{{ k3s_manifest_dir }}/app-ingress.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/app-ingress-prod.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-certificate.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/letsencrypt-clusterissuer.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-service.yaml"

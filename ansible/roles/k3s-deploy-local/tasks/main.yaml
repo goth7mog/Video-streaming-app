@@ -52,7 +52,7 @@
     . "{{ k3s_manifest_dir }}/variables.local.env"
     set +a
 
-    envsubst < "{{ k3s_manifest_dir }}/app-ingress.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/app-ingress-local.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/nfs-pv-pvc.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-configmap-local.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-deployment.yaml" | kubectl apply -f -

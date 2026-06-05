@@ -27,7 +27,7 @@
       fi
     }
 
-    delete_manifest "{{ k3s_manifest_dir }}/app-ingress.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/app-ingress-local.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-service.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-deployment.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-configmap-local.yaml"
