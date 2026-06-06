@@ -67,7 +67,7 @@
     envsubst < "{{ k3s_manifest_dir }}/letsencrypt-clusterissuer.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-certificate.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-ingress-prod.yaml" | kubectl apply -f -
-    envsubst < "{{ k3s_manifest_dir }}/nfs-pv-pvc.yaml" | kubectl apply -f -
+    envsubst < "{{ k3s_manifest_dir }}/nfs-pv-pvc-prod.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-configmap-prod.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-deployment.yaml" | kubectl apply -f -
     envsubst < "{{ k3s_manifest_dir }}/app-service.yaml" | kubectl apply -f -

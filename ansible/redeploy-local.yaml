@@ -1,0 +1,8 @@
+- name: K3S deploy local
+  hosts: localhost
+  connection: local
+  vars:
+    working_dir: /home/ubuntu/Code/Video-streaming-app
+  roles:
+    - k3s-reset-local
+    - k3s-deploy-local

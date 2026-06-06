@@ -10,8 +10,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: ${DOMAIN_NAME}
-      http:
+    # - host: ${DOMAIN_NAME}      // Hostless for local metallb deployment
+    - http:
         paths:
           - path: /
             pathType: Prefix

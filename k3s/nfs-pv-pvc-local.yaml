@@ -10,7 +10,7 @@ spec:
   storageClassName: local-path
   nfs:
     server: ${NFS_SERVER_IP}
-    path: /home/main/Video-streaming-app/exports
+    path: /home/ubuntu/Code/Video-streaming-app/exports
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

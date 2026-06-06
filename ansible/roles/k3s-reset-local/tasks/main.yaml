@@ -11,7 +11,6 @@
   register: ingress_nginx_uninstall
   changed_when: "ingress_nginx_uninstall.stdout is not search('skipping Helm uninstall')"
   failed_when: ingress_nginx_uninstall.rc != 0
-  become: true
 
 - name: Delete K3S app manifests
   ansible.builtin.shell: |
@@ -31,7 +30,7 @@
     delete_manifest "{{ k3s_manifest_dir }}/app-service.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-deployment.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-configmap-local.yaml"
-    delete_manifest "{{ k3s_manifest_dir }}/nfs-pv-pvc.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/nfs-pv-pvc-local.yaml"
   args:
     executable: /bin/bash
   environment:
@@ -39,4 +38,3 @@
   register: k3s_manifest_delete
   changed_when: k3s_manifest_delete.rc == 0
   failed_when: k3s_manifest_delete.rc != 0
-  become: true

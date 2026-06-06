@@ -33,7 +33,7 @@
     delete_manifest "{{ k3s_manifest_dir }}/app-service.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-deployment.yaml"
     delete_manifest "{{ k3s_manifest_dir }}/app-configmap-prod.yaml"
-    delete_manifest "{{ k3s_manifest_dir }}/nfs-pv-pvc.yaml"
+    delete_manifest "{{ k3s_manifest_dir }}/nfs-pv-pvc-prod.yaml"
   args:
     executable: /bin/bash
   environment:
