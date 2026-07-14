@@ -37,6 +37,6 @@ nfs.txt
 nfs-log.txt
 Notes.txt
 certificates.txt
-certificate-issuance-sequence.md
+# certificate-issuance-sequence.md
 diagrams/
 PLAN.md
