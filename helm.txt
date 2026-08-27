@@ -1,0 +1,63 @@
+#------------------------ Useful Helm Commands-----------------------#
+
+# NGINX
+
+helm install ingress-nginx ingress-nginx/ingress-nginx --namespace default -f k3s/helm/ingress-nginx-values.yaml
+
+helm upgrade ingress-nginx ingress-nginx/ingress-nginx --namespace default -f k3s/helm/ingress-nginx-values.yaml
+
+helm uninstall ingress-nginx --namespace default
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Add the Bitnami repository (only needed once per system)
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# Update all repositories
+helm repo update
+
+# List all installed Helm releases
+helm list
+
+# Install a chart (example: Redis)
+helm install my-redis bitnami/redis
+
+# Install a chart with custom values
+helm install my-redis bitnami/redis -f k3s/redis-values.yaml
+
+# Upgrade a release with new values
+helm upgrade my-redis bitnami/redis -f k3s/redis-values.yaml
+
+# Uninstall (delete) a release
+helm uninstall my-redis
+
+# Show all available charts in a repo
+helm search repo bitnami
+
+# Get the values used to deploy a release
+helm get values my-redis
+
+# Dry run an install/upgrade to see what will happen
+helm install --dry-run --debug my-redis bitnami/redis
+
+# Show the manifest that would be installed
+helm template my-redis bitnami/redis
+
+# Roll back to a previous release revision
+helm rollback my-redis 1

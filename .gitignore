@@ -32,7 +32,7 @@ terraform/*.tfstate
 terraform/*.tfstate.backup
 ks-commands.txt
 k8s-commands.txt
-helm.txt
+# helm.txt
 nfs.txt
 nfs-log.txt
 Notes.txt
